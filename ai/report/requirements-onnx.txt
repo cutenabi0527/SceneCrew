@@ -1,0 +1,12 @@
+# ONNX 변환·검사 도구 (export_onnx.py, verify_onnx.py, test_onnx.py).
+# 학습 환경 pyproject·lock은 V7-D05 보존 대상이라 바꾸지 않고 실행할 때 덧붙인다:
+#   uv run --with-requirements requirements-onnx.txt export_onnx.py
+onnx==1.23.2
+onnxruntime==1.31.1
+onnxscript==0.7.2
+# 변환 결과(model.onnx 바이트)에 영향을 주는 간접 의존성도 고정한다
+onnx-ir==1.1.0
+protobuf==7.36.2
+ml-dtypes==0.6.0
+flatbuffers==25.12.19
+sympy==1.14.0

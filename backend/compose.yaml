@@ -1,0 +1,58 @@
+# 로컬 백엔드·DB 확인용. 공용 배포 설정은 infra/app-server에서 관리한다.
+name: scenecrew-local
+services:
+  backend:
+    image: scenecrew-backend:local
+    build:
+      context: .
+    ports:
+      - "127.0.0.1:${BACKEND_HOST_PORT:-8080}:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/scenecrew
+      SPRING_DATASOURCE_USERNAME: scenecrew
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-scenecrew-local}
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=75
+      TZ: UTC
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    mem_limit: 1g
+    stop_grace_period: 30s
+
+  # 서버(infra/app-server)와 같은 이미지. 로컬 전용 계정이며 운영 비밀번호와 무관하다.
+  postgres:
+    image: pgvector/pgvector:0.8.7-pg17
+    environment:
+      POSTGRES_DB: scenecrew
+      POSTGRES_USER: scenecrew
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-scenecrew-local}
+      TZ: UTC
+    ports:
+      - "127.0.0.1:${POSTGRES_HOST_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U scenecrew -d scenecrew"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    mem_limit: 1g
+
+  redis:
+    image: redis:8.10.2-alpine
+    ports:
+      - "127.0.0.1:${REDIS_HOST_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres-data:

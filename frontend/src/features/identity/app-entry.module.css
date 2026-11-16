@@ -1,0 +1,155 @@
+/* APP 로그인·회원가입·비밀번호 찾기(#402). 웹 화면은 이 클래스를 쓰지 않는다 */
+
+/* 로그인: 이름표는 숨기고 칸 안 안내 글로 보인다 */
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.loginForm label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+.loginForm input {
+    box-sizing: border-box;
+    min-height: 52px;
+    padding: 0 14px;
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+    background: var(--surface);
+    font: inherit;
+    font-size: 15px;
+}
+.loginBtn {
+    min-height: 52px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--fg);
+    color: var(--surface);
+    font: inherit;
+    font-size: 16px;
+    font-weight: 700;
+}
+.links,
+.footLinks {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 14px;
+}
+.links a,
+.footLinks a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+}
+.links a {
+    color: var(--blue);
+}
+.footLinks {
+    margin-top: auto;
+    font-size: 13px;
+}
+.footLinks a {
+    color: var(--fg);
+}
+
+/* 회원가입·비밀번호 찾기 본문 */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.consents {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    margin: 0;
+    padding: 4px 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+}
+.consentAll,
+.consent {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    font-size: 15px;
+}
+.consentAll {
+    min-height: 52px;
+    border-bottom: 1px solid var(--surface-2);
+    font-size: 16px;
+    font-weight: 700;
+}
+.consentList {
+    display: flex;
+    flex-direction: column;
+    padding: 4px 0;
+}
+.consentAll input,
+.consent input {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    accent-color: var(--fg);
+}
+.steps {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 13px;
+}
+.steps li {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: var(--muted);
+}
+.steps li::before {
+    content: '';
+    height: 4px;
+    border-radius: 999px;
+    background: var(--surface-2);
+}
+.steps li[aria-current='step'] {
+    color: var(--fg);
+    font-weight: 700;
+}
+.steps li[aria-current='step']::before {
+    background: var(--fg);
+}
+.lead {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.lead b {
+    font-size: 20px;
+    font-weight: 700;
+}
+.lead span {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+.textLink {
+    align-self: flex-start;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--blue);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+}

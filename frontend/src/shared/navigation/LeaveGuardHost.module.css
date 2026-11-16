@@ -1,0 +1,44 @@
+.dialog {
+    width: min(26rem, calc(100vw - 2rem));
+    padding: 1.5rem;
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-panel);
+}
+
+.dialog::backdrop {
+    background: rgb(25 54 44 / 55%);
+}
+
+.dialog h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.25rem;
+    line-height: 1.4;
+    word-break: keep-all;
+}
+
+.dialog p {
+    margin: 0;
+    color: var(--color-muted);
+    line-height: 1.7;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+.actions button {
+    min-width: 48px;
+    min-height: 48px;
+}
+
+.leave {
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+}

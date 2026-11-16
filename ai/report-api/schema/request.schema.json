@@ -1,0 +1,193 @@
+{
+  "$defs": {
+    "AnalyzePayload": {
+      "additionalProperties": false,
+      "properties": {
+        "reportId": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Reportid",
+          "type": "string"
+        },
+        "normalizedText": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Normalizedtext",
+          "type": "string"
+        },
+        "allowedZones": {
+          "items": {
+            "$ref": "#/$defs/ZoneInput"
+          },
+          "maxItems": 10,
+          "title": "Allowedzones",
+          "type": "array"
+        },
+        "allowedPrograms": {
+          "items": {
+            "$ref": "#/$defs/ProgramInput"
+          },
+          "maxItems": 20,
+          "title": "Allowedprograms",
+          "type": "array"
+        },
+        "allowedWorkGroups": {
+          "items": {
+            "$ref": "#/$defs/WorkGroupInput"
+          },
+          "maxItems": 31,
+          "title": "Allowedworkgroups",
+          "type": "array"
+        }
+      },
+      "required": [
+        "reportId",
+        "normalizedText",
+        "allowedZones",
+        "allowedPrograms",
+        "allowedWorkGroups"
+      ],
+      "title": "AnalyzePayload",
+      "type": "object"
+    },
+    "ProgramInput": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "zoneId": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Zoneid"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "zoneId"
+      ],
+      "title": "ProgramInput",
+      "type": "object"
+    },
+    "WorkGroupInput": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "zoneIds": {
+          "items": {
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "type": "string"
+          },
+          "maxItems": 10,
+          "title": "Zoneids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "zoneIds"
+      ],
+      "title": "WorkGroupInput",
+      "type": "object"
+    },
+    "ZoneInput": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 30,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "ZoneInput",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "jobId": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "title": "Jobid",
+      "type": "string"
+    },
+    "attempt": {
+      "minimum": 1,
+      "title": "Attempt",
+      "type": "integer"
+    },
+    "requestSchemaVersion": {
+      "const": "4",
+      "title": "Requestschemaversion",
+      "type": "string"
+    },
+    "kind": {
+      "const": "ANALYZE_REPORT",
+      "title": "Kind",
+      "type": "string"
+    },
+    "inputHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Inputhash",
+      "type": "string"
+    },
+    "contextRevision": {
+      "minimum": 0,
+      "title": "Contextrevision",
+      "type": "integer"
+    },
+    "deadlineAt": {
+      "format": "date-time",
+      "title": "Deadlineat",
+      "type": "string"
+    },
+    "payload": {
+      "$ref": "#/$defs/AnalyzePayload"
+    }
+  },
+  "required": [
+    "jobId",
+    "attempt",
+    "requestSchemaVersion",
+    "kind",
+    "inputHash",
+    "contextRevision",
+    "deadlineAt",
+    "payload"
+  ],
+  "title": "AnalyzeRequest",
+  "type": "object"
+}

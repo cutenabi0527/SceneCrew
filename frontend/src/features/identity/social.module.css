@@ -1,0 +1,168 @@
+/* 로그인 실패 안내: 빨간 작은 글씨 한 줄. 넘치면 말줄임하고 전체 문구는 title로 본다. */
+.loginError {
+    margin: 0;
+    color: var(--bad);
+    font-size: 12.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 소셜 로그인 로고 버튼을 한 줄로 놓는다. */
+.providers {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.provider {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease;
+}
+
+.provider:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.15);
+}
+
+.provider:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 3px;
+}
+
+.provider:disabled {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.provider[aria-busy='true'] {
+    opacity: 1;
+    animation: pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+    to {
+        opacity: 0.45;
+    }
+}
+
+.GOOGLE {
+    background: #fff;
+    border-color: #d0d0cc;
+}
+
+.KAKAO {
+    background: #fee500;
+}
+
+.NAVER {
+    background: #03c75a;
+}
+
+/* 내 정보의 소셜 계정 한 줄: 로고 · 연결 · 해제(버튼은 낮게) */
+.linkRow {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.linkLogo {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid transparent;
+    border-radius: 50%;
+}
+
+.linkRow :global(.btn) {
+    min-height: 32px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/* 소셜 계정 묶음 아래 구분선(동의와 나눈다) */
+.linkList {
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+}
+
+/* APP 간편 로그인(#402): 구분선 아래 56px 동그라미 3개와 이름 */
+.app {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0 2px;
+    font-size: 13px;
+}
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.3;
+}
+.appProviders {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.appProvider {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 64px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+.circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    box-shadow: 0 1px 2px rgb(14 26 43 / 15%);
+}
+.appProvider:focus-visible {
+    outline: none;
+}
+.appProvider:focus-visible .circle {
+    outline: 2px solid var(--fg);
+    outline-offset: 3px;
+}
+.appProvider[aria-busy='true'] .circle {
+    animation: pulse 1s ease-in-out infinite alternate;
+}
+.appGuide {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: center;
+}

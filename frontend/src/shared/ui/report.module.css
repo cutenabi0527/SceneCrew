@@ -1,0 +1,115 @@
+/* 한글 보고서 형식(이슈·변경안 공용): 카드·색 띠 없이 가운데 제목 → 1. 대항목 → 들여 쓴 항목 → - 소항목. 글자는 모두 검정 */
+.report {
+    color: var(--fg);
+    font-size: 10pt;
+}
+/*
+ * 보고서 글자 크기는 한 가지(10pt)로 맞춘다. 맨 위 제목만 18pt.
+ * 굵기는 건드리지 않아 굵은 글씨는 그대로 굵다. small·xs·h4 같은 공통 크기보다 앞서도록 클래스를 겹쳐 쓴다
+ */
+.report.report * {
+    font-size: 10pt;
+}
+.report.report .head h3 {
+    font-size: 18pt;
+}
+.head {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: center;
+}
+.byline {
+    margin-top: 6px;
+    text-align: right;
+}
+.section {
+    padding-top: 14px;
+    border-top: 1px solid #eef0f3;
+}
+.section h4 {
+    margin-bottom: 8px;
+    font-weight: 800;
+}
+.items,
+.sub {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-left: 12px;
+}
+.items > li,
+.sub > li {
+    position: relative;
+}
+.sub {
+    margin-top: 2px;
+    padding-left: 6px;
+}
+.sub > li {
+    padding-left: 14px;
+}
+.sub > li::before {
+    content: '-';
+    position: absolute;
+    left: 0;
+}
+
+/* 보고서 + 오른쪽 행동 칸(이슈·변경안 공용): 넓으면 오른쪽 칸(스크롤해도 따라옴), 좁으면(APP·좁은 WEB) 보고서 아래로 내린다 */
+.wrap {
+    container-type: inline-size;
+    height: 100%;
+}
+.layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    height: 100%;
+}
+.side {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #eef0f3;
+}
+@container (min-width: 620px) {
+    .layout {
+        grid-template-columns: minmax(0, 1fr) 220px;
+        gap: 24px;
+    }
+    /* 높이가 정해진 칸(WEB 대응 현황)에서는 보고서만 스크롤하고 행동 칸은 그대로 둔다 */
+    /* 스크롤바 자리를 늘 비워 두어 스크롤바가 생기고 없어져도 폭이 그대로다 */
+    .layout > .body {
+        min-height: 0;
+        overflow-y: auto;
+        scrollbar-gutter: stable;
+        padding-right: 8px;
+    }
+    .side {
+        align-self: start;
+        padding: 0;
+        border-top: 0;
+    }
+    /* 오른쪽 행동 칸이 없는 보고서(변경안: 버튼이 제목 오른쪽 위)는 한 단으로 */
+    .layout.solo {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+/* 오른쪽 칸의 버튼 묶음: 같은 너비로 세로 나열 */
+.sideActions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.sideActions > :global(.btn) {
+    width: 100%;
+}
+.sideActions > :global(.btn:not(.primary)) {
+    border-color: var(--fg);
+}

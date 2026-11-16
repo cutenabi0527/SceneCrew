@@ -1,0 +1,195 @@
+/* 복구 대안 비교: 장비·담당자마다 "현재 / 변경 후" 두 줄 */
+.wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    align-items: center;
+}
+.legend {
+    display: flex;
+    gap: 6px;
+}
+.chip {
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: #e7e9ee;
+    color: #000000;
+    font-size: 11.5px;
+    font-weight: 600;
+}
+.chip[data-added] {
+    border: 2px dashed #a4520f;
+    background: #fff4e8;
+    color: #a4520f;
+}
+.chip[data-clash] {
+    background: var(--bad-soft);
+    color: var(--bad);
+    outline: 2px solid var(--bad);
+}
+.head,
+.group {
+    display: grid;
+    grid-template-columns: 150px max-content;
+    width: max-content;
+}
+.head {
+    grid-template-columns: 150px 56px var(--track-w);
+    border-bottom: 1px solid var(--line);
+}
+/* 왼쪽 이름·현재/변경 후 열 고정: 오른쪽 시간만 스크롤한다 */
+.head > span {
+    position: sticky;
+    z-index: 3;
+    background: var(--surface);
+}
+.head > span:first-child {
+    left: 0;
+}
+.head > span:nth-child(2) {
+    left: 150px;
+}
+.scale {
+    position: relative;
+    height: 24px;
+}
+.scale span {
+    position: absolute;
+    top: 4px;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+}
+.scale span:first-child {
+    transform: none;
+}
+.scale span:last-child {
+    transform: translateX(-100%);
+}
+.group {
+    border-bottom: 1px solid #eef0f3;
+}
+.name {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    padding: 6px 8px;
+}
+.pair {
+    display: flex;
+    flex-direction: column;
+}
+.row {
+    display: grid;
+    grid-template-columns: 56px var(--track-w);
+    align-items: center;
+}
+.row[data-after] {
+    background: #fffaf2;
+}
+.tag {
+    position: sticky;
+    left: 150px;
+    z-index: 3;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    background: var(--surface);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+}
+.row[data-after] .tag {
+    background: #fffaf2;
+    color: #a4520f;
+}
+.track {
+    position: relative;
+    height: 34px;
+}
+.now {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--bad);
+}
+.bar {
+    position: absolute;
+    top: 5px;
+    height: 24px;
+    padding: 0 6px;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #e7e9ee;
+    color: #000000;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 24px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.bar[data-kind='준비'] {
+    background: #dce8ff;
+    color: #1e4fb8;
+}
+.bar[data-kind='공연'] {
+    background: #2b2f36;
+    color: #ffffff;
+}
+.bar[data-kind='예약'] {
+    background: #ece4ff;
+    color: #5b3ab8;
+}
+.bar[data-kind='업무'] {
+    background: #e3f2ea;
+    color: #1d6b43;
+}
+/* 새로 생기는 것: 점선(아직 적용 전) */
+.bar[data-added] {
+    border: 2px dashed #a4520f;
+    background: #fff4e8;
+    color: #a4520f;
+    line-height: 20px;
+}
+.bar[data-clash] {
+    outline: 2px solid var(--bad);
+    outline-offset: 1px;
+}
+/* 해제되는 기존 예약: 흐리게 지운 모양 */
+.chip[data-removed],
+.bar[data-removed] {
+    border: 1px dashed var(--line-2);
+    background: transparent;
+    color: var(--muted);
+    text-decoration: line-through;
+}
+.bar[data-removed] {
+    line-height: 22px;
+    opacity: 0.8;
+}
+/* 변경 후의 충돌 목록 */
+.clashes {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.clashes ul {
+    margin: 0;
+    padding: 0;
+    color: var(--bad);
+    list-style: none;
+}

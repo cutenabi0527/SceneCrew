@@ -1,0 +1,44 @@
+/* 신호 경로: 장비 → … → 최종 출력 */
+.path {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 13px;
+}
+.path li {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.path li + li::before {
+    content: '→';
+    color: var(--muted);
+}
+
+/* 인수/설치/재시험 단계 */
+.steps {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.steps li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 6px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    font-size: 13.5px;
+}
+.steps li[data-done='true'] {
+    background: var(--ok-soft);
+    border-color: transparent;
+}

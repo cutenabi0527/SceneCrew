@@ -1,0 +1,1369 @@
+{
+    "$source": "develop docs/api-contract/drafts/v9-327 (#327, MR !128 병합 4e9fce2)",
+    "POST /auth/register": {
+        "operationId": "scApi001",
+        "apiId": "SC-API-001",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "RegisterRequest"
+        },
+        "responses": {
+            "202": {
+                "application/json": "RegistrationAcceptedDraft"
+            }
+        }
+    },
+    "POST /auth/verify-email": {
+        "operationId": "scApi002",
+        "apiId": "SC-API-002",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "VerificationRequest"
+        },
+        "responses": {
+            "201": {
+                "application/json": "LoginResult"
+            }
+        }
+    },
+    "POST /auth/resend-verification": {
+        "operationId": "scApi003",
+        "apiId": "SC-API-003",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "RequestReference"
+        },
+        "responses": {
+            "202": {
+                "application/json": "RegistrationAcceptedDraft"
+            }
+        }
+    },
+    "POST /auth/login": {
+        "operationId": "scApi004",
+        "apiId": "SC-API-004",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "Login"
+        },
+        "responses": {
+            "200": {
+                "application/json": "LoginResult"
+            }
+        }
+    },
+    "POST /auth/refresh": {
+        "operationId": "scApi005",
+        "apiId": "SC-API-005",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "RefreshRequest"
+        },
+        "responses": {
+            "200": {
+                "application/json": "AuthRefreshResult"
+            }
+        }
+    },
+    "POST /auth/logout": {
+        "operationId": "scApi006",
+        "apiId": "SC-API-006",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "LogoutRequest"
+        },
+        "responses": {
+            "204": {}
+        }
+    },
+    "POST /auth/password-reset/request": {
+        "operationId": "scApi007",
+        "apiId": "SC-API-007",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "PasswordResetRequest"
+        },
+        "responses": {
+            "202": {
+                "application/json": "RecoveryAcceptedDraft"
+            }
+        }
+    },
+    "POST /auth/password-reset/confirm": {
+        "operationId": "scApi008",
+        "apiId": "SC-API-008",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "PasswordResetConfirm"
+        },
+        "responses": {
+            "204": {}
+        }
+    },
+    "GET /me": {
+        "operationId": "scApi012",
+        "apiId": "SC-API-012",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "AccountSummary"
+            }
+        }
+    },
+    "PATCH /me": {
+        "operationId": "scApi013",
+        "apiId": "SC-API-013",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "NamePatch"
+        },
+        "responses": {
+            "200": {
+                "application/json": "AccountSummary"
+            }
+        }
+    },
+    "PATCH /me/consents": {
+        "operationId": "scApi017",
+        "apiId": "SC-API-017",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "ConsentPatch"
+        },
+        "responses": {
+            "200": {
+                "application/json": "ConsentSummary"
+            }
+        }
+    },
+    "GET /events": {
+        "operationId": "scApi021",
+        "apiId": "SC-API-021",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "EventPage"
+            }
+        }
+    },
+    "GET /events/{e}": {
+        "operationId": "scApi023",
+        "apiId": "SC-API-023",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "Event"
+            }
+        }
+    },
+    "PATCH /events/{e}": {
+        "operationId": "scApi024",
+        "apiId": "SC-API-024",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "EventPatch"
+        },
+        "responses": {
+            "200": {
+                "application/json": "Event"
+            }
+        }
+    },
+    "PATCH /events/{e}/input": {
+        "operationId": "scApi026",
+        "apiId": "SC-API-026",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "InputPatch"
+        },
+        "responses": {
+            "200": {
+                "application/json": "Event"
+            }
+        }
+    },
+    "GET /events/{e}/plan": {
+        "operationId": "scApi027",
+        "apiId": "SC-API-027",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "PlanView"
+            }
+        }
+    },
+    "PUT /events/{e}/draft-plan": {
+        "operationId": "scApi028",
+        "apiId": "SC-API-028",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "DraftPlanWrite"
+        },
+        "responses": {
+            "200": {
+                "application/json": "DraftPlanSaved"
+            }
+        }
+    },
+    "POST /events/{e}/start": {
+        "operationId": "scApi030",
+        "apiId": "SC-API-030",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "ExpectedEventCommand"
+        },
+        "responses": {
+            "200": {
+                "application/json": "Event"
+            }
+        }
+    },
+    "POST /events/{e}/end": {
+        "operationId": "scApi031",
+        "apiId": "SC-API-031",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "EndEvent"
+        },
+        "responses": {
+            "200": {
+                "application/json": "Event"
+            }
+        }
+    },
+    "GET /invites/{token}/options": {
+        "operationId": "scApi034",
+        "apiId": "SC-API-034",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "InviteOptionsDraft"
+            }
+        }
+    },
+    "POST /invites/{token}/join": {
+        "operationId": "scApi035",
+        "apiId": "SC-API-035",
+        "status": "connected",
+        "idempotency": "REQUIRED",
+        "request": {
+            "application/json": "Join"
+        },
+        "responses": {
+            "200": {
+                "application/json": "JoinResult"
+            }
+        }
+    },
+    "PATCH /members/{m}/availability": {
+        "operationId": "scApi039",
+        "apiId": "SC-API-039",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "Availability"
+        },
+        "responses": {
+            "200": {
+                "application/json": "ParticipationChanged"
+            }
+        }
+    },
+    "POST /events/{e}/leave": {
+        "operationId": "scApi040",
+        "apiId": "SC-API-040",
+        "status": "connected",
+        "idempotency": "REQUIRED",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "DepartureReceipt"
+            }
+        }
+    },
+    "POST /events/{e}/plan-generations": {
+        "operationId": "scApi043",
+        "apiId": "SC-API-043",
+        "status": "connected",
+        "idempotency": "REQUIRED",
+        "request": {
+            "application/json": "Generation"
+        },
+        "responses": {
+            "202": {
+                "application/json": "JobAccepted"
+            }
+        }
+    },
+    "POST /events/{e}/documents": {
+        "operationId": "scApi046",
+        "apiId": "SC-API-046",
+        "status": "connected",
+        "idempotency": "REQUIRED",
+        "request": {
+            "multipart/form-data": "DocumentUpload"
+        },
+        "responses": {
+            "200": {
+                "application/json": "UploadResult"
+            }
+        }
+    },
+    "POST /events/{e}/extractions": {
+        "operationId": "scApi049",
+        "apiId": "SC-API-049",
+        "status": "connected",
+        "idempotency": "REQUIRED",
+        "request": {
+            "application/json": "Generation"
+        },
+        "responses": {
+            "202": {
+                "application/json": "JobAccepted"
+            }
+        }
+    },
+    "GET /events/{e}/tasks": {
+        "operationId": "scApi050",
+        "apiId": "SC-API-050",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "TaskPage"
+            }
+        }
+    },
+    "GET /tasks/{t}": {
+        "operationId": "scApi051",
+        "apiId": "SC-API-051",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9Task"
+            }
+        }
+    },
+    "POST /tasks/{t}/start": {
+        "operationId": "scApi052",
+        "apiId": "SC-API-052",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "ExpectedEventCommand"
+        },
+        "responses": {
+            "200": {
+                "application/json": "TaskCommandResult"
+            }
+        }
+    },
+    "POST /tasks/{t}/complete": {
+        "operationId": "scApi053",
+        "apiId": "SC-API-053",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "ExpectedEventCommand"
+        },
+        "responses": {
+            "200": {
+                "application/json": "TaskCommandResult"
+            }
+        }
+    },
+    "PATCH /tasks/{t}/checklist": {
+        "operationId": "scApi054",
+        "apiId": "SC-API-054",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "ChecklistUpdate"
+        },
+        "responses": {
+            "200": {
+                "application/json": "TaskCommandResult"
+            }
+        }
+    },
+    "GET /ai-jobs/{j}": {
+        "operationId": "scApi063",
+        "apiId": "SC-API-063",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9JobRead"
+            }
+        }
+    },
+    "POST /events/{e}/summary": {
+        "operationId": "scApi080",
+        "apiId": "SC-API-080",
+        "status": "connected",
+        "idempotency": "REQUIRED",
+        "request": {
+            "application/json": "ExpectedEventCommand"
+        },
+        "responses": {
+            "200": {
+                "application/json": "Summary"
+            }
+        }
+    },
+    "GET /events/{e}/issues": {
+        "operationId": "scApi055",
+        "apiId": "SC-API-055",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "IssuePage"
+            }
+        }
+    },
+    "POST /events/{e}/issues": {
+        "operationId": "scApi056",
+        "apiId": "SC-API-056",
+        "status": "connected",
+        "idempotency": "REQUIRED",
+        "request": {
+            "application/json": "V9IssueCreate"
+        },
+        "responses": {
+            "201": {
+                "application/json": "IssueCreated"
+            }
+        }
+    },
+    "GET /issues/{i}": {
+        "operationId": "scApi057",
+        "apiId": "SC-API-057",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "IssueView"
+            }
+        }
+    },
+    "PATCH /issues/{i}": {
+        "operationId": "scApi058",
+        "apiId": "SC-API-058",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "IssuePatch"
+        },
+        "responses": {
+            "200": {
+                "application/json": "IssueView"
+            }
+        }
+    },
+    "PATCH /issues/{i}/situation": {
+        "operationId": "draft320EXT19",
+        "apiId": "draft320EXT19",
+        "status": "planned",
+        "idempotency": "PROPOSED_USE_EXISTING_RULES",
+        "request": {
+            "application/json": "V9SituationWrite"
+        },
+        "responses": {
+            "200": {
+                "application/json": "FinalReceipt"
+            }
+        }
+    },
+    "POST /issues/{i}/reports": {
+        "operationId": "scApi059",
+        "apiId": "SC-API-059",
+        "status": "connected",
+        "idempotency": "REQUIRED",
+        "request": {
+            "application/json": "FollowupReportInput"
+        },
+        "responses": {
+            "201": {
+                "application/json": "ReportCreated"
+            }
+        }
+    },
+    "POST /reports/{r}/analyze": {
+        "operationId": "scApi062",
+        "apiId": "SC-API-062",
+        "status": "connected",
+        "idempotency": "REQUIRED",
+        "request": {
+            "application/json": "Generation"
+        },
+        "responses": {
+            "202": {
+                "application/json": "JobAccepted"
+            }
+        }
+    },
+    "POST /events/{e}/change-generations": {
+        "operationId": "scApi064",
+        "apiId": "SC-API-064",
+        "status": "connected",
+        "idempotency": "REQUIRED",
+        "request": {
+            "application/json": "V9ChangeGeneration"
+        },
+        "responses": {
+            "202": {
+                "application/json": "JobAccepted"
+            }
+        }
+    },
+    "GET /events/{e}/change-sets": {
+        "operationId": "scApi065",
+        "apiId": "SC-API-065",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9ChangeSetPage"
+            }
+        }
+    },
+    "POST /events/{e}/change-sets": {
+        "operationId": "scApi066",
+        "apiId": "SC-API-066",
+        "status": "connected",
+        "idempotency": "REQUIRED",
+        "request": {
+            "application/json": "V9ChangeSetCreate"
+        },
+        "responses": {
+            "201": {
+                "application/json": "V9ChangeSetView"
+            }
+        }
+    },
+    "GET /change-sets/{c}": {
+        "operationId": "scApi067",
+        "apiId": "SC-API-067",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9ChangeSetView"
+            }
+        }
+    },
+    "POST /change-sets/{c}/preview": {
+        "operationId": "scApi069",
+        "apiId": "SC-API-069",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "PreviewCommand"
+        },
+        "responses": {
+            "200": {
+                "application/json": "V9ChangeSetView"
+            }
+        }
+    },
+    "POST /change-sets/{c}/apply": {
+        "operationId": "scApi070",
+        "apiId": "SC-API-070",
+        "status": "connected",
+        "idempotency": "REQUIRED",
+        "request": {
+            "application/json": "ChangeCommand"
+        },
+        "responses": {
+            "200": {
+                "application/json": "V9ChangeSetView"
+            }
+        }
+    },
+    "POST /change-sets/{c}/discard": {
+        "operationId": "scApi071",
+        "apiId": "SC-API-071",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "DiscardCommand"
+        },
+        "responses": {
+            "200": {
+                "application/json": "V9ChangeSetView"
+            }
+        }
+    },
+    "GET /events/{e}/my-changes": {
+        "operationId": "scApi076",
+        "apiId": "SC-API-076",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "AcknowledgmentPage"
+            }
+        }
+    },
+    "POST /change-acknowledgments/{a}/ack": {
+        "operationId": "scApi077",
+        "apiId": "SC-API-077",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "Ack"
+        },
+        "responses": {
+            "200": {
+                "application/json": "AcknowledgmentView"
+            }
+        }
+    },
+    "POST /events/{e}/recovery-simulations": {
+        "operationId": "draft320EXT06",
+        "apiId": "draft320EXT06",
+        "status": "connected",
+        "idempotency": "PROPOSED_USE_EXISTING_RULES",
+        "request": {
+            "application/json": "V9RecoveryRequest"
+        },
+        "responses": {
+            "202": {
+                "application/json": "JobAccepted"
+            }
+        }
+    },
+    "GET /recovery-simulations/{s}": {
+        "operationId": "final327EXT07",
+        "apiId": "final327EXT07",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9RecoverySimulation"
+            }
+        }
+    },
+    "GET /issues/{i}/recovery-simulations/latest": {
+        "operationId": "final327Q1-latest",
+        "apiId": "final327Q1-latest",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "FinalRecoveryPointer"
+            }
+        }
+    },
+    "GET /events/{e}/equipment": {
+        "operationId": "draft320EXT01",
+        "apiId": "draft320EXT01",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9EquipmentAssetPage"
+            }
+        }
+    },
+    "GET /equipment/{a}": {
+        "operationId": "draft320EXT03",
+        "apiId": "draft320EXT03",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9EquipmentDetail"
+            }
+        }
+    },
+    "GET /events/{e}/equipment-reservations": {
+        "operationId": "draft320EXT05",
+        "apiId": "draft320EXT05",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9EquipmentReservationPage"
+            }
+        }
+    },
+    "PATCH /change-sets/{c}": {
+        "operationId": "scApi068",
+        "apiId": "SC-API-068",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "V9ChangeSetEdit"
+        },
+        "responses": {
+            "200": {
+                "application/json": "V9ChangeSetView"
+            }
+        }
+    },
+    "GET /change-sets/{c}/evidence/{revision}": {
+        "operationId": "final327R2-history",
+        "apiId": "final327R2-history",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "FinalEvidenceSnapshot"
+            }
+        }
+    },
+    "POST /tasks/{t}/equipment-checks": {
+        "operationId": "draft320EXT09",
+        "apiId": "draft320EXT09",
+        "status": "connected",
+        "idempotency": "PROPOSED_USE_EXISTING_RULES",
+        "request": {
+            "application/json": "V9EquipmentCheckWrite"
+        },
+        "responses": {
+            "201": {
+                "application/json": "FinalReceipt"
+            }
+        }
+    },
+    "POST /events/{e}/equipment": {
+        "operationId": "draft320EXT02",
+        "apiId": "draft320EXT02",
+        "status": "connected",
+        "idempotency": "PROPOSED_USE_EXISTING_RULES",
+        "request": {
+            "application/json": "V9AssetCreate"
+        },
+        "responses": {
+            "201": {
+                "application/json": "FinalReceipt"
+            }
+        }
+    },
+    "POST /equipment/{a}/observations": {
+        "operationId": "draft320EXT04",
+        "apiId": "draft320EXT04",
+        "status": "connected",
+        "idempotency": "PROPOSED_USE_EXISTING_RULES",
+        "request": {
+            "application/json": "V9EquipmentObservationWrite"
+        },
+        "responses": {
+            "201": {
+                "application/json": "FinalReceipt"
+            }
+        }
+    },
+    "GET /events/{e}/equipment-context": {
+        "operationId": "final327R1-read",
+        "apiId": "final327R1-read",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "FinalEquipmentContext"
+            }
+        }
+    },
+    "POST /events/{e}/equipment-connections": {
+        "operationId": "final327R1-connections-create",
+        "apiId": "final327R1-connections-create",
+        "status": "connected",
+        "idempotency": null,
+        "request": {
+            "application/json": "FinalConnectionsWrite"
+        },
+        "responses": {
+            "201": {
+                "application/json": "FinalReceipt"
+            }
+        }
+    },
+    "PATCH /events/{e}/equipment-connections/{r}": {
+        "operationId": "final327R1-connections-replace",
+        "apiId": "final327R1-connections-replace",
+        "status": "connected",
+        "idempotency": null,
+        "request": {
+            "application/json": "FinalConnectionsWriteReplace"
+        },
+        "responses": {
+            "200": {
+                "application/json": "FinalReceipt"
+            }
+        }
+    },
+    "DELETE /events/{e}/equipment-connections/{r}": {
+        "operationId": "final327R1-connections-release",
+        "apiId": "final327R1-connections-release",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "FinalRelationDeleteReceipt"
+            }
+        }
+    },
+    "POST /events/{e}/equipment-requirements": {
+        "operationId": "final327R1-requirements-create",
+        "apiId": "final327R1-requirements-create",
+        "status": "connected",
+        "idempotency": null,
+        "request": {
+            "application/json": "FinalRequirementsWrite"
+        },
+        "responses": {
+            "201": {
+                "application/json": "FinalReceipt"
+            }
+        }
+    },
+    "PATCH /events/{e}/equipment-requirements/{r}": {
+        "operationId": "final327R1-requirements-replace",
+        "apiId": "final327R1-requirements-replace",
+        "status": "connected",
+        "idempotency": null,
+        "request": {
+            "application/json": "FinalRequirementsWriteReplace"
+        },
+        "responses": {
+            "200": {
+                "application/json": "FinalReceipt"
+            }
+        }
+    },
+    "DELETE /events/{e}/equipment-requirements/{r}": {
+        "operationId": "final327R1-requirements-release",
+        "apiId": "final327R1-requirements-release",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "FinalRelationDeleteReceipt"
+            }
+        }
+    },
+    "POST /events/{e}/equipment-dependencies": {
+        "operationId": "final327R1-dependencies-create",
+        "apiId": "final327R1-dependencies-create",
+        "status": "connected",
+        "idempotency": null,
+        "request": {
+            "application/json": "FinalDependenciesWrite"
+        },
+        "responses": {
+            "201": {
+                "application/json": "FinalReceipt"
+            }
+        }
+    },
+    "PATCH /events/{e}/equipment-dependencies/{r}": {
+        "operationId": "final327R1-dependencies-replace",
+        "apiId": "final327R1-dependencies-replace",
+        "status": "connected",
+        "idempotency": null,
+        "request": {
+            "application/json": "FinalDependenciesWriteReplace"
+        },
+        "responses": {
+            "200": {
+                "application/json": "FinalReceipt"
+            }
+        }
+    },
+    "DELETE /events/{e}/equipment-dependencies/{r}": {
+        "operationId": "final327R1-dependencies-release",
+        "apiId": "final327R1-dependencies-release",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "FinalRelationDeleteReceipt"
+            }
+        }
+    },
+    "GET /events/{e}/safety-map": {
+        "operationId": "draft320EXT10",
+        "apiId": "draft320EXT10",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9SafetyMap"
+            }
+        }
+    },
+    "PATCH /events/{e}/safety-map": {
+        "operationId": "draft320EXT11",
+        "apiId": "draft320EXT11",
+        "status": "connected",
+        "idempotency": "PROPOSED_USE_EXISTING_RULES",
+        "request": {
+            "application/json": "V9SafetyMapWrite"
+        },
+        "responses": {
+            "200": {
+                "application/json": "FinalReceipt"
+            }
+        }
+    },
+    "GET /events/{e}/safety-support-candidates": {
+        "operationId": "final361-safety-support-candidates",
+        "apiId": "final361-safety-support-candidates",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9SafetySupportCandidatePage"
+            }
+        }
+    },
+    "GET /events/{e}/safety-observations": {
+        "operationId": "draft320EXT13",
+        "apiId": "draft320EXT13",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9SafetyObservationPage"
+            }
+        }
+    },
+    "GET /safety-observations/{o}": {
+        "operationId": "draft320EXT14",
+        "apiId": "draft320EXT14",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9SafetyObservation"
+            }
+        }
+    },
+    "GET /events/{e}/safety-cameras": {
+        "operationId": "draft320EXT21",
+        "apiId": "draft320EXT21",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9SafetyCameraPage"
+            }
+        }
+    },
+    "POST /events/{e}/safety-cameras": {
+        "operationId": "draft320EXT22",
+        "apiId": "draft320EXT22",
+        "status": "connected",
+        "idempotency": "PROPOSED_USE_EXISTING_RULES",
+        "request": {
+            "application/json": "V9CameraCreate"
+        },
+        "responses": {
+            "201": {
+                "application/json": "FinalReceipt"
+            }
+        }
+    },
+    "GET /safety-cameras/{c}": {
+        "operationId": "draft320EXT23",
+        "apiId": "draft320EXT23",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9SafetyCamera"
+            }
+        }
+    },
+    "PATCH /safety-cameras/{c}": {
+        "operationId": "draft320EXT24",
+        "apiId": "draft320EXT24",
+        "status": "connected",
+        "idempotency": "PROPOSED_USE_EXISTING_RULES",
+        "request": {
+            "application/json": "V9CameraPatch"
+        },
+        "responses": {
+            "200": {
+                "application/json": "FinalReceipt"
+            }
+        }
+    },
+    "GET /safety-cameras/{c}/snapshot": {
+        "operationId": "final327Q2-snapshot",
+        "apiId": "final327Q2-snapshot",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "image/jpeg": "op__final327Q2-snapshot__200"
+            }
+        }
+    },
+    "GET /events/{e}/my-links": {
+        "operationId": "final393W1-my-links",
+        "apiId": "final393W1-my-links",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9MyLinks"
+            }
+        }
+    },
+    "POST /safety-cameras/{c}/browser-link": {
+        "operationId": "final393W2-browser-link",
+        "apiId": "final393W2-browser-link",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "V9CameraLinkWrite"
+        },
+        "responses": {
+            "200": {
+                "application/json": "V9CameraLink"
+            }
+        }
+    },
+    "DELETE /safety-cameras/{c}/browser-link": {
+        "operationId": "final393W3-browser-unlink",
+        "apiId": "final393W3-browser-unlink",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9CameraUnlink"
+            }
+        }
+    },
+    "POST /events/{e}/equipment-links/codes": {
+        "operationId": "final394W5-equipment-link-code",
+        "apiId": "final394W5-equipment-link-code",
+        "status": "connected",
+        "idempotency": null,
+        "request": {
+            "application/json": "op__final394W5-equipment-link-code__request"
+        },
+        "responses": {
+            "201": {
+                "application/json": "V9EquipmentLinkCode"
+            }
+        }
+    },
+    "PUT /equipment/{a}/link": {
+        "operationId": "final394W6-equipment-link",
+        "apiId": "final394W6-equipment-link",
+        "status": "connected",
+        "idempotency": null,
+        "request": {
+            "application/json": "V9EquipmentLinkWrite"
+        },
+        "responses": {
+            "200": {
+                "application/json": "V9EquipmentLinkReceipt"
+            }
+        }
+    },
+    "DELETE /equipment/{a}/link": {
+        "operationId": "final394W7-equipment-unlink",
+        "apiId": "final394W7-equipment-unlink",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9EquipmentLinkReceipt"
+            }
+        }
+    },
+    "POST /safety-cameras/{c}/frames": {
+        "operationId": "final393W4-frame",
+        "apiId": "final393W4-frame",
+        "status": "connected",
+        "idempotency": null,
+        "request": {
+            "image/jpeg": "op__final393W4-frame__request"
+        },
+        "responses": {
+            "202": {
+                "application/json": "V9FrameAck"
+            }
+        }
+    },
+    "GET /events/{e}/channels": {
+        "operationId": "scApi072",
+        "apiId": "SC-API-072",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "ChannelPage"
+            }
+        }
+    },
+    "GET /events/{e}/messages": {
+        "operationId": "scApi073",
+        "apiId": "SC-API-073",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "V9MessageRecoveryPage"
+            }
+        }
+    },
+    "GET /me/notifications": {
+        "operationId": "scApi074",
+        "apiId": "SC-API-074",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "NotificationPage"
+            }
+        }
+    },
+    "POST /notifications/{n}/read": {
+        "operationId": "scApi075",
+        "apiId": "SC-API-075",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "NotificationView"
+            }
+        }
+    },
+    "GET /events/{e}/stream": {
+        "operationId": "scApi078",
+        "apiId": "SC-API-078",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "text/event-stream": "op__scApi078__200"
+            }
+        }
+    },
+    "PUT /me/devices/{deviceId}": {
+        "operationId": "scApi019",
+        "apiId": "SC-API-019",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "V9DeviceRequest"
+        },
+        "responses": {
+            "200": {
+                "application/json": "DeviceRegisteredDraft"
+            }
+        }
+    },
+    "GET /events/{e}/invite": {
+        "operationId": "scApi032",
+        "apiId": "SC-API-032",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "InviteDraft"
+            }
+        }
+    },
+    "GET /events/{e}/work-groups": {
+        "operationId": "scApi036",
+        "apiId": "SC-API-036",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "WorkGroupPage"
+            }
+        }
+    },
+    "GET /events/{e}/members": {
+        "operationId": "scApi037",
+        "apiId": "SC-API-037",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "MemberPage"
+            }
+        }
+    },
+    "PATCH /members/{m}": {
+        "operationId": "scApi038",
+        "apiId": "SC-API-038",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "MemberPatch"
+        },
+        "responses": {
+            "200": {
+                "application/json": "MemberChanged"
+            }
+        }
+    },
+    "POST /events/{e}/chief-transfer": {
+        "operationId": "scApi042",
+        "apiId": "SC-API-042",
+        "status": "connected",
+        "idempotency": "NOT_REQUIRED_IGNORE_IF_PRESENT",
+        "request": {
+            "application/json": "ChiefTransfer"
+        },
+        "responses": {
+            "200": {
+                "application/json": "ChiefTransferResult"
+            }
+        }
+    },
+    "GET /events/{e}/unconfirmed-draft": {
+        "operationId": "final327Q3-read",
+        "apiId": "final327Q3-read",
+        "status": "connected",
+        "idempotency": null,
+        "request": {},
+        "responses": {
+            "200": {
+                "application/json": "FinalUnconfirmedDraft"
+            }
+        }
+    },
+    "PUT /events/{e}/unconfirmed-draft": {
+        "operationId": "final327Q3-save",
+        "apiId": "final327Q3-save",
+        "status": "connected",
+        "idempotency": null,
+        "request": {
+            "application/json": "FinalUnconfirmedDraftWrite"
+        },
+        "responses": {
+            "200": {
+                "application/json": "FinalReceipt"
+            }
+        }
+    },
+    "POST /events/{e}/transcriptions": {
+        "operationId": "scApi060",
+        "apiId": "SC-API-060",
+        "status": "connected",
+        "idempotency": "REQUIRED",
+        "request": {
+            "multipart/form-data": "V9AudioUpload"
+        },
+        "responses": {
+            "202": {
+                "application/json": "TranscriptionAccepted"
+            }
+        }
+    },
+    "POST /events": {
+        "operationId": "scApi022",
+        "apiId": "SC-API-022",
+        "status": "planned",
+        "idempotency": "REQUIRED",
+        "request": {
+            "application/json": "EventCreate"
+        },
+        "responses": {
+            "201": {
+                "application/json": "Event"
+            }
+        }
+    },
+    "POST /events/{e}/publish": {
+        "operationId": "scApi029",
+        "apiId": "SC-API-029",
+        "status": "planned",
+        "idempotency": "REQUIRED",
+        "request": {
+            "application/json": "ExpectedEventCommand"
+        },
+        "responses": {
+            "200": {
+                "application/json": "Event"
+            }
+        }
+    },
+    "POST /events/{e}/initial-assignments": {
+        "operationId": "scApi045",
+        "apiId": "SC-API-045",
+        "status": "planned",
+        "idempotency": "REQUIRED",
+        "request": {
+            "application/json": "InitialAssignment"
+        },
+        "responses": {
+            "200": {
+                "application/json": "InitialAssignmentApplied"
+            }
+        }
+    }
+}

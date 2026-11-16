@@ -1,0 +1,12 @@
+[project]
+name = "plan-contract"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.162.0",
+    "httpx>=0.28.1",
+    "pillow>=11",
+    "pydantic>=2.12",
+    "pypdfium2>=4.30",
+    "uvicorn>=0.54.0",
+]

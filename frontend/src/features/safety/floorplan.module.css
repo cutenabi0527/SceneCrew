@@ -1,0 +1,247 @@
+/* 평면도·구역 편집: 왼쪽 평면도(상자 편집) | 오른쪽 이미지 올리기·구역 목록 */
+/* 창 높이는 평면도 높이에 맞춘다(아래 빈 여백 없음). 구역이 많으면 구역 목록 안에서만 위아래로 스크롤한다 */
+.dialog {
+    --stage-max-h: calc(min(760px, 100dvh - 32px) - 120px);
+}
+/* 창 본문(Dialog .body)이 남는 높이를 다 쓰게 한다 */
+.dialog > :last-child {
+    flex: 1;
+    min-height: 0;
+}
+.layout {
+    display: grid;
+    flex: 1;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 16px;
+    align-items: start;
+    min-height: 0;
+}
+.stage {
+    position: relative;
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    background-color: #f6f7f9;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    overflow: hidden;
+    touch-action: none;
+    user-select: none;
+}
+.box {
+    position: absolute;
+    border: 2px solid var(--blue);
+    border-radius: 6px;
+    background: rgb(76 141 246 / 14%);
+    cursor: move;
+}
+.box[aria-selected='true'] {
+    z-index: 1;
+    border-color: var(--fg);
+    background: rgb(76 141 246 / 26%);
+}
+.boxName {
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    max-width: calc(100% - 8px);
+    overflow: hidden;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: rgb(255 255 255 / 88%);
+    color: #000000;
+    font-size: 12px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/* 오른쪽 아래 모서리: 끌어서 크기 바꾸기 */
+.handle {
+    position: absolute;
+    right: -2px;
+    bottom: -2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    background: var(--fg);
+    cursor: nwse-resize;
+}
+.side {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-self: stretch;
+    /* 목록 길이가 창 높이를 늘리지 않게 한다: 높이는 평면도 칸에서 정해진다 */
+    contain: size;
+    min-height: 300px;
+}
+.addZone {
+    padding: 4px 6px;
+    border: 0;
+    background: none;
+    color: var(--fg);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+.addZone:hover {
+    text-decoration: underline;
+}
+.removeZone {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 999px;
+    background: none;
+    color: var(--bad);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+.removeZone:hover {
+    background: rgb(220 38 38 / 10%);
+}
+.list {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 6px;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+}
+.list li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4px;
+    align-items: center;
+}
+.list li[aria-selected='true'] input {
+    border-color: var(--fg);
+}
+/* 이름이 같은 구역 중 처음 것을 뺀 나머지 */
+.box[data-dup] {
+    border-color: var(--bad);
+    background: rgb(220 38 38 / 14%);
+}
+.list li[data-dup] input {
+    border-color: var(--bad);
+    box-shadow: 0 0 0 1px var(--bad);
+}
+/* 제목 줄 ✕ 왼쪽: 평면도 다시 올리기 */
+.reupload {
+    display: inline-flex;
+    align-items: center;
+    height: 36px;
+    padding: 0 14px;
+    border-radius: var(--r-sm);
+    background: var(--fg);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.reupload:hover {
+    opacity: 0.9;
+}
+:focus-visible + .reupload {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+.reupload[data-disabled] {
+    cursor: default;
+    opacity: 0.5;
+}
+/* 화면 오른쪽에서 나오는 경고 알림 */
+.toast {
+    position: fixed;
+    top: 84px;
+    right: 16px;
+    z-index: 70;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: min(340px, calc(100vw - 32px));
+    padding: 12px 16px;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--bad);
+    border-radius: var(--r-sm);
+    background: var(--surface);
+    box-shadow: 0 10px 28px rgb(16 24 40 / 22%);
+    color: var(--fg);
+    font-size: 14px;
+    animation: toastIn 0.25s ease-out;
+}
+.toast b {
+    color: var(--bad);
+}
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateX(110%);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .toast {
+        animation: none;
+    }
+}
+@media (max-width: 860px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+    .side {
+        contain: none;
+        min-height: 0;
+    }
+    .list {
+        max-height: 320px;
+    }
+}
+
+/* 평면도 자르기: 작업 칸은 평면도 틀 비율이고 사진을 가로나 세로에 꽉 맞춘다. 남는 칸 배경이 곧 여백이다.
+   상자 밖은 사진과 여백 모두 어둡게 덮는다 */
+.cropFrame {
+    display: grid;
+    place-items: center;
+}
+.cropStage {
+    position: relative;
+    max-width: 100%;
+    /* 어둡게 덮는 상자 그림자를 작업 칸 안으로 가둔다 */
+    overflow: hidden;
+    border-radius: var(--r-sm);
+    background: var(--surface-2);
+    touch-action: none;
+    user-select: none;
+}
+/* 자유 모드에서 평면도 비율로 여백까지 채운 결과 범위 */
+.cropResult {
+    position: absolute;
+    border: 1px dashed var(--muted);
+    pointer-events: none;
+}
+.cropImage {
+    position: absolute;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.cropBox {
+    position: absolute;
+    border: 2px solid var(--fg);
+    outline: 1px solid #ffffff;
+    /* 작업 칸(overflow: hidden) 안에서 상자 밖을 어둡게 덮는다 */
+    box-shadow: 0 0 0 9999px rgb(16 24 40 / 55%);
+    cursor: move;
+}

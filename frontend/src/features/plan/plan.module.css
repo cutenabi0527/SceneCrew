@@ -1,0 +1,135 @@
+.flow {
+    display: flex;
+    flex-direction: column;
+}
+.fi {
+    display: grid;
+    grid-template-columns: 48px 16px 1fr;
+    gap: 8px;
+    padding: 8px 0;
+    font-size: 13.5px;
+}
+.fi time {
+    font-size: 12px;
+    color: var(--muted);
+}
+.fi i {
+    width: 10px;
+    height: 10px;
+    margin-top: 5px;
+    border-radius: 50%;
+    border: 2px solid var(--line-2);
+    background: var(--surface);
+}
+.past {
+    opacity: 0.55;
+}
+.now i {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+.next i {
+    border-color: var(--blue);
+}
+.nowline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent);
+    font-size: 11.5px;
+    font-weight: 700;
+}
+.nowline::after {
+    content: '';
+    flex: 1;
+    border-top: 2px dashed var(--accent);
+}
+/* 소속 안내 표: 구분(고정 폭) | 안내. 표 폭이 정해져 있어 칸 폭은 줄마다 같다 */
+.guideTable {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    color: var(--fg);
+    font-size: 14px;
+}
+.guideName {
+    width: 112px;
+}
+.guideTable th,
+.guideTable td {
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+}
+.guideTable thead th {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-bottom-color: var(--fg);
+    font-size: 14px;
+}
+
+/* 행사 흐름 목록 칸: 길어지면 안쪽에서 스크롤하고, 스크롤바 자리를 늘 비워 두어 폭이 바뀌지 않는다 */
+.phaseScroll {
+    max-height: 320px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+}
+/* 소속 안내 표: 칸 사이와 네 변을 선으로 닫는다(머리 행 위에도 선) */
+.guideTable th,
+.guideTable td {
+    border-right: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+}
+.guideTable thead th {
+    border-top: 1px solid var(--line);
+    /* 머리 행은 연한 회색 바탕으로 본문과 구분한다 */
+    background: #f2f4f7;
+}
+
+/* 행사 흐름 목록: 시간 | 상태 꼬리표 | 단계 (담당). 기록 목록과 같은 한 줄 형식 */
+.flowList {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--fg);
+}
+.flowList li {
+    display: grid;
+    grid-template-columns: 110px 64px minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+    padding: 9px 6px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+.flowList li[aria-current='step'] {
+    background: var(--blue-soft);
+}
+.flowList time {
+    color: #000000;
+    font-size: 14px;
+}
+.flowTag {
+    justify-self: start;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: var(--surface-2);
+    font-size: 12px;
+    font-weight: 700;
+}
+.flowTag[data-state='진행 중'] {
+    background: var(--fg);
+    color: var(--bg);
+}
+
+/* APP 글자는 회색을 쓰지 않는다: 공연 순서의 시각과 지난 회차도 검정으로 둔다 */
+:global([data-ui='app']) .flowList time {
+    color: #000000;
+}
+:global([data-ui='app']) .past {
+    opacity: 1;
+}

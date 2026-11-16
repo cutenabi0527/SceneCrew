@@ -1,0 +1,113 @@
+{
+  "jobId": "11111111-1111-4111-8111-111111111111",
+  "attempt": 1,
+  "requestSchemaVersion": "4",
+  "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "contextRevision": 12,
+  "resultSchemaVersion": "5",
+  "modelVersion": "plan-workflow-dev",
+  "result": {
+    "status": "READY",
+    "workGroups": [
+      {"id": null, "tempId": "tmp-wg-reception", "name": "접수"},
+      {"id": null, "tempId": "tmp-wg-stage", "name": "무대 운영"}
+    ],
+    "zones": [
+      {"id": "33333333-3333-4333-8333-333333333301", "tempId": null, "name": "메인홀", "description": "시연 무대와 객석"},
+      {"id": "33333333-3333-4333-8333-333333333302", "tempId": null, "name": "로비", "description": null}
+    ],
+    "programs": [
+      {"id": "44444444-4444-4444-8444-444444444401", "tempId": null, "zoneId": "33333333-3333-4333-8333-333333333301",
+       "name": "개회식", "startAt": "2026-11-14T01:00:00Z", "endAt": "2026-11-14T01:30:00Z"},
+      {"id": "44444444-4444-4444-8444-444444444402", "tempId": null, "zoneId": "33333333-3333-4333-8333-333333333301",
+       "name": "프로젝터 시연", "startAt": "2026-11-14T02:00:00Z", "endAt": "2026-11-14T07:00:00Z"}
+    ],
+    "tasks": [
+      {"tempId": "tmp-task-1", "workGroupId": "tmp-wg-reception", "bundleKey": "reception-a",
+       "zoneId": "33333333-3333-4333-8333-333333333302", "programId": null, "title": "접수 데스크 설치",
+       "startAt": "2026-11-13T23:00:00Z", "endAt": "2026-11-14T00:30:00Z",
+       "steps": ["테이블과 안내판을 로비 입구에 배치한다", "QR 확인용 태블릿을 충전하고 연결을 확인한다"],
+       "checklist": [{"key": "qr-ready", "text": "QR 확인 태블릿 동작 확인", "required": true}],
+       "assigneeId": null},
+      {"tempId": "tmp-task-2", "workGroupId": "tmp-wg-reception", "bundleKey": "reception-a",
+       "zoneId": "33333333-3333-4333-8333-333333333302", "programId": null, "title": "오전 방문객 접수",
+       "startAt": "2026-11-14T01:00:00Z", "endAt": "2026-11-14T04:00:00Z",
+       "steps": ["사전 등록자 QR을 확인한다", "미등록 방문객은 현장 등록 양식으로 안내한다"],
+       "checklist": [], "assigneeId": null},
+      {"tempId": "tmp-task-3", "workGroupId": "tmp-wg-reception", "bundleKey": "reception-b",
+       "zoneId": "33333333-3333-4333-8333-333333333302", "programId": null, "title": "오후 방문객 접수",
+       "startAt": "2026-11-14T04:00:00Z", "endAt": "2026-11-14T08:00:00Z",
+       "steps": ["사전 등록자 QR을 확인한다", "마감 30분 전 입장 종료를 안내한다"],
+       "checklist": [], "assigneeId": null},
+      {"tempId": "tmp-task-4", "workGroupId": "tmp-wg-stage", "bundleKey": "stage-a",
+       "zoneId": "33333333-3333-4333-8333-333333333301", "programId": null, "title": "무대 장비 점검",
+       "startAt": "2026-11-13T23:30:00Z", "endAt": "2026-11-14T01:00:00Z",
+       "steps": ["마이크와 스피커 음량을 점검한다", "프로젝터 화면 출력을 확인한다"],
+       "checklist": [{"key": "projector-ok", "text": "프로젝터 출력 확인", "required": true},
+                     {"key": "mic-ok", "text": "무선 마이크 2개 동작 확인", "required": true}],
+       "assigneeId": null},
+      {"tempId": "tmp-task-5", "workGroupId": "tmp-wg-stage", "bundleKey": "stage-a",
+       "zoneId": "33333333-3333-4333-8333-333333333301", "programId": "44444444-4444-4444-8444-444444444401",
+       "title": "개회식 진행 지원", "startAt": "2026-11-14T01:00:00Z", "endAt": "2026-11-14T01:30:00Z",
+       "steps": ["사회자 마이크를 전달한다", "개회식 영상을 순서대로 재생한다"],
+       "checklist": [], "assigneeId": null},
+      {"tempId": "tmp-task-6", "workGroupId": "tmp-wg-stage", "bundleKey": "stage-b",
+       "zoneId": "33333333-3333-4333-8333-333333333301", "programId": "44444444-4444-4444-8444-444444444402",
+       "title": "프로젝터 시연 운영", "startAt": "2026-11-14T02:00:00Z", "endAt": "2026-11-14T07:00:00Z",
+       "steps": ["시연 순서표대로 발표 화면을 전환한다", "장비 이상은 즉시 보고한다"],
+       "checklist": [], "assigneeId": null},
+      {"tempId": "tmp-task-7", "workGroupId": "tmp-wg-stage", "bundleKey": "stage-a",
+       "zoneId": "33333333-3333-4333-8333-333333333301", "programId": null, "title": "무대 장비 철수",
+       "startAt": "2026-11-14T08:00:00Z", "endAt": "2026-11-14T10:00:00Z",
+       "steps": ["프로젝터와 음향 장비 전원을 끈다", "대여 장비를 반납 목록과 대조한다"],
+       "checklist": [{"key": "return-checked", "text": "대여 장비 반납 목록 대조", "required": true}],
+       "assigneeId": null}
+    ],
+    "instructions": [
+      {"scope": "EVENT", "targetId": null, "body": "입장은 사전 등록자 QR 확인 후 진행합니다. 장비 이상은 앱 보고로 바로 알려 주세요."},
+      {"scope": "WORK_GROUP", "targetId": "tmp-wg-stage", "body": "시연 중 화면이 꺼지면 예비 HDMI 케이블로 먼저 교체합니다."}
+    ],
+    "bundles": [
+      {"bundleKey": "reception-a", "workGroupId": "tmp-wg-reception", "taskCount": 2,
+       "startAt": "2026-11-13T23:00:00Z", "endAt": "2026-11-14T04:00:00Z"},
+      {"bundleKey": "reception-b", "workGroupId": "tmp-wg-reception", "taskCount": 1,
+       "startAt": "2026-11-14T04:00:00Z", "endAt": "2026-11-14T08:00:00Z"},
+      {"bundleKey": "stage-a", "workGroupId": "tmp-wg-stage", "taskCount": 3,
+       "startAt": "2026-11-13T23:30:00Z", "endAt": "2026-11-14T10:00:00Z"},
+      {"bundleKey": "stage-b", "workGroupId": "tmp-wg-stage", "taskCount": 1,
+       "startAt": "2026-11-14T02:00:00Z", "endAt": "2026-11-14T07:00:00Z"}
+    ],
+    "assumptions": [
+      {"key": "reserve-unbundled", "statement": "희망 예비 2명은 사전 묶음에 넣지 않고 총괄 승인 투입용으로 남긴다.",
+       "refs": ["payload.event.desiredReserveCount"]}
+    ],
+    "unresolved": [],
+    "questions": [],
+    "coordination": {
+      "graph": [
+        {"taskId": "t1", "parentTaskId": null, "role": "SUPERVISOR", "status": "SUCCEEDED"},
+        {"taskId": "t2", "parentTaskId": "t1", "role": "PLANNING", "status": "SUCCEEDED"},
+        {"taskId": "t3", "parentTaskId": "t1", "role": "SCHEDULE", "status": "SUCCEEDED"},
+        {"taskId": "t4", "parentTaskId": "t1", "role": "STAFFING", "status": "SUCCEEDED"},
+        {"taskId": "t5", "parentTaskId": "t1", "role": "REVIEW", "status": "SUCCEEDED"},
+        {"taskId": "t6", "parentTaskId": "t1", "role": "PLANNING", "status": "SUCCEEDED"},
+        {"taskId": "t7", "parentTaskId": "t1", "role": "GUIDE", "status": "SUCCEEDED"},
+        {"taskId": "t8", "parentTaskId": "t1", "role": "REVIEW", "status": "SUCCEEDED"}
+      ],
+      "redelegations": [
+        {"taskId": "t6", "reason": "Review가 접수 업무 전체를 한 묶음에 넣어 한 사람이 9시간 연속 맡는다고 지적해 Planning에 묶음 분리를 재위임"}
+      ],
+      "evidenceRefs": ["44444444-4444-4444-8444-444444444401", "44444444-4444-4444-8444-444444444402"],
+      "resolvedConflicts": [
+        {"refs": ["tmp-task-2", "tmp-task-3"], "resolution": "오후 접수를 reception-b 묶음으로 나눠 접수 담당 한 사람의 연속 시간을 줄임"}
+      ],
+      "contributions": [
+        {"role": "PLANNING", "summary": "접수·무대 운영 2개 그룹과 업무 7건 구성, 재위임 후 접수 묶음 분리"},
+        {"role": "SCHEDULE", "summary": "묶음별 시간 중복 없음 확인"},
+        {"role": "STAFFING", "summary": "총 12명 중 예비 2명을 뺀 인원으로 4개 묶음 수용 가능 확인"},
+        {"role": "GUIDE", "summary": "공통·무대 그룹 안내 작성"},
+        {"role": "REVIEW", "summary": "접수 묶음 연속 시간 지적, 분리 후 누락·모순 없음 확인"}
+      ]
+    }
+  }
+}

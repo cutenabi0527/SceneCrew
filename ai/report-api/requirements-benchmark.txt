@@ -1,0 +1,10 @@
+# benchmark.py를 저장소 uv 환경 밖(공용 GPU 서버 conda 등)에서 돌릴 때 쓰는 고정 버전.
+# 로컬 측정(2026-11-03, ai/report-api uv 환경)과 같은 버전이다. torch는 CPU 빌드로 설치한다:
+#   pip install -r requirements-benchmark.txt --extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.14.1
+transformers==5.21.0
+tokenizers==0.23.3
+safetensors==0.8.0
+onnxruntime==1.31.1
+numpy==2.5.4
+pydantic==2.14.1

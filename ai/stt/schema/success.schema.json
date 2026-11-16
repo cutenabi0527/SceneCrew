@@ -1,0 +1,175 @@
+{
+  "$defs": {
+    "ExecutionMeta": {
+      "additionalProperties": false,
+      "description": "실제 실행 경로(§6.1). 전사문·음성·파생 파일은 넣지 않는다.",
+      "properties": {
+        "pipeline": {
+          "enum": [
+            "DENOISED",
+            "RAW"
+          ],
+          "title": "Pipeline",
+          "type": "string"
+        },
+        "denoiseModel": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Denoisemodel"
+        },
+        "processingMs": {
+          "minimum": 0,
+          "title": "Processingms",
+          "type": "integer"
+        },
+        "fallbackReason": {
+          "anyOf": [
+            {
+              "enum": [
+                "DENOISE_FAILED",
+                "DENOISE_TIMEOUT"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Fallbackreason"
+        }
+      },
+      "required": [
+        "pipeline",
+        "denoiseModel",
+        "processingMs",
+        "fallbackReason"
+      ],
+      "title": "ExecutionMeta",
+      "type": "object"
+    },
+    "Segment": {
+      "additionalProperties": false,
+      "properties": {
+        "startSec": {
+          "minimum": 0,
+          "title": "Startsec",
+          "type": "number"
+        },
+        "endSec": {
+          "minimum": 0,
+          "title": "Endsec",
+          "type": "number"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "startSec",
+        "endSec",
+        "text"
+      ],
+      "title": "Segment",
+      "type": "object"
+    },
+    "TranscriptionResult": {
+      "additionalProperties": false,
+      "properties": {
+        "audioId": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Audioid",
+          "type": "string"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "segments": {
+          "items": {
+            "$ref": "#/$defs/Segment"
+          },
+          "title": "Segments",
+          "type": "array"
+        },
+        "durationSec": {
+          "minimum": 0,
+          "title": "Durationsec",
+          "type": "number"
+        }
+      },
+      "required": [
+        "audioId",
+        "text",
+        "segments",
+        "durationSec"
+      ],
+      "title": "TranscriptionResult",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "jobId": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "title": "Jobid",
+      "type": "string"
+    },
+    "attempt": {
+      "minimum": 1,
+      "title": "Attempt",
+      "type": "integer"
+    },
+    "requestSchemaVersion": {
+      "const": "4",
+      "title": "Requestschemaversion",
+      "type": "string"
+    },
+    "inputHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Inputhash",
+      "type": "string"
+    },
+    "contextRevision": {
+      "minimum": 0,
+      "title": "Contextrevision",
+      "type": "integer"
+    },
+    "resultSchemaVersion": {
+      "const": "2",
+      "title": "Resultschemaversion",
+      "type": "string"
+    },
+    "modelVersion": {
+      "minLength": 1,
+      "title": "Modelversion",
+      "type": "string"
+    },
+    "result": {
+      "$ref": "#/$defs/TranscriptionResult"
+    },
+    "executionMeta": {
+      "$ref": "#/$defs/ExecutionMeta"
+    }
+  },
+  "required": [
+    "jobId",
+    "attempt",
+    "requestSchemaVersion",
+    "inputHash",
+    "contextRevision",
+    "resultSchemaVersion",
+    "modelVersion",
+    "result",
+    "executionMeta"
+  ],
+  "title": "Success",
+  "type": "object"
+}

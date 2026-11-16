@@ -1,0 +1,41 @@
+.narrow {
+    max-width: 960px;
+    margin: 0 auto;
+}
+.webArchive {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 420px;
+    gap: 24px;
+    align-items: start;
+}
+@media (max-width: 900px) {
+    .webArchive {
+        grid-template-columns: 1fr;
+    }
+    /* 한 단으로 접히면 세로줄 대신 위 구분선 */
+    .archiveSide {
+        padding: 16px 0 0;
+        border-top: 1px solid #d0d5dd;
+        border-left: 0;
+    }
+}
+.summary {
+    width: 100%;
+    min-height: 280px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    background: var(--surface-2);
+    font: 12.5px/1.6 var(--mono);
+    resize: vertical;
+}
+
+/* 종료 현황 칸: 카드 없이 왼쪽 세로줄로 운영 이력과 나누고, 제목은 가운데 */
+.archiveSide {
+    align-self: stretch;
+    padding-left: 24px;
+    border-left: 1px solid #d0d5dd;
+}
+.archiveSideTitle {
+    text-align: center;
+}

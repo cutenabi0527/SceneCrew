@@ -1,0 +1,406 @@
+.row {
+    /* 왼쪽 처리 상태 색 바 폭. 보고·대응 통합 목록(data-tone)은 더 굵게 */
+    --bar-w: 4px;
+    --bar-c: var(--line-2);
+
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-left: var(--bar-w) solid var(--bar-c);
+    border-radius: var(--r-sm);
+    background: var(--surface);
+    text-align: left;
+    color: inherit;
+}
+.row:hover {
+    background: var(--bg);
+}
+.row[aria-current='true'] {
+    border-color: var(--fg);
+    border-left-color: var(--bar-c);
+    background: var(--blue-soft);
+}
+/* 왼쪽 색 바 = 처리 상태(주황 신규 접수 / 보라 확정 대기 / 초록 해결 확인 / 회색 종료) */
+.row[data-tone] {
+    --bar-w: 8px;
+}
+.row[data-tone='new'] {
+    --bar-c: var(--tone-new);
+}
+.row[data-tone='approve'] {
+    --bar-c: var(--tone-approve);
+}
+.row[data-tone='resolve'] {
+    --bar-c: var(--tone-resolve);
+}
+.row[data-tone='closed'] {
+    --bar-c: var(--tone-closed);
+}
+/* 제목 줄: 제목(길면 …) + 오른쪽 성격 표시 */
+.rowHead {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 0;
+}
+.rowHead > b {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/* 성격 표시: 해당하는 것을 모두(빨강 미해결 / 하늘 장비 / 노랑 안전 / 황갈 지연 / 파랑 대기 / 회색 일반) */
+.tags {
+    /* 어두운 화면(운영 현황 구성도) 안에서도 보고·대응과 똑같이 보이게 밝은 토큰으로 고정 */
+    --surface-2: #e9ece4;
+    --muted: #000000;
+    --bad: #b4232a;
+    --bad-soft: #fbe3e3;
+    --blue: #1e5ed8;
+    --blue-soft: #e4ecfb;
+    --warn: #a35a00;
+    --warn-soft: #fcefd6;
+
+    display: inline-flex;
+    flex: none;
+    gap: 4px;
+}
+.tags i {
+    padding: 1px 7px;
+    border: 1px solid currentcolor;
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--muted);
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.tags i[data-tag='open'] {
+    background: var(--bad-soft);
+    color: var(--bad);
+}
+.tags i[data-tag='equip'] {
+    background: var(--sky-soft);
+    color: var(--sky-ink);
+}
+.tags i[data-tag='safety'] {
+    background: var(--yellow-soft);
+    color: var(--yellow-ink);
+}
+.tags i[data-tag='approve'] {
+    background: var(--blue-soft);
+    color: var(--blue);
+}
+.tags i[data-tag='followup'] {
+    background: var(--surface-2);
+    color: var(--fg);
+}
+.tags i[data-tag='delay'] {
+    background: var(--warn-soft);
+    color: var(--warn);
+}
+
+.quick {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+/* 빠른 보고: 2×2 큰 버튼으로 한 번에 누른다. 누르면 내용만 채우고 바로 보내지 않는다 */
+.quickBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    /* 한 화면에 폼이 거의 다 들어오도록 낮게. APP 터치 영역 48px 이상은 지킨다 */
+    min-height: 56px;
+    padding: 8px 12px;
+    /* 팝업과 같은 바탕이라 테두리로 버튼을 구분한다 */
+    border: 1px solid var(--line-2);
+    border-radius: 14px;
+    background: var(--surface);
+    color: #000000;
+    font-weight: 800;
+    font-size: 16px;
+    text-align: center;
+}
+.quickBtn:active {
+    transform: scale(0.97);
+}
+/* 누른(고른) 빠른 보고는 검은 바탕에 흰 글씨 */
+.quickBtn:active,
+.quickBtn[aria-pressed='true'] {
+    border-color: #000000;
+    background: #000000;
+    color: #ffffff;
+}
+.quickBtn small {
+    font-weight: 600;
+    font-size: 12px;
+    color: inherit;
+}
+.rec {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px dashed var(--line-2);
+    border-radius: 10px;
+    font-size: 13px;
+}
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--bad);
+    animation: blink 1s infinite;
+}
+@keyframes blink {
+    50% {
+        opacity: 0.3;
+    }
+}
+/* 상황 보고 팝업 위 음성 입력 덮개: 불투명한 어두운 바탕 + 큰 마이크 */
+.form {
+    position: relative;
+}
+.voiceCover {
+    position: absolute;
+    inset: -24px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background: rgb(14 26 43 / 94%);
+    color: #ffffff;
+    text-align: center;
+}
+/* APP: 보고 페이지 위에 휴대폰 화면 전체를 덮는다 */
+:global([data-ui='app']) .voiceCover {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    border-radius: 0;
+    padding: 24px;
+}
+.voiceMic {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #000000;
+}
+.voiceMic svg {
+    width: 44px;
+    height: 44px;
+}
+.listening {
+    animation: pulse 1.4s ease-out infinite;
+}
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgb(255 255 255 / 45%);
+    }
+    100% {
+        box-shadow: 0 0 0 28px rgb(255 255 255 / 0%);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .listening {
+        animation: none;
+    }
+}
+.voiceTitle {
+    font-size: 22px;
+}
+.voiceState {
+    font-size: 14px;
+    opacity: 0.85;
+}
+.voiceGhost,
+.voiceDone {
+    min-height: 40px;
+    padding: 0 18px;
+    border-radius: 10px;
+    font-weight: 700;
+}
+.voiceGhost {
+    border: 1px solid rgb(255 255 255 / 50%);
+    background: transparent;
+    color: #ffffff;
+}
+.voiceDone {
+    border: 0;
+    background: #ffffff;
+    color: #000000;
+}
+.voiceDone:disabled {
+    opacity: 0.5;
+}
+/* 높이가 정해진 칸(WEB 대응 현황)의 오른쪽 칸: 주 행동과 전달 칸은 제자리에 두고 가운데만 스크롤한다.
+   창이 아주 낮아 최소 높이도 못 지키면 칸 전체가 바깥에서 스크롤된다 */
+.relatedScroll {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+/* 좁아서 오른쪽 칸이 보고서 아래로 내려와도 위 구분선을 긋지 않는다(관련 업무 위 가로줄 없음) */
+.workSide.workSide {
+    border-top: 0;
+}
+@container (min-width: 620px) {
+    .workLayout {
+        grid-template-rows: minmax(0, 1fr);
+    }
+    .workSide.workSide {
+        gap: 10px;
+        align-self: stretch;
+        min-height: 0;
+    }
+    /* 칸 안에 다 들어오도록 버튼·입력칸을 낮춘다 */
+    .workSide > div > :global(.btn) {
+        min-height: 34px;
+        font-size: 12.5px;
+    }
+    .workSide :global(.inp) {
+        min-height: 34px;
+        padding-block: 4px;
+        font-size: 12.5px;
+    }
+    .workSide > :first-child {
+        gap: 6px;
+    }
+    .workSide > * {
+        flex: none;
+    }
+    .workSide > .relatedScroll {
+        flex: 1 1 0;
+        min-height: 80px;
+        overflow-y: auto;
+    }
+}
+/* 관련 업무 묶음: 위 행동 묶음과 여백으로만 나눈다(구분선 없음) */
+.relatedGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.relatedGroup {
+    padding-top: 14px;
+}
+.relatedGroup h4 {
+    font-size: 13px;
+    font-weight: 800;
+}
+.relatedGroup > :global(.btn) {
+    width: 100%;
+}
+.relatedGroup > .taskBtn {
+    flex: none;
+    justify-content: space-between;
+    min-height: 56px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-weight: 500;
+    text-align: left;
+}
+.taskText {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+/* 상황 요약 본문은 한눈에 읽히도록 크게 */
+/* 보고·처리 이력: 왼쪽에 시각, 오른쪽에 항목을 둔 시간순 목록 */
+.timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.timeline > li {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 12px;
+    padding: 0 0 12px;
+}
+.timeline > li:last-child {
+    padding-bottom: 0;
+}
+.timeline time {
+    padding-top: 1px;
+}
+
+/* APP은 상단 바에 이미 제목이 있어 폼 제목을 숨기고 빠른 보고를 맨 위에 둔다 */
+:global([data-ui='app']) .formTitle {
+    display: none;
+}
+/* 이슈 전달(총괄)·전달 기록 */
+.forward {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+}
+.forward h4 {
+    margin: 0;
+    font-size: 14px;
+}
+/* 전달: 위 전달 내용 입력 칸과 같은 너비 */
+.sendBtn {
+    width: 100%;
+}
+.mentionList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.forwardLog {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.forwardLog p {
+    margin: 2px 0 0;
+}
+/* WEB 팀원은 관련 업무를 열 수 없다: 흐리지 않고 누를 수 없게만 */
+.taskBtn:disabled {
+    opacity: 1;
+    cursor: default;
+}
+
+/* 추가 보고 카드: 원 보고 카드보다 낮고 글자가 작다 */
+.followRow {
+    padding-block: 8px;
+}
+.followRow .rowHead > b {
+    font-size: 13px;
+    font-weight: 600;
+}
+/* 보고 상세 오른쪽 칸: 관련 업무 위 '대응안 보기' */
+.responseBtn {
+    flex: none;
+    width: 100%;
+}
+/* 연한 회색 버튼(전용 클래스 두 번으로 기본 .btn 색보다 우선) */
+.responseBtn.responseBtn {
+    border-color: #e5e7eb;
+    background: #f3f4f6;
+    color: #000000;
+}
+.responseBtn.responseBtn:hover {
+    background: #e5e7eb;
+}

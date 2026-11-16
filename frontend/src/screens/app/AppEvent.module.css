@@ -1,0 +1,202 @@
+/* APP 계획(M02): 그룹 안내 한 상자 + 공연 순서와 내 업무 한 시간표 + 접기 두 줄 */
+.guide {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--warn-soft);
+    font-size: 14px;
+    line-height: 1.5;
+    word-break: keep-all;
+}
+.guideHead {
+    font-size: 12px;
+    font-weight: 600;
+    color: #7a4300;
+}
+
+.flow {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-variant-numeric: tabular-nums;
+}
+.flowHead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+.flowHead h2 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+}
+.flowHead span {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+}
+.rowPast {
+    opacity: 0.6;
+}
+/* 지금 하는 내 업무: 줄 전체를 연한 주황으로 */
+.rowNow {
+    min-height: 56px;
+    margin: 0 -8px;
+    padding: 0 8px;
+    border-radius: 10px;
+    background: var(--accent-soft);
+}
+.rowNow .time {
+    font-weight: 600;
+    color: var(--fg);
+}
+.time {
+    flex-shrink: 0;
+    width: 44px;
+    font-size: 13px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+}
+.rowBody {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+.rowText {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+}
+.nowTitle {
+    font-weight: 700;
+}
+.sub {
+    font-size: 12px;
+    color: var(--muted);
+}
+.chip {
+    flex-shrink: 0;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.chipDone {
+    background: var(--ok-soft);
+    color: var(--ok);
+}
+.chipNow {
+    background: var(--accent);
+    color: var(--accent-fg);
+}
+.chipMine {
+    background: var(--blue-soft);
+    color: var(--blue);
+}
+.chipShow {
+    background: var(--surface-2);
+    color: var(--muted);
+}
+
+.nowLine {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 2px 0;
+}
+.nowLine span {
+    flex-shrink: 0;
+    width: 44px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--bad);
+}
+.nowLine i {
+    flex: 1;
+    height: 2px;
+    background: var(--bad);
+}
+
+.folds {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--line);
+}
+.fold + .fold {
+    border-top: 1px solid var(--surface-2);
+}
+.fold summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 52px;
+    padding: 4px 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    list-style: none;
+}
+.fold summary::-webkit-details-marker {
+    display: none;
+}
+.foldTitle {
+    font-size: 15px;
+    font-weight: 600;
+}
+.count {
+    font-weight: 400;
+    color: var(--muted);
+}
+.chev {
+    flex-shrink: 0;
+    transition: transform 0.15s;
+}
+.fold[open] .chev {
+    transform: rotate(180deg);
+}
+.otherList {
+    margin: 0 0 8px;
+    padding: 0;
+    list-style: none;
+}
+.otherList li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+}
+.overview {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 8px 12px;
+    margin: 0 0 12px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.overview dt {
+    font-size: 13px;
+    color: var(--muted);
+}
+.overview dd {
+    margin: 0;
+}
+.empty {
+    margin: 0 0 12px;
+    font-size: 13px;
+    color: var(--muted);
+}

@@ -1,0 +1,34 @@
+{
+  "jobId": "55555555-5555-4555-8555-555555555555",
+  "attempt": 1,
+  "requestSchemaVersion": "4",
+  "inputHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "contextRevision": 12,
+  "resultSchemaVersion": "5",
+  "modelVersion": "plan-workflow-dev",
+  "result": {
+    "status": "NEEDS_INFO",
+    "workGroups": [],
+    "zones": [],
+    "programs": [],
+    "tasks": [],
+    "instructions": [],
+    "bundles": [],
+    "assumptions": [],
+    "unresolved": [],
+    "questions": [
+      {
+        "key": "zones",
+        "field": "payload.zones",
+        "question": "업무를 배치할 구역이 없습니다. 행사장 구역을 한 곳 이상 입력해 주세요."
+      }
+    ],
+    "coordination": {
+      "graph": [],
+      "redelegations": [],
+      "evidenceRefs": [],
+      "resolvedConflicts": [],
+      "contributions": []
+    }
+  }
+}

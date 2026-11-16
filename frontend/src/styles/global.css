@@ -1,0 +1,81 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+a {
+    color: var(--blue);
+}
+button,
+input,
+textarea,
+select {
+    font: inherit;
+    color: inherit;
+}
+button {
+    cursor: pointer;
+}
+/* 클래스 없는 버튼(오류·이탈 확인 등 기존 공통 UI)은 기본 주 버튼 모양을 유지한다. */
+button:not([class]),
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0.75rem 1.5rem;
+    color: var(--accent-fg);
+    background: var(--bar);
+    border: 0;
+    border-radius: 0.6rem;
+    text-decoration: none;
+}
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+:focus-visible {
+    outline: 3px solid #b6661e;
+    outline-offset: 2px;
+}
+h1,
+h2,
+h3,
+h4 {
+    margin: 0;
+    line-height: 1.35;
+    word-break: keep-all;
+}
+p {
+    margin: 0;
+}
+.error-root {
+    padding: 2rem;
+}
+.skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -10rem;
+    z-index: 100;
+    background: white;
+    padding: 1rem;
+}
+.skip-link:focus {
+    top: 1rem;
+}
+
+/* 화면에는 보이지 않고 스크린 리더만 읽는 글(숨긴 화면 제목 등) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

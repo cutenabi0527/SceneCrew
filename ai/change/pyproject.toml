@@ -1,0 +1,12 @@
+[project]
+name = "scenecrew-change"
+version = "0.1.0"
+description = "AI 대응안(GENERATE_CHANGE) Multi-agent 실행 구조·계약·내부 HTTP 입구"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.162.0",
+    "httpx>=0.28.1",
+    "langgraph>=1.2.20",
+    "pydantic>=2.12",
+    "uvicorn>=0.54.0",
+]

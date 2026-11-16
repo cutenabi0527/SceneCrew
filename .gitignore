@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+**/node_modules/
+**/dist/
+**/build/
+**/.gradle/
+**/.venv/
+**/__pycache__/
+**/.pytest_cache/
+*.log
+*.apk
+*.aab

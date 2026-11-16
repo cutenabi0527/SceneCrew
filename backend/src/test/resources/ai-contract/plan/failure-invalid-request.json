@@ -1,0 +1,17 @@
+{
+  "jobId": "77777777-7777-4777-8777-777777777777",
+  "attempt": 1,
+  "requestSchemaVersion": "4",
+  "inputHash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "contextRevision": 12,
+  "error": {
+    "code": "INVALID_REQUEST",
+    "message": "희망 예비 인원이 총인원보다 적어야 합니다.",
+    "retryable": false,
+    "details": {
+      "issues": [
+        "payload.event.desiredReserveCount"
+      ]
+    }
+  }
+}

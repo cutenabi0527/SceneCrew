@@ -1,0 +1,22 @@
+/* 초대 링크 팝업: QR 이미지와 그 아래 초대 링크(둥근 상자)를 가운데로 */
+.invite {
+    align-items: center;
+    text-align: center;
+}
+
+.link {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface-2, #f4f5f7);
+    font-size: 13px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.actions {
+    justify-content: center;
+}

@@ -1,0 +1,282 @@
+.app {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    max-width: 560px;
+    margin: 0 auto;
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--line);
+}
+
+/* 상단 앱바: WEB 상단 네비와 같은 파란 바 + 남색 글씨 */
+.appbar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 56px;
+    padding: calc(4px + env(safe-area-inset-top)) 8px 4px 12px;
+    background: var(--web-nav);
+    color: var(--fg);
+}
+.logo {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    margin-left: 4px;
+    border-radius: 7px;
+    background: var(--fg);
+    color: var(--bg);
+    font-size: 13px;
+    font-weight: 700;
+}
+.title {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding-left: 4px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 17px;
+    font-weight: 700;
+}
+.title b {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 17px;
+}
+.state {
+    font-size: 12px;
+    color: var(--bar-2);
+}
+.abBtn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    min-height: 48px;
+    border: 0;
+    border-radius: 12px;
+    background: none;
+    color: inherit;
+}
+.abBtn svg {
+    width: 22px;
+    height: 22px;
+}
+.dot {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--fg);
+}
+.av {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--fg);
+    color: var(--bg);
+    font-size: 12px;
+    font-weight: 700;
+}
+.demo {
+    min-height: 32px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 8px;
+    background: rgb(255 255 255 / 45%);
+    color: var(--fg);
+    font-size: 12px;
+}
+.demoSheet {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 14px;
+    background: var(--blue-soft);
+    color: var(--fg);
+}
+.persona {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+.persona select {
+    flex: 1;
+    min-height: 40px;
+    padding: 0 8px;
+    border-radius: 8px;
+    border: 1px solid var(--line-2);
+    background: var(--surface);
+    color: var(--fg);
+}
+
+/* 본문: 세로 스크롤 한 줄 */
+.body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 16px 40px;
+}
+/* 하단 탭이 없는 화면: 아래 고정 버튼이 바닥에 붙도록 아래 여백을 줄인다 */
+.noTabs {
+    padding-bottom: 0;
+}
+.body:focus {
+    outline: none;
+}
+.flush {
+    padding: 0;
+    gap: 0;
+}
+
+/* 하단 탭: WEB 메뉴처럼 파란 바 위 흰 알약이 현재 위치 */
+.tabs {
+    position: relative;
+    display: grid;
+    align-items: start;
+    grid-template-columns: repeat(5, 1fr);
+    padding: 4px 4px calc(4px + env(safe-area-inset-bottom));
+    background: var(--web-nav);
+}
+.tab {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-height: 56px;
+    padding-top: 4px;
+    color: var(--bar-2);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+}
+.pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 28px;
+    border-radius: 999px;
+}
+.tab[aria-current='page'] {
+    color: var(--fg);
+}
+.tab[aria-current='page'] .pill {
+    background: var(--surface);
+    color: var(--fg);
+}
+.cnt {
+    position: absolute;
+    top: 0;
+    left: calc(50% + 8px);
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--fg);
+    color: var(--bg);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+}
+
+/* 가운데 상황 보고: 네비 바 위로 솟은 큰 검은 원. 한 손 엄지로 바로 누른다 */
+.report {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    justify-self: center;
+    width: 72px;
+    height: 72px;
+    margin-top: -28px;
+    border: 4px solid var(--web-nav);
+    border-radius: 50%;
+    background: var(--fg);
+    color: var(--bg);
+    font-size: 12px;
+    font-weight: 800;
+    box-shadow: var(--shadow);
+}
+.report svg {
+    width: 24px;
+    height: 24px;
+}
+.report:active:not(:disabled) {
+    transform: scale(0.96);
+}
+.report:disabled {
+    opacity: 0.5;
+}
+/* 왼쪽 위 행사 이름: 누르면 행사 목록을 펼친다 */
+.titleBtn {
+    min-height: 48px;
+    justify-content: center;
+    border: 0;
+    background: none;
+    color: inherit;
+    text-align: left;
+}
+.caret {
+    font-size: 10px;
+}
+/* 공연 바꾸기: 어두운 배경 위로 아래에서 올라오는 시트 */
+.scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgb(14 26 43 / 45%);
+}
+.sheet {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: min(560px, 100%);
+    max-height: calc(100dvh - 48px);
+    overflow-y: auto;
+    padding: 10px 16px calc(24px + env(safe-area-inset-bottom));
+    border-radius: 20px 20px 0 0;
+    background: var(--surface);
+}
+.grip {
+    align-self: center;
+    width: 40px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--line-2);
+}
+.sheetHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.sheetHead h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+}

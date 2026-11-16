@@ -1,0 +1,389 @@
+/* 보고서 형식 카드(W01-DRAFT의 계획 초안·공연 관리): 테두리 없이 10pt 글씨로,
+   내용은 안에서 위아래로 스크롤하고 고정 바에 편집/저장 같은 버튼을 둔다 */
+.report {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    background: #f4f5f7;
+    font-size: 10pt;
+}
+
+.reportScroll {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 0;
+    padding: 24px 28px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-size: 10pt;
+    /* 계획 초안과 같은 너비가 되게 스크롤바 자리를 늘 비워 둔다 */
+    scrollbar-gutter: stable;
+}
+
+.reportSub {
+    margin: 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+    text-align: right;
+}
+
+/* 보고서 안의 구획: 제목 + 내용, 구획 사이에 선 */
+.reportScroll :global(.stack) {
+    gap: 10px;
+}
+
+.reportScroll > :global(form),
+.reportScroll > section {
+    padding: 4px 0 16px;
+    border-bottom: 1px solid var(--line);
+}
+
+.reportScroll > :global(form):last-of-type,
+.reportScroll > section:last-of-type {
+    border-bottom: 0;
+}
+
+.reportScroll h2,
+.reportScroll h3 {
+    margin: 0;
+    font-size: 10pt;
+    font-weight: 800;
+}
+
+.reportScroll p,
+.reportScroll li,
+.reportScroll label,
+.reportScroll :global(.field) label,
+.reportScroll input,
+.reportScroll select,
+.reportScroll textarea,
+.reportScroll :global(.small),
+.reportScroll :global(.btn) {
+    font-size: 10pt;
+}
+
+.reportScroll input,
+.reportScroll select {
+    min-height: 34px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.reportScroll textarea {
+    min-height: 64px;
+}
+
+/* 아래 고정 바: 왼쪽에 안내 문구, 오른쪽에 버튼 */
+.reportBar {
+    display: flex;
+    flex: none;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+    align-items: center;
+    justify-content: flex-end;
+    box-sizing: border-box;
+    min-height: 58px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--line);
+    background: #ffffff;
+}
+
+.reportBar > p {
+    flex: 1 1 160px;
+    margin: 0;
+    font-size: 9pt;
+    color: var(--muted, #6b6b6b);
+}
+
+/* 바 위에 뜨는 확인(공개 확인 등): 바 전체 너비 */
+.reportBar > [role='alertdialog'] {
+    flex: 1 1 100%;
+}
+
+.reportBar :global(.btn) {
+    font-size: 10pt;
+}
+
+/* 위 고정 바(상단 네비 바로 밑): 왼쪽 끝 주요 버튼, 가운데 안내 문구, 오른쪽 끝 도구·새로고침·저장.
+   높이는 낮게, 버튼은 크게 둔다 */
+.topBar {
+    display: grid;
+    flex: none;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 6px 10px;
+    align-items: center;
+    box-sizing: border-box;
+    min-height: 50px;
+    padding: 4px 12px;
+    border-bottom: 1px solid var(--line);
+    background: #ffffff;
+}
+
+/* 새로고침 중: 카드 전체를 덮는 반투명 층과 가운데 안내(누르는 것도 막는다) */
+.refreshLayer {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: grid;
+    place-items: center;
+    background: rgb(255 255 255 / 65%);
+    cursor: progress;
+}
+
+.refreshBadge {
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
+    color: #111827;
+    font-size: 12pt;
+    font-weight: 700;
+}
+
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgb(17 24 39 / 20%);
+    border-top-color: #111827;
+    border-radius: 50%;
+    animation: report-spin 0.8s linear infinite;
+}
+
+@keyframes report-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .spinner {
+        animation-duration: 2s;
+    }
+}
+
+.barGroup {
+    display: flex;
+    flex: none;
+    gap: 8px;
+    align-items: center;
+}
+
+.topBar > .barGroup:last-child {
+    justify-self: end;
+}
+
+.topBar :global(.btn) {
+    min-height: 40px;
+    padding: 0 18px;
+    font-size: 11pt;
+    font-weight: 700;
+}
+
+/* 기본정보 첫 줄 바로 위: 왼쪽 진행 안내, 오른쪽 끝 형광펜·새로고침 */
+.formTools {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 36px;
+}
+
+.formTools > p {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    font-size: 9pt;
+    color: var(--muted, #6b6b6b);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.formTools .barIcon {
+    width: 36px;
+    height: 36px;
+}
+
+/* 기본정보 입력 칸을 한 행에 나란히(너비 비율은 행마다 style로 준다). 좁은 틀에서는 한 줄씩 */
+.fieldRow {
+    display: grid;
+    gap: 10px 15px;
+    align-items: end;
+}
+
+@media (max-width: 720px) {
+    .fieldRow {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+}
+
+/* 칸 제목 줄: 왼쪽 제목, 오른쪽 회색 작은 한도(최대 글자수·범위) */
+.fieldHead {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.reportScroll .fieldHint {
+    flex: none;
+    font-size: 8.5pt;
+    color: var(--muted, #8a8f98);
+}
+
+.reportScroll input::placeholder {
+    color: #a3a8b0;
+}
+
+/* 기본정보 입력 칸 맨 아래: 임시 저장·공개를 가운데에 나란히, 버튼은 넉넉한 너비로 */
+.formActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding-top: 8px;
+}
+
+.formActions :global(.btn) {
+    min-width: 173px;
+    min-height: 48px;
+    font-size: 12pt;
+    font-weight: 700;
+}
+
+/* 공개 버튼 아래 노란 안내 카드: 아직 채우지 못한 공개 조건을 작은 글씨로. 너비는 위 입력 칸과 같게 */
+.publishNote {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 10px 14px;
+    border: 1px solid #f0d64a;
+    border-radius: 10px;
+    background: #fff8c5;
+    color: #5c4a00;
+}
+
+.reportScroll .publishNote b,
+.reportScroll .publishNote li {
+    font-size: 8.5pt;
+    line-height: 1.5;
+}
+
+.publishNote ul {
+    margin: 4px 0 0;
+    padding-left: 16px;
+}
+
+/* 편집·저장 바를 다른 줄(등록 화면 탭 줄 등)에 그릴 때: 테두리·배경 없이 버튼만 나란히 */
+.barInline {
+    display: flex;
+    gap: 6px 8px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.barInline > p {
+    margin: 0;
+    font-size: 9pt;
+}
+
+/* 바의 아이콘 버튼(편집·저장·새로고침 등) */
+.barIcon {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: var(--fg);
+    cursor: pointer;
+}
+
+.barIcon:hover:not(:disabled) {
+    background: #f1f2f5;
+}
+
+.barIcon:disabled {
+    cursor: default;
+    opacity: 0.35;
+}
+
+.barIcon[data-primary] {
+    color: var(--accent, #2f5bea);
+}
+
+.barIcon svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* 위 고정 바의 아이콘 버튼은 더 크게 */
+.topBar .barIcon {
+    width: 40px;
+    height: 40px;
+}
+
+.topBar .barIcon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.barIcon[aria-pressed='true'] {
+    background: #fff3a3;
+}
+
+/* 켜져도 노란 배경으로 바꾸지 않는 아이콘(지우개): 옅은 회색으로만 켜짐을 알린다 */
+.barIconPlain[aria-pressed='true'] {
+    background: #eceef2;
+}
+
+/* 형광펜: 드래그한 글자만 칠한다(입력 칸 밖은 CSS Custom Highlight, 입력 칸 안은 겹친 표시 층) */
+::highlight(report-marker) {
+    background-color: #fff176;
+}
+
+.reportScroll {
+    position: relative;
+}
+
+/* 입력 칸 뒤에 까는 형광펜 층: 칸 배경(흰색)을 대신 그리고 칠한 부분만 노랗게 한다.
+   칸은 그 앞에서 배경을 비우므로(ReportTools의 lift) 글자가 늘 칠 위에 또렷하게 보인다 */
+.markLayer {
+    position: absolute;
+    z-index: 0;
+    overflow: hidden;
+    background: #ffffff;
+    pointer-events: none;
+}
+
+.markLayer > div {
+    box-sizing: border-box;
+    color: transparent;
+}
+
+.markLayer mark {
+    background-color: #fff176;
+    color: transparent;
+}
+
+/* 형광펜으로 칠하는 동안: 커서를 노란 형광펜 모양으로(펜촉 끝이 누르는 자리) */
+.report[data-marking] .reportScroll,
+.report[data-marking] .reportScroll * {
+    cursor:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' stroke='%23111827' stroke-width='1.3' stroke-linejoin='round'%3E%3Cpath d='M9 11l6-6 4 4-6 6z' fill='%23ffe600'/%3E%3Cpath d='M9 11l-4 4v3h3l4-4z' fill='%23fff176'/%3E%3Cpath d='M5 15l-2 4 1 1 4-2' fill='%23ffe600'/%3E%3C/svg%3E")
+            3 21,
+        text !important;
+}
+
+/* 지우개를 켠 동안: 내용 위에서 커서를 지우개 모양으로(끝점이 누르는 자리) */
+.report[data-erasing] .reportScroll,
+.report[data-erasing] .reportScroll * {
+    cursor:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' stroke='%23111827' stroke-width='1.5' stroke-linejoin='round'%3E%3Cpath d='M4.6 15.4l9.8-9.8a2 2 0 0 1 2.8 0l2.2 2.2a2 2 0 0 1 0 2.8L11 19H8.2z' fill='%23f9a8d4'/%3E%3Cpath d='M4.6 15.4l4.9-4.9 5 5L11 19H8.2z' fill='%23ffffff'/%3E%3C/svg%3E")
+            6 22,
+        pointer !important;
+}

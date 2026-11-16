@@ -1,0 +1,13 @@
+**
+!Dockerfile
+!gradlew
+!build.gradle
+!settings.gradle
+!gradle/
+!gradle/**
+!src/
+!src/**
+**/.env
+**/.env.*
+**/*.pem
+**/*.key

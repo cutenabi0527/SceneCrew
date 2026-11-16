@@ -1,0 +1,32 @@
+{
+  "jobId": "55555555-5555-4555-8555-555555555555",
+  "attempt": 1,
+  "requestSchemaVersion": "4",
+  "kind": "GENERATE_PLAN",
+  "inputHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "contextRevision": 12,
+  "deadlineAt": "2026-11-01T03:10:00Z",
+  "payload": {
+    "event": {
+      "name": "캠퍼스 테크 페어",
+      "description": "학생 프로젝트 전시와 프로젝터 시연을 하루 동안 운영한다.",
+      "date": "2026-11-14",
+      "prepStartAt": "2026-11-13T23:00:00Z",
+      "openAt": "2026-11-14T01:00:00Z",
+      "closeAt": "2026-11-14T08:00:00Z",
+      "teardownEndAt": "2026-11-14T10:00:00Z",
+      "locationName": "멀티캠퍼스 역삼",
+      "address": "서울특별시 강남구 테헤란로 212",
+      "totalCapacity": 12,
+      "expectedVisitors": 300,
+      "peakVisitors": 80,
+      "desiredReserveCount": 2,
+      "confirmedInput": {
+        "entryRule": "사전 등록자 QR 확인 후 입장"
+      }
+    },
+    "zones": [],
+    "programs": [],
+    "workGroups": []
+  }
+}

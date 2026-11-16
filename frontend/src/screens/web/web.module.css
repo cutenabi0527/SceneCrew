@@ -1,0 +1,741 @@
+/* 대응 현황: 왼쪽 목록 + 오른쪽 작업 영역 */
+.split {
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+}
+
+/* 업무 조정 오른쪽 맨 위 "확인 요망" 상자: 테두리 없이 살구색 바탕, 제목 아래 변경안 줄 */
+.draftLinks {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #fbe8d6;
+    color: #7a4518;
+}
+.draftHead {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 4px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #000000;
+}
+.draftHead svg {
+    color: var(--bad);
+}
+.draftLink {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    min-height: 0;
+    padding: 4px 0 4px 22px;
+    border: 0;
+    background: none;
+    color: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+}
+.draftLink:hover {
+    text-decoration: underline;
+}
+.draftTitle {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.draftLink > :global(.chip),
+.draftRow > :global(.chip) {
+    flex: none;
+}
+.draftMore {
+    align-self: flex-start;
+    margin: 4px 0 0 22px;
+    padding: 4px 10px;
+    border: 1px solid currentcolor;
+    border-radius: var(--r-sm);
+    background: none;
+    color: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+}
+/* 확인 요망 목록 팝업: 건수와 상관없이 크기를 고정하고, 넘치면 목록만 스크롤한다 */
+.draftList {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    height: min(420px, calc(100dvh - 180px));
+    padding-right: 6px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+}
+.draftRow {
+    display: flex;
+    flex: none;
+    gap: 8px;
+    align-items: center;
+    min-height: 40px;
+    padding: 6px 12px;
+    border: 0;
+    border-radius: var(--r-sm);
+    background: #fbe8d6;
+    color: #7a4518;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+}
+.draftRow .draftTitle {
+    flex: 1;
+}
+/* 고른 막대: 크기는 그대로 두고 검은 바탕에 흰 글자로 바꾼다 */
+.bar[aria-pressed='true'] {
+    z-index: 2;
+    border-color: #000000;
+    background: #000000;
+    color: #ffffff;
+}
+
+/* 계획 */
+/* 계획 개요 보고서 두 단: 왼쪽(개요·소속) | 오른쪽(흐름). 구역 사이는 여백으로만 나눈다.
+   본문 글자는 모두 14px로 맞춘다(소제목만 16px) */
+.planReport {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 28px 0;
+    align-items: start;
+    font-size: 14px;
+}
+.planCol {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    min-width: 0;
+    padding-right: 40px;
+}
+/* 오른쪽 단은 왼쪽 세로줄로 나눈다 */
+.planCol + .planSec {
+    align-self: stretch;
+    padding-left: 40px;
+    border-left: 1px solid #d0d5dd;
+}
+.planSec h4 {
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 800;
+}
+.planReport :global(.kv) {
+    font-size: 14px;
+}
+.planReport :global(.mono) {
+    font-size: 1em;
+}
+/* 팀원 홈: 내 상태·업무 시계 | 좁은 그룹별 현황 */
+.homeGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(260px, 1fr);
+    gap: 16px;
+    align-items: start;
+}
+.homeSide {
+    align-self: stretch;
+    padding-left: 24px;
+    border-left: 1px solid #d0d5dd;
+}
+.homeSide > b {
+    text-align: center;
+}
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+.table th {
+    text-align: left;
+    padding: 8px;
+    background: var(--surface-2);
+    font-size: 12px;
+}
+.table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--line);
+}
+.table tbody tr {
+    cursor: pointer;
+}
+.table tbody tr:hover {
+    background: var(--bg);
+}
+.table tbody tr[aria-selected='true'] {
+    background: var(--blue-soft);
+}
+/* 계획 업무표: 표 | 고른 업무 상세 */
+.planTable {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 420px;
+    gap: 16px;
+    align-items: start;
+}
+.planDetail {
+    position: sticky;
+    top: 72px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    /* 부서 상자 + 업무 상세가 창보다 길면 이 칸 안에서 스크롤한다 */
+    max-height: calc(100dvh - 96px);
+    overflow-y: auto;
+}
+/* 큐시트: 끌 수 있는 행은 손 모양, 오른쪽 끝 '배정' 단추 칸 */
+.table tr[data-drag] {
+    cursor: grab;
+}
+.cueAssignCell {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+}
+
+/* 대응 현황: 넓은 WEB에서는 창 높이를 채우고 왼쪽 목록과 오른쪽 보고서가 각자 스크롤한다 */
+@media (min-width: 961px) {
+    .response {
+        flex: 1;
+        min-height: 0;
+    }
+    .response > .split {
+        flex: 1;
+        min-height: 0;
+        align-items: stretch;
+    }
+    .splitList,
+    .splitPane {
+        min-height: 0;
+        overflow-y: auto;
+        scrollbar-gutter: stable;
+    }
+    .splitList {
+        align-content: start;
+    }
+}
+
+/* 작은 WEB: 같은 화면을 위아래로 접는다(APP 레이아웃으로 바꾸지 않음) */
+@media (max-width: 960px) {
+    .split,
+    .tasks,
+    .homeGrid,
+    .planReport,
+    .planTable {
+        grid-template-columns: 1fr;
+    }
+    /* 한 단으로 접히면 세로줄 대신 위 구분선 */
+    .planCol {
+        padding-right: 0;
+    }
+    .planCol + .planSec {
+        padding: 20px 0 0;
+        border-top: 1px solid #d0d5dd;
+        border-left: 0;
+    }
+    /* 한 줄로 접히면 세로줄 대신 위 구분선 */
+    .homeSide {
+        padding: 16px 0 0;
+        border-top: 1px solid #d0d5dd;
+        border-left: 0;
+    }
+    .gantt {
+        overflow-x: auto;
+    }
+    .gHead,
+    .gRow {
+        min-width: 720px;
+    }
+}
+
+/* W07 소통: 채널 목록 | 대화. 화면 높이에 맞추고 대화만 안에서 스크롤한다 */
+.chatPage {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 20px;
+    height: calc(100dvh - 160px);
+    min-height: 420px;
+}
+.chatRooms {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+}
+.chatMain {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    overflow: hidden;
+}
+@media (max-width: 760px) {
+    .chatPage {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    .chatMain {
+        height: 70dvh;
+    }
+}
+
+/* W07 소통 새 창: 머리줄 + 목록/대화가 창 높이를 꽉 채운다 */
+.chatWindow {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    background: var(--surface);
+}
+.chatWindowBody {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+/* W01 큐시트: 곡/구간 머리 줄 */
+.table tbody tr.cueHead {
+    cursor: default;
+}
+.table tbody tr.cueHead:hover {
+    background: none;
+}
+.cueHead th {
+    padding-top: 14px;
+    border-bottom: 2px solid var(--line);
+    background: none;
+    font-size: 13px;
+}
+.cueHead[data-kind='program'] th {
+    border-bottom-color: var(--fg);
+}
+/* 카메라 새 창: 메뉴 없이 한 대만 크게 */
+.cameraWindow {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 100dvh;
+    padding: 16px;
+    background: var(--surface);
+}
+/* 공연 개요의 타임라인은 두 단을 가로질러 넓게 */
+.planWide {
+    grid-column: 1 / -1;
+    min-width: 0;
+}
+
+/* 업무 조정: 왼쪽 세로 시간표 | 오른쪽 목록·배정 상자 */
+.adjust {
+    display: grid;
+    /* 왼쪽 시간표 칸은 폭을 고정하고(화면 폭의 약 28%, 260~380px) 넘치는 열은 가로로 넘긴다.
+       오른쪽 목록·배정 상자가 시간표 때문에 좁아지지 않게 한다 */
+    grid-template-columns: clamp(260px, 28vw, 380px) minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+}
+.adjustTime {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+}
+
+/* W04 보고·대응: 보고 접수 버튼은 카드 목록 칸 맨 위 가운데 */
+/* 공통 .btn.sm(12.5px)보다 우선하도록 한 단계 더 구체적으로 */
+.splitList > .reportBtn.reportBtn {
+    flex: none;
+    /* 목록 칸 가로를 거의 다 채운다 */
+    align-self: stretch;
+    width: 100%;
+    min-height: 40px;
+    margin-bottom: 6px;
+    /* 기본 작은 버튼(12.5px)의 1.2배 */
+    font-size: 15px;
+}
+/* 보고·대응 목록 위: 처리 상태 체크 상자. 글자에 카드 왼쪽 색 바와 같은 색으로 형광펜을 친다 */
+.barLegend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    align-items: center;
+    color: #000000;
+    /* 잘 보이게 크고 굵게 */
+    font-size: 15px;
+    font-weight: 700;
+}
+.barLegend label {
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+    cursor: pointer;
+}
+.barLegend input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+}
+.barLegend span {
+    padding: 1px 6px;
+    border-radius: 3px;
+    background: var(--line-2);
+}
+.barLegend label[data-tone='new'] span {
+    background: var(--tone-new);
+}
+.barLegend label[data-tone='approve'] span {
+    background: var(--tone-approve);
+}
+.barLegend label[data-tone='resolve'] span {
+    background: var(--tone-resolve);
+}
+.barLegend label[data-tone='closed'] span {
+    background: var(--tone-closed);
+}
+
+/*
+ * 보고·대응 목록: 보고와 그 대응안·추가 보고를 선으로 잇는다.
+ * 보고 / 대응안(ㄴ 들여쓰기) / 추가 보고 를 시간 순으로 한 줄기에 단다.
+ */
+.thread {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-left: 14px;
+}
+.threadNode,
+.threadBranch {
+    position: relative;
+}
+/* 줄기에서 카드로 나가는 가로 가지 */
+.threadNode::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: -11px;
+    width: 11px;
+    height: 2px;
+    background: var(--line-2);
+}
+/* 대응안: 위 카드 밑에서 ㄴ 자로 꺾여 들어온다 */
+.threadBranch {
+    margin-left: 22px;
+}
+.threadBranch::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: -14px;
+    width: 14px;
+    height: 34px;
+    border-bottom: 2px solid var(--line-2);
+    border-left: 2px solid var(--line-2);
+    border-bottom-left-radius: 6px;
+}
+/*
+ * 세로 줄기: 보고와 추가 보고 사이에만. 각 칸이 자기 높이만큼 줄기 조각을 그린다
+ * (up: 위 칸에서 내 가지까지 / down: 내 가지에서 아래 칸까지 / both: 위아래 모두).
+ */
+.threadNode[data-trunk]::after,
+.threadBranch[data-trunk]::after {
+    content: '';
+    position: absolute;
+    left: -11px;
+    width: 2px;
+    background: var(--line-2);
+}
+.threadBranch[data-trunk]::after {
+    left: -33px;
+}
+.threadNode[data-trunk='up']::after {
+    top: -6px;
+    height: 33px;
+}
+.threadNode[data-trunk='down']::after {
+    top: 25px;
+    bottom: -6px;
+}
+.threadNode[data-trunk='both']::after,
+.threadBranch[data-trunk='both']::after {
+    top: -6px;
+    bottom: -6px;
+}
+/* 대응안만 달린 보고는 줄기·가로 가지 없이 ㄴ 선만 */
+.threadNode:not([data-trunk])::before {
+    content: none;
+}
+/* 추가 보고가 없으면 줄기 자리를 비우지 않아 보고 카드가 다른 카드와 나란하다 */
+.thread[data-flat] {
+    padding-left: 0;
+}
+
+/* 큐시트: 같은 업무의 복사본 담당은 원 업무 담당 밑에 "ㄴ이름"으로 단다 */
+.copyOf {
+    display: inline-flex;
+    gap: 2px;
+    align-items: baseline;
+    padding-left: 8px;
+    white-space: nowrap;
+}
+.copyOf > span {
+    color: var(--muted);
+}
+
+/* 큐시트 행의 업무 삭제 단추: 배정 옆 빨간 X */
+/* 테두리 없이 작은 빨간 X */
+.cueDelete.cueDelete {
+    min-width: 0;
+    min-height: 0;
+    margin-left: 4px;
+    padding: 4px 6px;
+    border: 0;
+    background: none;
+    color: var(--bad);
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+}
+.cueDelete.cueDelete:hover:not(:disabled) {
+    border: 0;
+    background: var(--bad-soft);
+}
+
+/* 적용된 변경: 삭제된 업무 이름은 빨간 취소선 */
+.deletedName {
+    color: var(--bad);
+    text-decoration: line-through;
+    text-decoration-color: var(--bad);
+    text-decoration-thickness: 2px;
+}
+/* 고른 변경의 변경 전 / 변경 후 두 열 */
+.beforeAfter {
+    /* 바깥 테두리 없이 줄 사이 선만 둔다 */
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+}
+/* 항목 | 변경 전 | 변경 후 세 열 */
+.baHead,
+.baRow {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0 12px;
+    padding: 8px 10px;
+}
+.baHead {
+    background: var(--surface-2);
+    font-size: 12px;
+    font-weight: 700;
+}
+.baRow {
+    border-top: 1px solid var(--line);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+/* 왼쪽 항목 열: 업무·시간·담당… */
+.baLabel {
+    color: var(--muted);
+    font-size: 12px;
+}
+.baRow[data-changed] > span:last-child {
+    color: var(--blue);
+    font-weight: 700;
+}
+.baRow[data-changed] > span:nth-child(2) {
+    /* 변경 전 값 */
+    color: var(--muted);
+    text-decoration: line-through;
+}
+/* 삭제된 업무 알림창 */
+.alertScrim {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    background: rgb(16 24 40 / 40%);
+}
+.alertBox {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: min(400px, 100%);
+    padding: 20px;
+    border-radius: var(--r);
+    background: var(--surface);
+    box-shadow: 0 12px 32px rgb(16 24 40 / 25%);
+}
+/* 알림창 머리: 제목 | 오른쪽 위 닫기(X) */
+.alertTop {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.alertClose {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: var(--muted);
+}
+.alertClose:hover {
+    background: var(--surface-2);
+    color: var(--fg);
+}
+.alertClose svg {
+    width: 18px;
+    height: 18px;
+}
+.alertHead {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    color: var(--bad);
+    font-size: 16px;
+}
+.alertHead svg {
+    width: 20px;
+    height: 20px;
+}
+.alertError {
+    color: var(--bad);
+}
+.purgeBtn.purgeBtn {
+    border-color: var(--bad);
+    color: var(--bad);
+}
+
+/* 적용된 변경의 작성·적용 열: 줄바꿈 없이 */
+.changeMeta {
+    white-space: nowrap;
+}
+
+/* 큐시트 상태 옆 "(미확인)": 박스 없이 파란 글씨 */
+.unacked {
+    color: var(--blue);
+    font-size: 12.5px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* W01-DRAFT 등록 화면: 위 탭 + 아래 화면. 상단 네비 바로 밑부터 창 아래까지 쓰도록 본문 위·아래 여백(24px·40px)을
+   끌어 쓰고, 높이는 화면에서 네비(64px)만 뺀 만큼으로 고정한다. 페이지 전체는 스크롤되지 않고(네비는 그대로),
+   내용이 길면 탭 아래 화면 안에서만 스크롤된다 */
+.draftPage {
+    display: flex;
+    flex-direction: column;
+    height: calc(100dvh - 64px);
+    overflow: hidden;
+    margin-top: -24px;
+    margin-bottom: -40px;
+}
+
+/* 탭 줄: 왼쪽 탭, 오른쪽 끝 상세 정보 탭의 편집·저장 버튼 */
+.draftTabs {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex: none;
+    padding: 10px 12px 0;
+    border-bottom: 1px solid var(--line);
+    background: #ffffff;
+}
+
+.draftTabs :global(.tabs) {
+    margin: 0;
+}
+
+.draftBar {
+    margin-left: auto;
+}
+
+.draftBar[hidden] {
+    display: none;
+}
+
+/* 공연/행사 정보 등록: 카드가 남은 높이를 채우고, 내용이 더 길면 이 칸 안에서만 스크롤된다.
+   스크롤 막대 자리는 늘 비워 두어(카드와 같은 회색) 막대가 생기고 없어져도 카드 너비·위치가 바뀌지 않는다 */
+.draftInfo {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    background: #f4f5f7;
+}
+
+.draftInfo [data-report] {
+    flex: 1 0 auto;
+    height: auto;
+}
+
+.draftInfo [data-report-scroll] {
+    flex: none;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    overflow: visible;
+    scrollbar-gutter: auto;
+}
+
+/* 한 화면에 들어가게: 내용이 없는 진행 칸은 숨기고, 공연 설명 칸은 두 줄 높이로 둔다 */
+.draftInfo [data-report-scroll] > section:empty {
+    display: none;
+}
+
+.draftInfo [data-report-scroll] textarea {
+    height: 64px;
+    min-height: 64px;
+}
+
+/* PDF로 만들기(V9-D65)·미확정 초안: 탭 아래 화면 안에서만 스크롤된다 */
+.draftPdf {
+    flex: 1;
+    min-height: 0;
+    padding: 16px 12px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+}
+
+/* 상세 정보 업로드: 계획 화면이 탭 바로 밑에서 시작해 창 아래까지 높이를 잰다.
+   비어 있는 안내 줄과 그 간격을 없애 탭 아래에 빈 여백이 생기지 않게 한다 */
+.draftUpload {
+    flex: 1;
+    min-height: 0;
+}
+
+.draftUpload > section {
+    gap: 0;
+}
+
+.draftUpload > section > p:empty {
+    display: none;
+}
+
+/* 오른쪽 계획 초안 카드(직무 그룹·공연 순서 등)는 공연 관리 카드와 같은 옅은 회색 바탕 */
+.draftUpload article[aria-label='계획 초안'],
+.draftUpload article[aria-label='계획 초안'] > div {
+    background: #f4f5f7;
+}
+
+.draftPdf[hidden],
+.draftInfo[hidden],
+.draftUpload[hidden] {
+    display: none;
+}

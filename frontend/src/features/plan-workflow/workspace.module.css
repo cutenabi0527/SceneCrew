@@ -1,0 +1,2486 @@
+/* 공연 계획 입력·수정 화면(W01-DRAFT). 넓은 화면에서도 읽기 좋은 폭으로 모으고,
+   버튼은 화면 폭을 채우지 않게 내용 크기로 둔다. */
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    background: var(--surface);
+}
+
+.sectionHead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 12px;
+}
+
+.sectionHead > h2,
+.sectionHead > h3 {
+    margin: 0;
+}
+
+summary.sectionHead {
+    cursor: pointer;
+    list-style: none;
+}
+
+summary.sectionHead::-webkit-details-marker {
+    display: none;
+}
+
+summary.sectionHead::before {
+    content: '▸';
+    font-size: 12px;
+    transition: transform 0.15s ease;
+}
+
+details[open] > summary.sectionHead::before {
+    transform: rotate(90deg);
+}
+
+details.section:not([open]) {
+    gap: 0;
+}
+
+.summary {
+    display: grid;
+    grid-template-columns: minmax(96px, max-content) 1fr;
+    gap: 6px 16px;
+    margin: 0;
+    font-size: 13px;
+}
+
+.summary dt {
+    font-weight: 600;
+}
+
+.summary dd {
+    margin: 0;
+}
+
+.plain {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.inline {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.inline > :first-child {
+    flex: 1;
+    min-width: 0;
+}
+
+.condition {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.condition > button {
+    align-self: flex-end;
+}
+
+/* 편집기: 항목마다 작은 카드, 입력 칸은 두 열 */
+.editor {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+}
+
+.editor > legend {
+    padding: 0;
+    margin-bottom: 4px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.item {
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    background: var(--bg, #fafaf8);
+}
+
+.item > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.itemBody {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 12px;
+    padding: 0 12px 12px;
+}
+
+.wide {
+    grid-column: 1 / -1;
+}
+
+/* 여러 줄 입력·점검 항목 묶음·경고는 두 열을 다 쓰고, 삭제 버튼은 오른쪽 끝에 둔다 */
+.itemBody > label:has(textarea),
+.itemBody > div,
+.itemBody > p {
+    grid-column: 1 / -1;
+}
+
+.itemBody > button {
+    grid-column: 1 / -1;
+    justify-self: end;
+}
+
+.itemBody > button + button {
+    margin-top: -4px;
+}
+
+.item.itemBody {
+    padding-top: 12px;
+}
+
+.itemBody > div:has(> label > input[type='checkbox']) {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: end;
+    gap: 8px;
+}
+
+.itemActions {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.check {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: end;
+    gap: 8px;
+}
+
+.add {
+    align-self: flex-start;
+}
+
+.empty {
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted, #6b6b6b);
+}
+
+/* 맨 끝 저장 줄. 길게 내려도 화면 아래에 붙어 있다. */
+.saveBar {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px 12px;
+    padding: 12px 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    background: var(--surface);
+    box-shadow: 0 -4px 16px rgb(0 0 0 / 0.06);
+}
+
+.saveBar > span {
+    margin-right: auto;
+}
+
+.saveBar > p {
+    flex-basis: 100%;
+    margin: 0;
+    text-align: right;
+}
+
+@media (max-width: 640px) {
+    .itemBody {
+        grid-template-columns: 1fr;
+    }
+}
+
+.section > h2 {
+    margin: 0;
+}
+
+.lead {
+    margin: -6px 0 0;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* 문서 입력: 점선 상자 + 올린 문서 목록 */
+.docs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* 표·버튼을 덮는 업로드 상자가 겹칠 자리 */
+.docArea {
+    position: relative;
+}
+
+.dropzone {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 120px;
+    padding: 20px;
+    border: 2px dashed var(--line);
+    border-radius: var(--r);
+    background: var(--surface);
+    color: #9a9a96;
+    text-align: center;
+    cursor: pointer;
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease;
+}
+
+.dropzone:hover,
+.dropzone[data-dragging] {
+    border-color: #7aa7ff;
+    background: #f5f8ff;
+}
+
+.dropzone:focus-within {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+.dropzone[data-disabled] {
+    cursor: default;
+    opacity: 0.6;
+}
+
+.dropzone[data-disabled]:hover {
+    border-color: var(--line);
+    background: var(--surface);
+}
+
+.dropTitle {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.dropHint {
+    font-size: 12px;
+}
+
+.docTable {
+    width: 100%;
+    table-layout: fixed;
+    /* 행마다 정확히 44px: 테두리를 겹치지 않게 두고 칸 높이에 테두리까지 넣는다 */
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 15px;
+}
+
+.docTable th,
+.docTable td {
+    box-sizing: border-box;
+    height: 44px;
+    padding: 0 14px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--line);
+}
+
+.docTable th {
+    background: #f4f5f7;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* 업로드 일시 열은 폭을 고정한다(문서가 없어도 같은 크기라 업로드 상자와 표의 크기가 같다).
+   두 열 사이에 세로선을 둔다 */
+.docTable th:last-child,
+.docTable td.docTime {
+    width: 12rem;
+    white-space: nowrap;
+    border-left: 1px solid var(--line);
+}
+
+/* 문서 이름 열: 길면 말줄임 */
+.docName {
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.docTime {
+    font-family: var(--mono, monospace);
+    white-space: nowrap;
+}
+
+.docTable td.addCell {
+    padding: 0;
+    border: 0;
+}
+
+/* 맨 아래 '+ 문서 추가하기' 행: 두 열을 합친 점선 칸 */
+.addRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    /* 문서 행(44px)과 같은 높이: 점선 테두리까지 포함해 맞춘다 */
+    height: 44px;
+    padding: 0 14px;
+    border: 1px dashed #b9b9b4;
+    color: #9a9a96;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.addRow:hover,
+.addRow[data-dragging] {
+    background: #f5f8ff;
+}
+
+.addRow:focus-within {
+    outline: 2px solid #2563eb;
+    outline-offset: -2px;
+}
+
+.addRow[data-disabled] {
+    cursor: default;
+    opacity: 0.6;
+}
+
+.confirm {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+/* 문서 표 + 오른쪽 사각형 AI 문서 추출 버튼 */
+.docRow {
+    display: flex;
+    align-items: stretch;
+    gap: 16px;
+}
+
+.docRow > table {
+    flex: 1;
+    min-width: 0;
+}
+
+.aiSide {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 128px;
+    flex: none;
+}
+
+.aiTile {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 112px;
+    padding: 12px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--fg, #0e1a2b);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.aiTile svg {
+    width: 24px;
+    height: 24px;
+}
+
+.aiTile:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+.aiTile:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+.aiTile:disabled {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.aiTime {
+    font-size: 12px;
+    font-family: var(--mono, monospace);
+    text-align: center;
+}
+
+/* 표 머리 '문서' 칸: 오른쪽 끝에 빨간 '전체 삭제' */
+.docHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.deleteAll,
+.cancelDelete {
+    padding: 2px 4px;
+    border: 0;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.deleteAll {
+    color: var(--bad);
+}
+
+.cancelDelete {
+    color: var(--fg);
+}
+
+.deleteAll:disabled {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.deleteAll:hover:not(:disabled),
+.cancelDelete:hover {
+    text-decoration: underline;
+}
+
+/* 위쪽 상태 줄: 요청을 시작하면 비었다가 결과가 오면 다시 채워진다. 늘 한 줄 높이를 잡아 두어
+   아래 내용(문서 표 등)이 위아래로 튀지 않게 한다 */
+.status {
+    min-height: 1.5em;
+    margin: 0;
+}
+
+/* 문서 표 아래 평면도 / 장비 두 칸. 빈 점선 상자와 올린 뒤 보기가 같은 자리·같은 크기다 */
+.refGrid {
+    display: grid;
+    /* 평면도 | 평면도 구역 표, 그 아래 장비(한 줄 전체) */
+    grid-template-columns: minmax(0, 1fr) 112px;
+    gap: 16px;
+    margin-top: 6px;
+}
+
+.refCol {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.refHead {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 28px;
+    font-size: 14px;
+}
+
+.refTitle {
+    font-weight: 700;
+}
+
+.refName {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--muted, #6b6b66);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.refLink {
+    color: var(--fg);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.refLink[data-disabled] {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.dropzone.refDrop,
+.refView {
+    position: relative;
+    inset: auto;
+    box-sizing: border-box;
+    height: 320px;
+    border-radius: var(--r);
+}
+
+.refView {
+    overflow: hidden;
+    border: 2px solid var(--line);
+    background: var(--surface);
+}
+
+.refImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #fff;
+}
+
+.refView.sheetScroll {
+    overflow: auto;
+}
+
+.sheetScroll:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+.sheet {
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+    background: #fff;
+}
+
+.sheet th,
+.sheet td {
+    height: 28px;
+    padding: 0 8px;
+    border-right: 1px solid #e3e3df;
+    border-bottom: 1px solid #e3e3df;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.sheet td {
+    max-width: 16rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sheet thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: #f3f3f0;
+    color: #6b6b66;
+    font-weight: 600;
+    text-align: center;
+}
+
+.sheet tbody th {
+    position: sticky;
+    left: 0;
+    background: #f3f3f0;
+    color: #6b6b66;
+    font-weight: 600;
+    text-align: right;
+}
+
+.sheet thead .sheetCorner {
+    left: 0;
+    z-index: 2;
+}
+
+@media (max-width: 720px) {
+    .refGrid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* 좁은 화면: 추출 버튼을 표 아래로 내려 문서 이름 칸이 사라지지 않게 한다 */
+@media (max-width: 720px) {
+    .docRow {
+        flex-direction: column;
+    }
+
+    .aiSide {
+        width: 100%;
+    }
+
+    .aiTile {
+        flex-direction: row;
+        min-height: 48px;
+    }
+
+    .docTable th:last-child,
+    .docTable td.docTime {
+        width: 9.5rem;
+    }
+}
+
+/* 올린 평면도: 누르면 다른 파일로 바꾼다 */
+.refClick {
+    display: block;
+    cursor: pointer;
+}
+
+.refClick:hover .refView {
+    border-color: #7aa7ff;
+}
+
+.refClick[data-disabled] {
+    cursor: default;
+}
+
+.refRemove {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    margin-left: auto;
+    border: 0;
+    border-radius: 999px;
+    background: none;
+    color: var(--bad);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.refRemove:hover:not(:disabled) {
+    background: rgb(220 38 38 / 10%);
+}
+
+.refRemove:disabled {
+    cursor: default;
+    opacity: 0.5;
+}
+
+/* 계획 초안: 갈래마다 높이를 고정한 카드. 항목은 카드 안에서 위아래로 스크롤한다 */
+.draftCard {
+    display: flex;
+    flex-direction: column;
+    height: 460px;
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    background: var(--surface);
+    overflow: hidden;
+}
+
+.draftHead {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+}
+
+.draftHead h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.draftCount {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.draftAdd {
+    margin-left: auto;
+    padding: 4px 6px;
+    border: 0;
+    background: none;
+    color: var(--fg);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.draftAdd:hover:not(:disabled) {
+    text-decoration: underline;
+}
+
+.draftAdd:disabled {
+    cursor: default;
+    opacity: 0.4;
+}
+
+.draftScroll {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 0;
+    padding: 14px 16px;
+    overflow-y: auto;
+}
+
+/* 항목 하나: 보고 작성 양식처럼 이름표 위, 입력 칸 아래 */
+.formCard {
+    flex: none;
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    background: var(--surface);
+}
+
+.formCardHead {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 8px 6px 14px;
+}
+
+.formCardHead b {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.formCardRemove {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border: 0;
+    border-radius: 999px;
+    background: none;
+    color: var(--bad);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.formCardRemove:hover:not(:disabled) {
+    background: rgb(220 38 38 / 10%);
+}
+
+.formCard .itemBody {
+    padding: 4px 14px 14px;
+}
+
+/* 점검 항목 한 줄: 내용 | 필수 확인 | ✕ */
+.checkRow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 8px;
+    align-items: end;
+}
+
+.checkRow > .check {
+    min-height: 42px;
+}
+
+.itemBody > .draftAdd {
+    grid-column: 1 / -1;
+    justify-self: start;
+    margin-left: 0;
+}
+
+/* 평면도 오른쪽: 평면도에 올린 구역(읽기만) */
+.zoneBox {
+    box-sizing: border-box;
+    height: 320px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.zoneBox:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+.zoneTable {
+    width: 100%;
+    /* 칸 너비를 고정해 긴 이름도 가로로 넘치지 않는다(앞부분만 보인다) */
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 14px;
+}
+
+.zoneTable th,
+.zoneTable td {
+    height: 34px;
+    padding: 0 10px;
+    border-bottom: 1px solid #e3e3df;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.zoneTable th {
+    position: sticky;
+    top: 0;
+    background: #f3f3f0;
+    color: #6b6b66;
+    font-weight: 600;
+}
+
+.zoneTable th:first-child,
+.zoneTable td:first-child {
+    width: 2.5rem;
+    color: #6b6b66;
+}
+
+.zoneTable td:last-child {
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 계획 초안: 높이를 고정한 한 장의 문서 카드. 안에서 위아래로 스크롤한다 */
+.docCard {
+    display: flex;
+    flex-direction: column;
+    height: 680px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    background: var(--surface);
+    overflow: hidden;
+}
+
+/* fieldset의 legend는 테두리 위에 걸치므로 카드 안 첫 줄로 내린다 */
+.docTitle {
+    float: left;
+    width: 100%;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--line);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.docScroll {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 22px;
+    min-height: 0;
+    padding: 16px 18px 20px;
+    overflow-y: auto;
+    clear: both;
+}
+
+.docSection {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.docSection + .docSection {
+    padding-top: 18px;
+    border-top: 1px dashed var(--line);
+}
+
+.docSection > .draftHead {
+    padding: 0;
+    border-bottom: 0;
+}
+
+/* 계획 초안: A4 문서 한 장(가로:세로 = 1:1.414). 문서 안(paperScroll)에서 위아래로 스크롤하고
+   아래 고정 바(편집·저장)는 늘 보인다 */
+.paper {
+    box-sizing: border-box;
+    /* A4 크기로 고정한다(화면이 넓어도 좁아도 같은 크기) */
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    width: 660px;
+    aspect-ratio: 1 / 1.4142;
+    margin: 0 auto;
+    overflow: hidden;
+    /* 보고/대응의 보고서처럼 테두리·그림자 없이 */
+    background: #ffffff;
+}
+
+.paperScroll {
+    flex: 1;
+    min-height: 0;
+    padding: 36px 48px 48px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* 제목은 가운데(편집 버튼은 아래 고정 바에 있다) */
+.paperHead {
+    text-align: center;
+}
+
+.paperTitle {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.paperOwner {
+    margin: 10px 0 0;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+    text-align: right;
+    font-size: 15px;
+}
+
+.paperBody {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.paperSection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.paperSection:last-child {
+    border-bottom: 0;
+}
+
+.paperSection > h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.paperEmpty {
+    margin: 0 0 0 12px;
+    color: #9a9a96;
+    font-size: 14px;
+}
+
+.paperTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+.paperTable th,
+.paperTable td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e3e3df;
+    text-align: left;
+    vertical-align: top;
+}
+
+.paperTable thead th {
+    border-bottom: 2px solid #cfcfca;
+    font-weight: 700;
+}
+
+.paperKey {
+    width: 30%;
+    font-weight: 700;
+}
+
+/* 업무 한 건: 항목 | 내용 */
+.paperRows th {
+    width: 7rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.paperTask {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-left: 12px;
+}
+
+.paperTask + .paperTask {
+    margin-top: 10px;
+}
+
+.paperTaskHead {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+}
+
+.paperTaskHead b {
+    flex: 1;
+    min-width: 0;
+}
+
+.paperText {
+    white-space: pre-wrap;
+}
+
+.paperList,
+.paperNotes {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.paperNotes li + li {
+    margin-top: 8px;
+}
+
+.paperReq {
+    color: var(--bad);
+    font-size: 13px;
+}
+
+/* 편집 중 입력 칸: 점선 테두리(변경 검토 화면과 같은 느낌) */
+.paperField {
+    display: block;
+    min-width: 0;
+}
+
+.paperField input,
+.paperField select,
+.paperField textarea {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 40px;
+    padding: 8px 12px;
+    border: 1.5px dashed #6b6b66;
+    border-radius: 8px;
+    background: #f1f2f5;
+    font: inherit;
+}
+
+.paperField textarea {
+    min-height: 72px;
+    resize: vertical;
+}
+
+.paperRange {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 6px;
+    align-items: center;
+}
+
+.paperRemoveCell {
+    width: 40px;
+}
+
+.paperRemove {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border: 0;
+    border-radius: 999px;
+    background: none;
+    color: var(--bad);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.paperRemove:hover:not(:disabled) {
+    background: rgb(220 38 38 / 10%);
+}
+
+.paperAdd {
+    align-self: flex-start;
+    padding: 6px 12px;
+    border: 1px solid var(--line-2, #d6d6d1);
+    border-radius: 8px;
+    background: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.paperAdd:disabled {
+    cursor: default;
+    opacity: 0.4;
+}
+
+.paperChecks {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.paperNoteEdit {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px;
+    align-items: start;
+}
+
+/* 구획 제목 줄: 왼쪽 제목, 오른쪽 끝 '+추가'(편집 중에만) */
+.paperSectionHead {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* '+추가': 테두리 없이 파란 글씨 */
+.paper .paperAdd {
+    padding: 2px 4px;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    color: #2563eb;
+}
+
+.paper .paperAdd:hover:not(:disabled) {
+    text-decoration: underline;
+}
+
+/* 점선 칸 안 오른쪽 아래의 제한 글자 수(비어 있을 때만) */
+.paperField {
+    position: relative;
+}
+
+.paperLimit {
+    position: absolute;
+    right: 10px;
+    bottom: 6px;
+    color: #9a9a96;
+    font-size: 11px;
+    line-height: 1;
+    pointer-events: none;
+}
+
+/* 제한을 넘으면 빨간 점선 테두리와 칸 바깥 오른쪽 아래의 '현재/제한' */
+.paperField[data-over] input,
+.paperField[data-over] textarea {
+    border-color: var(--bad, #dc2626);
+}
+
+.paperOver {
+    display: block;
+    margin-top: 2px;
+    color: var(--bad, #dc2626);
+    font-size: 12px;
+    text-align: right;
+}
+
+/* 그룹 안내: 그룹 이름 칸과 같은 한 줄 높이에서 시작해 3줄까지 늘고, 그 뒤로는 칸 안에서 스크롤한다 */
+.paperField[data-compact] textarea {
+    min-height: 40px;
+    max-height: calc(3lh + 18px);
+    overflow-y: auto;
+    resize: none;
+    field-sizing: content;
+}
+
+/* 편집 중 공통 안내: 번호를 점선 칸 첫 줄 옆(위쪽)에 맞춘다 */
+.paperBody[data-editing] .paperNotes {
+    padding-left: 0;
+    list-style: none;
+    counter-reset: note;
+}
+
+.paperBody[data-editing] .paperNotes > li {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    align-items: start;
+    counter-increment: note;
+}
+
+.paperBody[data-editing] .paperNotes > li::before {
+    padding-top: 9px;
+    content: counter(note) '.';
+}
+
+@media (max-width: 720px) {
+    .paper {
+        width: 100%;
+        aspect-ratio: auto;
+        height: 80dvh;
+    }
+
+    .paperScroll {
+        padding: 20px 16px 28px;
+    }
+
+    .paperTitle {
+        text-align: left;
+        font-size: 20px;
+    }
+}
+
+/* 업무 이름 줄: 누르면 상세 표를 펼친다 */
+.paperTaskToggle {
+    display: flex;
+    flex: 1;
+    gap: 8px;
+    align-items: center;
+    min-width: 0;
+    padding: 6px 4px;
+    border: 0;
+    background: none;
+    color: var(--fg);
+    font: inherit;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+}
+
+.paperCaret {
+    display: inline-block;
+    font-size: 12px;
+    transition: transform 0.15s ease;
+}
+
+.paperTaskToggle[aria-expanded='true'] .paperCaret {
+    transform: rotate(90deg);
+}
+
+/* 업무 상세 표: 평면도 구역 표와 같은 느낌(회색 머리 줄, 가는 줄) */
+.taskTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 14px;
+}
+
+.taskTable th,
+.taskTable td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #e3e3df;
+    text-align: left;
+    vertical-align: top;
+}
+
+.taskTable thead th {
+    background: #f3f3f0;
+    color: #6b6b66;
+    font-weight: 600;
+}
+
+.taskTable tbody th {
+    width: 7rem;
+    color: #6b6b66;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* 계획 초안 문서 안의 글자는 모두 10pt로 맞춘다(펼침 삼각형만 조금 크게) */
+/* 제목·소제목·버튼의 자체 글자 크기보다 앞서도록 선택자를 두 번 겹쳐 쓴다 */
+.paper.paper,
+.paper.paper *,
+.paper.paper :global(.btn) {
+    font-size: 10pt;
+}
+
+.paper.paper .paperCaret {
+    font-size: 16px;
+    line-height: 1;
+}
+
+/* 계획 수정: 보고/대응 화면과 같은 구성. 왼쪽 칸 640px(문서 / 평면도·구역·장비) | 가운데 계획 초안 */
+.planSplit {
+    /* 한 화면 높이(머리 줄·여백을 뺀 나머지)에 왼쪽 칸과 계획 초안이 모두 들어가게 한다 */
+    --avail: calc(100dvh - 140px);
+    /* 평면도·구역 줄과 장비 줄의 상자 높이: 남는 높이를 반씩 나눈다 */
+    --box-h: max(150px, calc((var(--avail) - 300px) / 2));
+    /* 계획 초안(A4)은 왼쪽 칸 오른쪽 제자리에 둔다. 왼쪽 칸은 420~760px로 줄고 늘며,
+       그만큼도 자리가 없는 좁은 틀에서만 초안이 아래로 내려간다 */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.planSide {
+    flex: 1 1 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+    /* 왼쪽 칸 자체의 너비에 맞춰 안쪽 배치를 바꾼다(좁은 틀 안에 열려도 넘치지 않게) */
+    container-type: inline-size;
+}
+
+.planMain {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+/* AI 조건 '생성': 왼쪽 AI 아이콘 */
+.aiGenerate {
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.aiGenerate svg {
+    width: 15px;
+    height: 15px;
+}
+
+/* 좁은 왼쪽 칸: 추출 버튼은 표 아래, 글자와 칸은 조금 작게 */
+.planSide .docRow {
+    flex-direction: column;
+}
+
+.planSide .aiSide {
+    width: 100%;
+}
+
+.planSide .aiTile {
+    flex-direction: row;
+    min-height: 44px;
+}
+
+.planSide .docTable {
+    font-size: 13px;
+}
+
+.planSide .docTable th,
+.planSide .docTable td {
+    padding: 0 10px;
+}
+
+.planSide .docTable th:last-child,
+.planSide .docTable td.docTime {
+    width: 7.5rem;
+    font-size: 12px;
+}
+
+.planSide .addRow {
+    font-size: 13px;
+}
+
+.planSide .dropzone.refDrop,
+.planSide .refView,
+.planSide .zoneBox {
+    height: 220px;
+}
+
+.planSide .refHead {
+    font-size: 13px;
+}
+
+.planSide .zoneTable {
+    font-size: 13px;
+}
+
+.planSide .zoneTable th:first-child,
+.planSide .zoneTable td:first-child {
+    width: 1.8rem;
+    padding: 0 4px 0 8px;
+}
+
+.planSide .zoneTable th:last-child,
+.planSide .zoneTable td:last-child {
+    padding: 0 8px 0 4px;
+}
+
+/* 문서 머리 줄 오른쪽: 최근 추출 | AI 문서 추출 | 전체 삭제 */
+.docTools {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-left: auto;
+}
+
+.docTools .aiTime {
+    color: #6b6b66;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.aiButton {
+    display: inline-flex;
+    gap: 5px;
+    align-items: center;
+    height: 28px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 7px;
+    background: var(--fg, #0e1a2b);
+    color: #ffffff;
+    font-size: 12.5px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.aiButton svg {
+    width: 15px;
+    height: 15px;
+}
+
+.aiButton:disabled {
+    cursor: default;
+    opacity: 0.5;
+}
+
+/* 평면도 칸은 올린 그림 비율(없으면 4:3)이고, 구역·장비 칸은 그 높이에 맞춰 늘어난다 */
+.planSide .refGrid {
+    align-items: stretch;
+}
+
+.planSide .refView.refFloor,
+.planSide .dropzone.refDrop.refFloor {
+    height: auto;
+}
+
+.planSide .dropzone.refDrop.refFloor {
+    aspect-ratio: 4 / 3;
+}
+
+.planSide .refCol .zoneBox,
+.planSide .refCol > .refView:not(.refFloor),
+.planSide .refCol > .dropzone.refDrop:not(.refFloor) {
+    flex: 1;
+    height: auto;
+    min-height: 160px;
+    /* 내용 길이가 줄 높이를 늘리지 않게 한다(높이는 평면도 칸에서 정해진다). 넘치면 안에서 스크롤 */
+    contain: size;
+}
+
+/* 엑셀 표는 작게 해 더 많이 보이게 */
+.planSide .sheet {
+    font-size: 11px;
+}
+
+.planSide .sheet th,
+.planSide .sheet td {
+    height: 22px;
+    padding: 0 6px;
+}
+
+.refRemove svg {
+    width: 17px;
+    height: 17px;
+}
+
+/* 왼쪽 칸 위: 문서 업로드 | AI 조건 입력 */
+.sideTop {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 16px;
+    align-items: start;
+}
+
+/* AI 조건 입력: 테두리 없이 */
+.aiConditions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+}
+
+.aiConditions > h2 {
+    margin: 0;
+    font-size: 15px;
+}
+
+.aiConditions .actions {
+    flex-wrap: wrap;
+}
+
+/* 장비는 평면도·구역 아래 한 줄 전체, 높이는 고정 */
+.planSide .refGrid > .refCol:nth-child(3) {
+    grid-column: 1 / -1;
+}
+
+.planSide .refGrid > .refCol:nth-child(3) > .refView,
+.planSide .refGrid > .refCol:nth-child(3) > .dropzone.refDrop {
+    flex: none;
+    height: 260px;
+    contain: none;
+}
+
+@media (max-width: 720px) {
+    .sideTop {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* 평면도는 높이를 정하고 너비는 그림 비율대로, 구역 표가 그 옆의 남은 너비를 쓴다 */
+.planSide .refGrid {
+    grid-template-columns: auto minmax(112px, 280px);
+}
+
+.planSide .refGrid > .refCol:first-child {
+    width: min-content;
+}
+
+.planSide .refView.refFloor,
+.planSide .dropzone.refDrop.refFloor {
+    width: auto;
+    max-width: 600px;
+    height: 280px;
+}
+
+/* 좁은 화면: 평면도·구역·장비를 위아래로 쌓아 가로로 넘치지 않게 한다 */
+@media (max-width: 720px) {
+    .planSide .refGrid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .planSide .refGrid > .refCol:first-child {
+        width: auto;
+    }
+
+    .planSide .refView.refFloor,
+    .planSide .dropzone.refDrop.refFloor {
+        width: 100%;
+        max-width: none;
+        height: auto;
+    }
+
+    .planSide .refCol .zoneBox {
+        flex: none;
+        height: 220px;
+        contain: none;
+    }
+}
+
+/* 왼쪽 칸이 좁으면 문서 업로드와 AI 조건 입력을 위아래로 쌓는다 */
+@container (max-width: 600px) {
+    .sideTop {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* 평면도 편집(아이콘): 제거 왼쪽 */
+.refEdit {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    margin-left: auto;
+    border: 0;
+    border-radius: 999px;
+    background: none;
+    color: var(--fg);
+    cursor: pointer;
+}
+
+.refEdit + .refRemove {
+    margin-left: 0;
+}
+
+.refEdit:hover:not(:disabled) {
+    background: #f1f2f5;
+}
+
+.refEdit:disabled {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.refEdit svg {
+    width: 17px;
+    height: 17px;
+}
+
+/* 한 화면에 맞추기: 계획 초안은 남은 높이에 맞춘 A4(비율 그대로), 위에는 편집 취소/저장하기 줄 */
+.planSplit .paper {
+    width: auto;
+    height: min(933px, calc(var(--avail) - 48px));
+}
+
+.planSide .sideTop {
+    grid-template-columns: minmax(0, 1fr) 340px;
+}
+
+/* AI 조건 입력은 문서 카드 높이 안에서 스크롤한다 */
+.planSide .aiConditions {
+    max-height: 190px;
+    overflow-y: auto;
+}
+
+.planSide .refView.refFloor,
+.planSide .dropzone.refDrop.refFloor {
+    height: var(--box-h);
+}
+
+.planSide .refGrid > .refCol:nth-child(3) > .refView,
+.planSide .refGrid > .refCol:nth-child(3) > .dropzone.refDrop {
+    height: var(--box-h);
+}
+
+/* 좁은 화면에서는 한 화면 맞춤 대신 화면 너비에 맞춘다(가로로 넘치지 않게) */
+.planSplit .paper {
+    max-width: 100%;
+}
+
+@media (max-width: 720px) {
+    .planSplit .paper {
+        width: 100%;
+        height: 80dvh;
+        aspect-ratio: auto;
+    }
+
+    .planMain {
+        flex: 1 1 100%;
+    }
+}
+
+/* 왼쪽 칸이 좁으면(위 두 칸 규칙보다 앞서도록 같은 선택자로) 문서 업로드와 AI 조건 입력을 위아래로 쌓는다 */
+@container (max-width: 600px) {
+    .planSide .sideTop {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .planSide .aiConditions {
+        max-height: none;
+    }
+}
+
+/* 왼쪽 칸 너비를 평면도(높이 × 그림 비율) + 사이 12px + 구역 표 220px로 맞춘다.
+   문서 | AI 조건 줄과 장비 줄은 이 너비를 그대로 쓴다(세 줄의 너비가 같다) */
+.planSplit .planSide {
+    --floor-w: calc(var(--box-h) * var(--floor-ratio, 1.3333));
+    flex: 0 0 auto;
+    width: calc(var(--floor-w) + 12px + 220px);
+    /* 평면도가 세로로 길어 너무 좁아지면 문서·AI 조건이 들어갈 만큼은 둔다(구역 표가 남는 너비를 쓴다) */
+    min-width: 640px;
+    max-width: 100%;
+}
+
+.planSide .refGrid {
+    grid-template-columns: var(--floor-w) minmax(220px, 1fr);
+    column-gap: 12px;
+}
+
+.planSide .refGrid > .refCol:first-child {
+    width: auto;
+}
+
+.planSide .refView.refFloor,
+.planSide .dropzone.refDrop.refFloor {
+    width: 100%;
+    max-width: none;
+}
+
+@container (max-width: 600px) {
+    .planSide .sideTop {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 720px) {
+    .planSplit .planSide {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .planSide .refGrid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* 문서 표 아래: 최근 추출 / 문서 추출 / 전체 삭제 */
+.docBar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 36px;
+    padding-top: 6px;
+}
+
+.docBar .docTools {
+    margin-left: auto;
+}
+
+/* 머리 줄을 없앤 문서 표: 첫 줄 위에도 선을 그어 칸이 보이게 한다 */
+.docTable tbody tr:first-child > td {
+    border-top: 1px solid var(--line);
+}
+
+/* 평면도 칸: 안전 탭 평면도 틀 비율, 빈 점선 상자와 올린 그림이 같은 크기 */
+.planSide .refView.refFloor,
+.planSide .dropzone.refDrop.refFloor {
+    width: 100%;
+    height: var(--box-h);
+    aspect-ratio: auto;
+}
+
+/* 편집·지우기는 평면도 안 오른쪽 위 */
+.refBoxWrap {
+    position: relative;
+}
+
+.refOverlay {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 4px;
+}
+
+.refOverlay .refEdit,
+.refOverlay .refRemove {
+    margin-left: 0;
+    background: rgb(255 255 255 / 92%);
+    box-shadow: 0 1px 4px rgb(16 24 40 / 18%);
+}
+
+/* 문서 카드는 넓게, AI 조건 입력은 좁게 */
+.planSide .sideTop {
+    grid-template-columns: minmax(0, 1fr) 260px;
+}
+
+/* 평면도가 넓어진 만큼 구역 표를 줄인다(왼쪽 칸 너비는 그대로) */
+.planSplit .planSide {
+    width: max(640px, calc(var(--floor-w) + 12px + 120px));
+}
+
+.planSide .refGrid {
+    grid-template-columns: var(--floor-w) minmax(120px, 1fr);
+}
+
+/* (위 너비 규칙보다 뒤에 둔다) 왼쪽 칸이 좁으면 문서 업로드와 AI 조건 입력을 위아래로 쌓는다 */
+@container (max-width: 600px) {
+    .planSide .sideTop {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 720px) {
+    .planSplit .planSide {
+        width: 100%;
+    }
+
+    .planSide .refGrid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .planSide .refView.refFloor,
+    .planSide .dropzone.refDrop.refFloor {
+        height: auto;
+        aspect-ratio: var(--floor-ratio, 1.3333);
+    }
+}
+
+/* --- 한 화면 맞춤(창 높이를 재어 --avail로 받는다) --- */
+.planSplit {
+    /* 위: 문서|AI 조건(약 184px), 아래: 평면도·구역 줄과 장비 줄(장비만 제목 줄)을 남는 높이로 반씩 */
+    --box-h: max(140px, calc((var(--avail) - 260px) / 2));
+}
+
+/* 왼쪽 칸은 계획 초안 옆의 남는 너비를 쓴다(최대 900px). 평면도가 넓어지고 구역 표는 140px */
+.planSplit .planSide {
+    flex: 1 1 640px;
+    width: auto;
+    max-width: 900px;
+}
+
+.planSide .refGrid {
+    grid-template-columns: minmax(0, 1fr) 140px;
+}
+
+/* 평면도 칸: 제목 줄 없이 구역 표와 위를 맞춘다. 파일 이름은 상자 안 왼쪽 위 */
+.refChip {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    max-width: calc(100% - 96px);
+    overflow: hidden;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgb(255 255 255 / 92%);
+    box-shadow: 0 1px 4px rgb(16 24 40 / 18%);
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* 문서 표 오른쪽: 문서 추출 / 전체 삭제를 세로로 */
+.planSide .docRow {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.planSide .docRow > table {
+    flex: 1;
+    min-width: 0;
+}
+
+.planSide .docBar {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    min-height: 0;
+    padding-top: 0;
+}
+
+.planSide .docBar .docTools,
+.planSide .docBar .confirm {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-left: 0;
+}
+
+.planSide .docBar .deleteAll,
+.planSide .docBar .cancelDelete {
+    text-align: center;
+}
+
+.planSide .docBar .aiTime {
+    text-align: center;
+    white-space: normal;
+}
+
+@media (max-width: 720px) {
+    .planSplit .planSide {
+        max-width: none;
+    }
+
+    .planSide .refGrid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* 평면도 칸: 5177×2748 비율(빈 점선 상자와 올린 그림이 같은 크기). 높이는 한 화면 맞춤 높이, 너비는 비율대로 */
+.planSide .refGrid {
+    grid-template-columns: calc(var(--box-h) * var(--floor-ratio)) minmax(140px, 1fr);
+}
+
+.planSide .refView.refFloor,
+.planSide .dropzone.refDrop.refFloor {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 5177 / 2748;
+}
+
+@media (max-width: 720px) {
+    .planSide .refGrid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* 왼쪽 칸 너비 = 평면도(비율대로) + 12px + 구역 140px. 문서|AI 조건이 들어갈 640px보다는 좁아지지 않는다 */
+.planSplit .planSide {
+    flex: 0 0 auto;
+    width: max(640px, calc(var(--box-h) * var(--floor-ratio) + 152px));
+    max-width: 100%;
+}
+
+@media (max-width: 720px) {
+    .planSplit .planSide {
+        width: 100%;
+    }
+}
+
+/* 문서 표 오른쪽: 문서 추출 / 전체 삭제를 표 높이만큼 세로로 긴 버튼 두 개로 */
+.planSide .docRow {
+    align-items: stretch;
+}
+
+.planSide .docBar {
+    flex: none;
+    align-self: stretch;
+    width: 96px;
+}
+
+.planSide .docBar .docTools,
+.planSide .docBar .confirm {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.planSide .docBar .aiButton,
+.planSide .docBar .deleteAll,
+.planSide .docBar .cancelDelete {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    min-height: 0;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: normal;
+    text-align: center;
+}
+
+.planSide .docBar .aiButton svg {
+    width: 20px;
+    height: 20px;
+}
+
+.planSide .docBar .deleteAll {
+    border: 1px solid #f0c4c4;
+    background: #fff5f5;
+}
+
+.planSide .docBar .deleteAll:hover:not(:disabled) {
+    background: #ffe9e9;
+}
+
+.planSide .docBar .cancelDelete {
+    border: 1px solid var(--line);
+    background: var(--surface);
+}
+
+.planSide .docBar .aiTime,
+.planSide .docBar .confirm > :not(button) {
+    flex: none;
+}
+
+/* 문서 추출 / 전체 삭제: 표 높이만큼 세로로 긴 버튼 두 개를 한 줄로 나란히, 글자도 세로로 */
+.planSide .docBar {
+    width: auto;
+}
+
+.planSide .docBar .docTools,
+.planSide .docBar .confirm {
+    flex-direction: row;
+    gap: 6px;
+}
+
+.planSide .docBar .aiButton,
+.planSide .docBar .deleteAll,
+.planSide .docBar .cancelDelete {
+    flex: none;
+    width: 40px;
+    padding: 10px 0;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    letter-spacing: 2px;
+}
+
+.planSide .docBar .aiButton svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* 삭제 확인 안내 글은 세로 버튼 옆에서 줄여 보인다 */
+.planSide .docBar .confirm {
+    font-size: 0;
+}
+
+.planSide .docBar .confirm > button {
+    font-size: 13px;
+}
+
+/* 문서 추출 위, 전체 삭제 아래로 쌓은 작은 세로 버튼. AI 아이콘은 '문서 추출' 글자 바로 위.
+   글자는 한 글자씩 줄을 바꿔 세로로 읽힌다(아이콘은 돌리지 않는다) */
+.planSide .docBar .docTools,
+.planSide .docBar .confirm {
+    flex-direction: column;
+    gap: 4px;
+}
+
+.planSide .docBar .aiButton,
+.planSide .docBar .deleteAll,
+.planSide .docBar .cancelDelete {
+    flex: 1;
+    gap: 3px;
+    width: 26px;
+    padding: 4px 0;
+    border-radius: 6px;
+    writing-mode: horizontal-tb;
+    text-orientation: mixed;
+    letter-spacing: 0;
+    font-size: 10px;
+    line-height: 1.05;
+    word-break: break-all;
+}
+
+.planSide .docBar .aiButton svg {
+    flex: none;
+    width: 12px;
+    height: 12px;
+}
+
+/* 한 줄에 한 글자씩: 글자 칸은 한 글자 폭(1em)만 남긴다 */
+.planSide .docBar .aiButton,
+.planSide .docBar .deleteAll,
+.planSide .docBar .cancelDelete {
+    width: 22px;
+    padding-right: 5px;
+    padding-left: 5px;
+    line-height: 1;
+}
+
+/* ===== 계획 수정 배치(최종): 왼쪽 칸 | 오른쪽 계획 초안. 둘 다 한 화면 높이(--avail) 안에서 각자 스크롤한다 ===== */
+.planSplit {
+    display: grid;
+    /* 왼쪽 칸 : 계획 초안 = 5 : 7(왼쪽은 460px보다 좁아지지 않는다) */
+    grid-template-columns: minmax(460px, 5fr) minmax(0, 7fr);
+    gap: 24px;
+    align-items: stretch;
+    height: var(--avail);
+}
+
+/* 왼쪽 칸: 파일 업로드 → AI 조건 입력 → 평면도 | 구역 → 장비. 넘치면 칸 안에서 위아래로 스크롤 */
+.planSplit .planSide {
+    flex: none;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    height: 100%;
+    min-height: 0;
+    padding-right: 6px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.planSide .sideTop {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+}
+
+.planSide .aiConditions {
+    max-height: none;
+    overflow: visible;
+}
+
+/* 평면도 | 구역: 평면도는 5177×2748 비율 그대로(너비에 맞춰 높이가 정해진다), 구역 표는 그 높이 */
+.planSide .refGrid {
+    grid-template-columns: minmax(0, 1fr) 140px;
+    align-items: stretch;
+}
+
+.planSide .refView.refFloor,
+.planSide .dropzone.refDrop.refFloor {
+    width: 100%;
+    max-width: none;
+    height: auto;
+    aspect-ratio: 5177 / 2748;
+}
+
+.planSide .refGrid > .refCol:nth-child(3) > .refView,
+.planSide .refGrid > .refCol:nth-child(3) > .dropzone.refDrop {
+    height: 260px;
+}
+
+/* 오른쪽: 위에 편집 취소/저장하기, 그 아래 계획 초안이 남는 너비·높이를 다 쓰고 안에서 스크롤 */
+.planSplit .planMain {
+    flex: none;
+    min-width: 0;
+    height: 100%;
+    min-height: 0;
+}
+
+.planSplit .paper {
+    flex: 1;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: auto;
+}
+
+@media (max-width: 960px) {
+    .planSplit {
+        grid-template-columns: minmax(0, 1fr);
+        height: auto;
+    }
+
+    .planSplit .planSide {
+        height: auto;
+        overflow: visible;
+        padding-right: 0;
+    }
+
+    .planSplit .planMain {
+        height: auto;
+    }
+
+    .planSplit .paper {
+        flex: none;
+        height: 80dvh;
+    }
+}
+
+@media (max-width: 720px) {
+    .planSide .refGrid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* 왼쪽 칸 | 계획 초안을 감싼 틀: 이 틀의 너비가 좁으면(좁은 화면, 좁은 계정 화면 틀) 위아래로 쌓는다 */
+.planWrap {
+    container-type: inline-size;
+    min-width: 0;
+}
+
+@container (max-width: 1000px) {
+    .planSplit {
+        grid-template-columns: minmax(0, 1fr);
+        height: auto;
+    }
+
+    .planSplit .planSide {
+        height: auto;
+        overflow: visible;
+        padding-right: 0;
+    }
+
+    .planSplit .planMain {
+        height: auto;
+    }
+
+    .planSplit .paper {
+        flex: none;
+        height: 80dvh;
+    }
+}
+
+/* ===== 운영 화면 안(embedded)의 배치 =====
+   W01-DRAFT: 왼쪽 칸 | 계획 초안 | 공연 관리를 같은 너비 세 열로 둔다.
+   계획 수정 탭(공연 관리 없음): 왼쪽 칸은 세 열일 때와 같은 너비(1/3)로 두고 계획 초안이 나머지를 쓴다.
+   셋 다 한 화면 높이(--avail) 안에서 각자 위아래로 스크롤하고, 카드 사이(각 스크롤바 바로 옆)에 검은 점선을 둔다.
+   1000px 이하의 틀에서는 한 열로 쌓는다. */
+.planAside {
+    min-width: 0;
+    height: 80dvh;
+}
+
+@container (min-width: 1001px) {
+    .planSplit[data-aside] {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .planSplit[data-embedded]:not([data-aside]) {
+        /* 세 열(사이 간격 둘)일 때의 한 열 너비와 같게 */
+        grid-template-columns: calc((100% - 48px) / 3) minmax(0, 1fr);
+    }
+
+    .planSplit[data-aside] .planAside {
+        height: 100%;
+        min-height: 0;
+        /* 계획 초안의 오른쪽 점선과 같은 두께를 비워 두 카드 안쪽 너비를 맞춘다 */
+        border-right: 1.5px solid transparent;
+    }
+
+    .planSplit[data-embedded] .planSide,
+    .planSplit[data-aside] .paper {
+        border-right: 1.5px dashed #000000;
+    }
+}
+
+/* 운영 화면 안(W01-DRAFT·계획 수정 탭)의 세 칸은 제목·표·입력 칸·버튼·안내까지 모든 글자를 10pt로 한다.
+   칸마다 글자 크기를 정한 규칙이 많아 하나씩 덮으면 새 규칙이 생길 때 다시 어긋나므로 여기 한 곳에서 강제한다.
+   (공연 공개 확인 팝업도 이 안에 그려지므로 같이 10pt다) */
+.planSplit[data-embedded],
+.planSplit[data-embedded] * {
+    font-size: 10pt !important;
+}
+
+/* 운영 화면 안에서는 계획 초안을 공연 관리(보고서 틀)와 같은 여백·제목 간격으로 맞춰
+   두 카드의 구획 가로줄 길이와 위치가 같게 한다. 스크롤바 자리는 늘 비워 둔다(내용 길이와 관계없이 같은 너비) */
+/* 왼쪽 입력 칸(AI 조건·문서·평면도·장비)도 스크롤 막대 자리를 늘 비워 두어,
+   막대가 생기고 없어져도 안의 카드 너비·위치가 바뀌지 않게 한다 */
+.planSplit[data-embedded] .planSide {
+    box-sizing: border-box;
+    /* 맨 위·맨 아래 카드가 칸 끝에 붙지 않게 위아래로 조금 띄운다 */
+    padding-top: 14px;
+    padding-bottom: 14px;
+    scrollbar-gutter: stable;
+}
+
+.planSplit[data-embedded] .paperScroll {
+    padding: 24px 28px;
+    scrollbar-gutter: stable;
+}
+
+.planSplit[data-embedded] .paperOwner {
+    margin-top: 12px;
+    padding-bottom: 12px;
+}
+
+/* 문서 카드 제목 줄: 왼쪽 '문서', 오른쪽에 최근 추출 / 문서 추출 / 전체 삭제를 가로로 */
+.docHeader {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    min-height: 32px;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.docActions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-left: auto;
+}
+
+.docActions .docTools,
+.docActions .confirm {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* 장비 편집(아이콘)은 label이라 커서와 잠김을 따로 맞춘다 */
+label.refEdit {
+    cursor: pointer;
+}
+
+label.refEdit[data-disabled] {
+    cursor: default;
+    opacity: 0.5;
+}
+
+/* AI 조건 입력 제목 줄: 왼쪽 제목, 오른쪽 저장 / 생성 */
+.aiHead {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.aiHead > h2 {
+    margin: 0;
+    font-size: 15px;
+}
+
+.aiHeadActions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-left: auto;
+}
+
+/* 문서 / AI 조건 입력 / 평면도 / 장비 제목은 모두 같은 크기·굵기 */
+.planSide .aiHead > h2,
+.planSide .docHeader > .refTitle,
+.planSide .refHead > .refTitle {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+/* AI 조건 카드: 맨 앞 3개 줄 + 전체 보기 */
+.condSummary {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.condRow {
+    display: grid;
+    grid-template-columns: minmax(0, 9rem) minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+    padding: 7px 10px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--fg);
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.condRow b,
+.condRow span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.condRow span {
+    color: #6b6b66;
+}
+
+.condRow:hover:not(:disabled) {
+    background: #f5f8ff;
+}
+
+.condMore,
+.condEmpty {
+    padding: 6px 10px;
+    border: 1px dashed #b9b9b4;
+    border-radius: 8px;
+    background: none;
+    color: #6b6b66;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.condMore {
+    border-style: none;
+    align-self: flex-end;
+    text-decoration: underline;
+}
+
+.condRow:disabled,
+.condMore:disabled,
+.condEmpty:disabled {
+    cursor: default;
+    opacity: 0.6;
+}
+
+/* AI 조건 팝업: 크기 고정. 목록은 안에서 위아래 스크롤, 입력 카드는 맨 아래 고정 */
+.condDialog {
+    width: min(600px, 100%);
+    height: min(640px, calc(100dvh - 32px));
+}
+
+.condDialog > :last-child {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.condBody {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    min-height: 0;
+}
+
+.condList {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+}
+
+.condNone {
+    padding: 12px;
+    color: #9a9a96;
+    font-size: 14px;
+}
+
+.condItem {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+}
+
+.condItemHead {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    padding: 4px 6px 4px 4px;
+}
+
+.condItemHead .refEdit {
+    margin-left: auto;
+}
+
+.condItemHead .refEdit + .refRemove {
+    margin-left: 0;
+}
+
+.condToggle {
+    display: flex;
+    flex: 1;
+    gap: 8px;
+    align-items: center;
+    min-width: 0;
+    padding: 6px;
+    border: 0;
+    background: none;
+    color: var(--fg);
+    font: inherit;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+}
+
+.condToggle[aria-expanded='true'] .paperCaret {
+    transform: rotate(90deg);
+}
+
+.condText {
+    margin: 0;
+    padding: 0 14px 12px 30px;
+    color: #4a4a46;
+    font-size: 14px;
+    white-space: pre-wrap;
+}
+
+.condEdit {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0 12px 12px 30px;
+}
+
+.condEdit textarea,
+.condForm textarea {
+    min-height: 72px;
+    resize: vertical;
+}
+
+.condForm {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #f7f7f5;
+}

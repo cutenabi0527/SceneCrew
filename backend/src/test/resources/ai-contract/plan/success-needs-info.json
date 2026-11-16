@@ -1,0 +1,60 @@
+{
+  "jobId": "11111111-1111-4111-8111-111111111111",
+  "attempt": 1,
+  "requestSchemaVersion": "4",
+  "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "contextRevision": 12,
+  "resultSchemaVersion": "5",
+  "modelVersion": "plan-workflow-dev",
+  "result": {
+    "status": "NEEDS_INFO",
+    "workGroups": [],
+    "zones": [],
+    "programs": [],
+    "tasks": [],
+    "instructions": [],
+    "bundles": [],
+    "assumptions": [
+      {
+        "key": "reserve-unbundled",
+        "statement": "희망 예비 2명은 사전 묶음에 넣지 않는다.",
+        "refs": [
+          "payload.event.desiredReserveCount"
+        ]
+      }
+    ],
+    "unresolved": [],
+    "questions": [
+      {
+        "key": "demo-staff",
+        "field": "payload.event.confirmedInput",
+        "question": "프로젝터 시연에 발표 학생 외 운영 인원이 따로 필요한가요? 필요하면 몇 명인가요?"
+      }
+    ],
+    "coordination": {
+      "graph": [
+        {
+          "taskId": "t1",
+          "parentTaskId": null,
+          "role": "SUPERVISOR",
+          "status": "NEEDS_INFO"
+        },
+        {
+          "taskId": "t2",
+          "parentTaskId": "t1",
+          "role": "PLANNING",
+          "status": "NEEDS_INFO"
+        }
+      ],
+      "redelegations": [],
+      "evidenceRefs": [],
+      "resolvedConflicts": [],
+      "contributions": [
+        {
+          "role": "PLANNING",
+          "summary": "시연 운영 인원 조건이 없어 무대 그룹 구성을 확정하지 못함"
+        }
+      ]
+    }
+  }
+}

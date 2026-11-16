@@ -1,0 +1,10 @@
+# 로컬에서도 요청 본문이나 인증 정보를 DEBUG 로그로 출력하지 않는다.
+# 기본값은 backend/compose.yaml의 로컬 PostgreSQL 기준이며 SPRING_DATASOURCE_* 환경변수가 있으면 그 값을 쓴다.
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:${POSTGRES_HOST_PORT:5432}/scenecrew
+    username: scenecrew
+    password: ${POSTGRES_PASSWORD:scenecrew-local}
+logging:
+  level:
+    root: INFO

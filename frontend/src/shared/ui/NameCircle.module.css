@@ -1,0 +1,50 @@
+/* 이름·역할 동그라미: 어느 화면에서나 같은 모양(어두운 바탕에 흰 글씨, 가운데 정렬) */
+.circle {
+    display: inline-flex;
+    flex: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #0e1a2b;
+    color: #ffffff;
+    line-height: 1.15;
+    text-align: center;
+}
+.circle b {
+    font-weight: 800;
+    white-space: nowrap;
+}
+.circle small {
+    white-space: nowrap;
+}
+.sm {
+    width: 48px;
+    height: 48px;
+}
+.sm b {
+    font-size: 11.5px;
+}
+.sm small {
+    font-size: 10px;
+}
+.md {
+    width: 46px;
+    height: 46px;
+}
+.md b {
+    font-size: 11.5px;
+}
+.md small {
+    font-size: 10px;
+}
+.lg {
+    width: 96px;
+    height: 96px;
+}
+.lg b {
+    font-size: 18px;
+}
+.lg small {
+    font-size: 13px;
+}

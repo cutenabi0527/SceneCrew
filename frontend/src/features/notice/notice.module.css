@@ -1,0 +1,23 @@
+.list {
+    display: flex;
+    flex-direction: column;
+}
+.item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+    min-height: 56px;
+    padding: 12px 14px;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    text-align: left;
+    color: inherit;
+}
+.item:hover {
+    background: var(--bg);
+}
+.unread {
+    background: var(--blue-soft);
+}

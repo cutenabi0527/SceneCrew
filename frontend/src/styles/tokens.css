@@ -1,0 +1,68 @@
+/* 와이어프레임(WEB·APP 공통) 팔레트. WEB/APP이 같은 토큰을 쓰고 레이아웃만 다르다. */
+:root {
+    --bg: #f3f4ef;
+    --surface: #ffffff;
+    --surface-2: #e9ece4;
+    --surface-3: #dde2d7;
+    --fg: #0e1a2b;
+    /* 보조 글씨도 회색 대신 검정(어두운 바탕은 흰색)으로 쓴다 */
+    --muted: #000000;
+    --faint: #000000;
+    --line: #d7dcd3;
+    --line-2: #c3cabf;
+    --accent: #d9480f;
+    --accent-fg: #ffffff;
+    --accent-soft: #fbe9dd;
+    --blue: #1e5ed8;
+    --blue-soft: #e4ecfb;
+    --ok: #1e7a4a;
+    --ok-soft: #dff2e6;
+    --warn: #a35a00;
+    --warn-soft: #fcefd6;
+    --bad: #b4232a;
+    --bad-soft: #fbe3e3;
+    --violet: #5b4bd6;
+    --violet-soft: #ece9fb;
+    --bar: #0e1a2b;
+    --bar-2: #1c2c44;
+    --bar-fg: #f6f7f3;
+    --bar-muted: #ffffff;
+    --web-nav: #7aa7ff;
+    /* 장비 이상 표시색(쨍한 하늘색). 글자는 읽히게 진한 쪽을 쓴다 */
+    --sky: #12b5ff;
+    --sky-ink: #0079b8;
+    --sky-soft: #d8f3ff;
+    /* 관객 안전 표시색(노랑). 글자는 읽히게 진한 쪽을 쓴다 */
+    --yellow: #ffd000;
+    --yellow-ink: #8a6a00;
+    --yellow-soft: #fff5c2;
+    /* 보고·대응 처리 상태 색(카드 왼쪽 색 바·보기 토글 견본) */
+    --tone-new: #ff9f43;
+    --tone-approve: #9b87f5;
+    --tone-resolve: #40c463;
+    --tone-closed: #adb5bd;
+    --canvas: #e7eae2;
+    --canvas-dot: #c4cbbe;
+    --font: 'IBM Plex Sans KR', 'Pretendard', 'Noto Sans KR', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+    --r: 12px;
+    --r-sm: 8px;
+    --shadow: 0 10px 30px rgb(14 26 43 / 10%);
+    --shadow-sm: 0 1px 2px rgb(14 26 43 / 8%);
+
+    /* 기존 공통 UI(StatusPanel·LeaveGuardHost)가 쓰는 이름 */
+    --color-background: var(--bg);
+    --color-surface: var(--surface);
+    --color-text: var(--fg);
+    --color-muted: var(--muted);
+    --color-primary: var(--bar);
+    --color-primary-soft: var(--surface-2);
+    --color-border: var(--line);
+    --radius-panel: 1rem;
+
+    font-family: var(--font);
+    color: var(--fg);
+    background: var(--bg);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+}

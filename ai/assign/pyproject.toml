@@ -1,0 +1,11 @@
+[project]
+name = "scenecrew-assign"
+version = "0.1.0"
+description = "최초 배정(ASSIGN_INITIAL) 계약·규칙/GMS 생성·내부 HTTP 입구"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.162.0",
+    "httpx>=0.28.1",
+    "pydantic>=2.12",
+    "uvicorn>=0.54.0",
+]

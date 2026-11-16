@@ -1,0 +1,13 @@
+/* 화면에서 쓰는 굵기만 포함한다. 한글은 unicode-range에 따라 필요한 조각을 읽는다. */
+@import '@fontsource/ibm-plex-sans-kr/300.css';
+@import '@fontsource/ibm-plex-sans-kr/400.css';
+@import '@fontsource/ibm-plex-sans-kr/500.css';
+@import '@fontsource/ibm-plex-sans-kr/600.css';
+@import '@fontsource/ibm-plex-sans-kr/700.css';
+@import '@fontsource/jetbrains-mono/latin-400.css';
+@import '@fontsource/jetbrains-mono/latin-500.css';
+@import '@fontsource/jetbrains-mono/latin-600.css';
+@import '@fontsource/jetbrains-mono/latin-700.css';
+/* 로그인 소개 화면의 영문 표제. 외부 CDN 대신 앱 자산으로 읽는다. Archivo는 폭(wdth)·굵기 가변 글꼴이다. */
+@import '@fontsource/anton/latin-400.css';
+@import '@fontsource-variable/archivo/wdth.css';

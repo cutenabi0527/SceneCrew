@@ -1,0 +1,35 @@
+# 테스트는 Testcontainers가 띄운 PostgreSQL 17에 Flyway를 적용한 뒤 실행한다.
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:17-alpine:///scenecrew
+    hikari:
+      # 캐시된 테스트 컨텍스트가 공유 PostgreSQL의 연결을 선점하지 않도록 한다.
+      minimum-idle: 1
+
+# 테스트는 outbox 주기 실행을 끄고 OutboxRelay를 직접 호출해 확인한다.
+scenecrew:
+  invite:
+    web-origin: https://web.example.invalid
+  # 테스트는 만료 원본 정리 주기 실행을 끄고 FileCleanup을 직접 호출해 확인한다.
+  storage:
+    files:
+      cleanup:
+        enabled: false
+  outbox:
+    relay:
+      enabled: false
+  # 테스트는 응답 본문 정리 주기 실행을 끄고 IdempotencyCleanup을 직접 호출해 확인한다. 처리 중 대기는 짧게 둔다.
+  idempotency:
+    in-progress-wait: 500ms
+    lock-retry: 20ms
+    cleanup:
+      enabled: false
+  # 테스트는 AI 작업 복구 주기 실행을 끄고 AiJobRecovery를 직접 호출해 확인한다.
+  ai:
+    job:
+      recovery:
+        enabled: false
+
+# Synthetic test-only keys, never production configuration.
+SCENECREW_DATA_ENCRYPTION_KEYS: "test:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+SCENECREW_DATA_ENCRYPTION_ACTIVE_KEY_ID: test

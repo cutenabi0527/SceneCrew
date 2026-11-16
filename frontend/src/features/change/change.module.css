@@ -1,0 +1,266 @@
+.before {
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 12.5px;
+    overflow-wrap: anywhere;
+}
+.after {
+    color: var(--accent);
+    font-weight: 700;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    overflow-wrap: anywhere;
+}
+.added {
+    color: var(--ok);
+    font-weight: 700;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    overflow-wrap: anywhere;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    background: var(--surface);
+}
+.cardDiff {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 10px;
+    border-radius: var(--r-sm);
+    background: var(--bg);
+}
+.arrow {
+    color: var(--faint);
+    font-size: 12px;
+}
+
+/* WEB 변경 검토: 항목 | 현재 | 변경 후 세 칸 표. 테두리 없이 행 구분선만 둔다 */
+.op {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-left: 12px;
+}
+.compare {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr) minmax(0, 1fr);
+}
+.compare > div {
+    display: contents;
+}
+.compare [role='cell'],
+.cardDiff p {
+    white-space: pre-wrap;
+}
+.compare > div > * {
+    padding: 6px 8px;
+    border-bottom: 1px solid #eef0f3;
+    overflow-wrap: anywhere;
+}
+.compareHead > span {
+    font-weight: 800;
+    border-bottom-color: var(--line-2);
+}
+/* 바뀐 항목: 노란 형광 바탕 + 현재(파랑) / 변경 후(빨강) 글자 */
+.chgBefore,
+.chgAfter {
+    background: #fff3a8;
+    font-weight: 700;
+}
+.chgBefore {
+    color: var(--blue);
+}
+.chgAfter {
+    color: var(--bad);
+}
+
+/* 원본 | 수정 내역 두 열 */
+.compareTwo {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+/* 변경안 편집: 고칠 수 있는 곳은 점선 테두리와 연한 회색 바탕으로 표시한다 */
+.docText,
+.compare :global(.inp) {
+    border: 1px dashed var(--muted);
+    border-radius: var(--r-sm);
+    outline: 0;
+    background: #eef0f3;
+}
+.docText:focus,
+.compare :global(.inp):focus {
+    border-color: var(--fg);
+}
+.docText {
+    display: block;
+    width: 100%;
+    padding: 6px 8px;
+    overflow: hidden;
+    line-height: 1.5;
+    resize: none;
+    white-space: pre-wrap;
+}
+.times {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+    font-weight: 400;
+}
+.times :global(.inp) {
+    flex: 1 1 120px;
+    min-width: 0;
+}
+.people {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-weight: 400;
+}
+.person {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+.person select {
+    flex: 1;
+    min-width: 0;
+}
+.addPerson {
+    align-self: flex-start;
+}
+
+/* 변경안 보고서 머리: 제목은 가운데, 오른쪽 위에 작업 버튼. 좁으면 버튼을 제목 아래 오른쪽으로 */
+/* 공통 보고서 머리(.head, 세로 flex)보다 우선하도록 클래스를 겹쳐 쓴다 */
+.reviewHead.reviewHead {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: start;
+    gap: 8px;
+}
+.reviewHead > h3 {
+    grid-column: 2;
+}
+.headActions {
+    display: flex;
+    grid-column: 3;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    justify-content: flex-end;
+}
+.reviewHead > p {
+    grid-column: 1 / -1;
+}
+@container (max-width: 520px) {
+    .reviewHead.reviewHead {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .reviewHead > h3,
+    .headActions {
+        grid-column: 1;
+    }
+}
+/* 낡은 변경안 경고 + 다시 확인 */
+.staleRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+.staleRow > :first-child {
+    flex: 1;
+    min-width: 220px;
+}
+/* 편집·변경 확정·폐기 아이콘 버튼 한 줄. 색으로 구분한다 */
+.actionIcons {
+    display: flex;
+    gap: 6px;
+}
+.actionIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 36px;
+    border: 0;
+    border-radius: 10px;
+    color: #ffffff;
+}
+.actionIcon svg {
+    width: 20px;
+    height: 20px;
+}
+.actionIcon[data-kind='edit'] {
+    background: var(--blue);
+}
+.actionIcon[data-kind='apply'] {
+    background: var(--ok);
+}
+.actionIcon[data-kind='discard'] {
+    background: var(--bad);
+}
+/* 보고(이슈) 작업: AI 대응안 보라 / 추가 보고 하늘 / 상황 유형 확인·정정 주황 (종료는 확정과 같은 초록) */
+.actionIcon[data-kind='ai'] {
+    background: var(--violet);
+}
+.actionIcon[data-kind='followup'] {
+    background: var(--sky-ink);
+}
+.actionIcon[data-kind='situation'] {
+    background: var(--accent);
+}
+.actionIcon:hover:not(:disabled) {
+    filter: brightness(1.12);
+}
+.actionIcon:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* 대응안 오른쪽 칸: 적용하면 바뀌는 업무. 오른쪽 표시는 변경 파랑 / 추가 초록 / 취소 빨강 */
+.changeSide {
+    gap: 10px;
+}
+.opChip {
+    flex: none;
+    padding: 1px 8px;
+    border: 1px solid currentcolor;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+}
+.opChip[data-op='update'] {
+    background: var(--blue-soft);
+    color: var(--blue);
+}
+.opChip[data-op='add'] {
+    background: var(--ok-soft);
+    color: var(--ok);
+}
+.opChip[data-op='cancel'] {
+    background: var(--bad-soft);
+    color: var(--bad);
+}
+/* 바뀌는 업무 카드: 제목 줄(제목 + 표시) 아래로 시간·담당을 줄바꿈해 쌓는다 */
+.changeTask.changeTask {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    white-space: normal;
+}
+.changeTaskHead {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: space-between;
+}
+.changeTaskHead > b {
+    min-width: 0;
+}

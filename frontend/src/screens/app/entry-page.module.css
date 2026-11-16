@@ -1,0 +1,149 @@
+/* 공연 밖 APP 화면 틀: 머리줄 56 · 세로 스크롤 본문 · 아래 고정 줄 */
+.screen {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    max-width: 560px;
+    margin: 0 auto;
+    background: var(--surface);
+    font-variant-numeric: tabular-nums;
+}
+.top {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 4px;
+    min-height: 56px;
+    padding: calc(6px + env(safe-area-inset-top)) 8px 6px;
+    background: var(--web-nav);
+    color: var(--fg);
+}
+.brand {
+    flex: 1;
+    padding-left: 8px;
+    font-size: 18px;
+    font-weight: 700;
+}
+.title {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+}
+.back {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+}
+.back svg {
+    width: 22px;
+    height: 22px;
+}
+.main {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+}
+.main:focus {
+    outline: none;
+}
+.foot {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 16px calc(20px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+}
+
+/* 입력 칸: 이름표 14 굵게 · 칸 52 · 도움말 12 */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.label {
+    font-size: 14px;
+    font-weight: 600;
+}
+.input {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 52px;
+    padding: 0 14px;
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--fg);
+    font: inherit;
+    font-size: 16px;
+}
+.hint {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+/* 아래 고정 주 버튼 56 */
+.primary {
+    width: 100%;
+    min-height: 56px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--fg);
+    color: var(--surface);
+    font: inherit;
+    font-size: 17px;
+    font-weight: 700;
+}
+.primary:disabled {
+    background: var(--surface-2);
+    color: var(--fg);
+}
+/* 보조 버튼 52 */
+.secondary {
+    width: 100%;
+    min-height: 52px;
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--fg);
+    font: inherit;
+    font-size: 16px;
+    font-weight: 600;
+}
+/* 글자만 있는 버튼 44 */
+.textBtn {
+    min-height: 44px;
+    padding: 0 12px;
+    border: 0;
+    background: none;
+    color: var(--fg);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 600;
+}
+.footNote {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: center;
+    color: var(--muted);
+}
+.notice {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+}

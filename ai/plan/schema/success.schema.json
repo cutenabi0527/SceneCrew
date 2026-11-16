@@ -1,0 +1,1087 @@
+{
+  "$defs": {
+    "AgentTaskNode": {
+      "additionalProperties": false,
+      "properties": {
+        "taskId": {
+          "pattern": "^[A-Za-z0-9_-]{1,40}$",
+          "title": "Taskid",
+          "type": "string"
+        },
+        "parentTaskId": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z0-9_-]{1,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parenttaskid"
+        },
+        "role": {
+          "enum": [
+            "SUPERVISOR",
+            "PLANNING",
+            "SCHEDULE",
+            "STAFFING",
+            "GUIDE",
+            "REVIEW"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "SUCCEEDED",
+            "NEEDS_INFO",
+            "FAILED"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "taskId",
+        "role",
+        "status"
+      ],
+      "title": "AgentTaskNode",
+      "type": "object"
+    },
+    "AssetPlan": {
+      "additionalProperties": false,
+      "description": "선택 필드 equipmentDraft.assets의 한 항목(V9-D59). autoObservationKind는 QLXD4 수신기만 \"QLXD4\"다.",
+      "properties": {
+        "name": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "kind": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Kind"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Location"
+        },
+        "autoObservationKind": {
+          "anyOf": [
+            {
+              "const": "QLXD4",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Autoobservationkind"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "AssetPlan",
+      "type": "object"
+    },
+    "Assumption": {
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "pattern": "^[A-Za-z0-9_-]{1,40}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "statement": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Statement",
+          "type": "string"
+        },
+        "refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "key",
+        "statement"
+      ],
+      "title": "Assumption",
+      "type": "object"
+    },
+    "BundleSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "bundleKey": {
+          "pattern": "^[A-Za-z0-9_-]{1,40}$",
+          "title": "Bundlekey",
+          "type": "string"
+        },
+        "workGroupId": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "type": "string"
+            },
+            {
+              "pattern": "^tmp-[A-Za-z0-9_-]{1,40}$",
+              "type": "string"
+            }
+          ],
+          "title": "Workgroupid"
+        },
+        "taskCount": {
+          "minimum": 1,
+          "title": "Taskcount",
+          "type": "integer"
+        },
+        "startAt": {
+          "format": "date-time",
+          "title": "Startat",
+          "type": "string"
+        },
+        "endAt": {
+          "format": "date-time",
+          "title": "Endat",
+          "type": "string"
+        }
+      },
+      "required": [
+        "bundleKey",
+        "workGroupId",
+        "taskCount",
+        "startAt",
+        "endAt"
+      ],
+      "title": "BundleSummary",
+      "type": "object"
+    },
+    "CameraPlan": {
+      "additionalProperties": false,
+      "description": "선택 필드 cameras의 한 항목. zoneName은 같은 결과 zones의 이름이다(V9-D58).",
+      "properties": {
+        "name": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "zoneName": {
+          "maxLength": 30,
+          "minLength": 1,
+          "title": "Zonename",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "zoneName"
+      ],
+      "title": "CameraPlan",
+      "type": "object"
+    },
+    "ChecklistItem": {
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "pattern": "^[A-Za-z0-9_-]{1,40}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "key",
+        "text",
+        "required"
+      ],
+      "title": "ChecklistItem",
+      "type": "object"
+    },
+    "Contribution": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "enum": [
+            "SUPERVISOR",
+            "PLANNING",
+            "SCHEDULE",
+            "STAFFING",
+            "GUIDE",
+            "REVIEW"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "summary": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "summary"
+      ],
+      "title": "Contribution",
+      "type": "object"
+    },
+    "Coordination": {
+      "additionalProperties": false,
+      "description": "작업 그래프·재위임 이유·근거 ID·충돌 해결·최종 기여만 둔다. 원시 프롬프트·모델 사고·원문은 넣지 않는다.",
+      "properties": {
+        "graph": {
+          "items": {
+            "$ref": "#/$defs/AgentTaskNode"
+          },
+          "title": "Graph",
+          "type": "array"
+        },
+        "redelegations": {
+          "items": {
+            "$ref": "#/$defs/Redelegation"
+          },
+          "title": "Redelegations",
+          "type": "array"
+        },
+        "evidenceRefs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidencerefs",
+          "type": "array"
+        },
+        "resolvedConflicts": {
+          "items": {
+            "$ref": "#/$defs/ResolvedConflict"
+          },
+          "title": "Resolvedconflicts",
+          "type": "array"
+        },
+        "contributions": {
+          "items": {
+            "$ref": "#/$defs/Contribution"
+          },
+          "title": "Contributions",
+          "type": "array"
+        }
+      },
+      "title": "Coordination",
+      "type": "object"
+    },
+    "EquipmentDraft": {
+      "additionalProperties": false,
+      "description": "이번 범위는 assets만 생산한다. connections·requirements·reservations·dependencies는 만들지 않는다(V9-D45·D59).",
+      "properties": {
+        "assets": {
+          "items": {
+            "$ref": "#/$defs/AssetPlan"
+          },
+          "maxItems": 50,
+          "title": "Assets",
+          "type": "array"
+        }
+      },
+      "required": [
+        "assets"
+      ],
+      "title": "EquipmentDraft",
+      "type": "object"
+    },
+    "Instruction": {
+      "additionalProperties": false,
+      "properties": {
+        "scope": {
+          "enum": [
+            "EVENT",
+            "WORK_GROUP"
+          ],
+          "title": "Scope",
+          "type": "string"
+        },
+        "targetId": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "type": "string"
+            },
+            {
+              "pattern": "^tmp-[A-Za-z0-9_-]{1,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Targetid"
+        },
+        "body": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Body",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scope",
+        "body"
+      ],
+      "title": "Instruction",
+      "type": "object"
+    },
+    "PlanResult": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "READY",
+            "NEEDS_INFO"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "workGroups": {
+          "items": {
+            "$ref": "#/$defs/WorkGroupPlan"
+          },
+          "maxItems": 31,
+          "title": "Workgroups",
+          "type": "array"
+        },
+        "zones": {
+          "items": {
+            "$ref": "#/$defs/ZonePlan"
+          },
+          "maxItems": 10,
+          "title": "Zones",
+          "type": "array"
+        },
+        "programs": {
+          "items": {
+            "$ref": "#/$defs/ProgramPlan"
+          },
+          "maxItems": 20,
+          "title": "Programs",
+          "type": "array"
+        },
+        "tasks": {
+          "items": {
+            "$ref": "#/$defs/TaskPlan"
+          },
+          "maxItems": 200,
+          "title": "Tasks",
+          "type": "array"
+        },
+        "instructions": {
+          "items": {
+            "$ref": "#/$defs/Instruction"
+          },
+          "title": "Instructions",
+          "type": "array"
+        },
+        "bundles": {
+          "items": {
+            "$ref": "#/$defs/BundleSummary"
+          },
+          "title": "Bundles",
+          "type": "array"
+        },
+        "assumptions": {
+          "items": {
+            "$ref": "#/$defs/Assumption"
+          },
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "unresolved": {
+          "items": {
+            "$ref": "#/$defs/Unresolved"
+          },
+          "title": "Unresolved",
+          "type": "array"
+        },
+        "questions": {
+          "items": {
+            "$ref": "#/$defs/Question"
+          },
+          "title": "Questions",
+          "type": "array"
+        },
+        "coordination": {
+          "$ref": "#/$defs/Coordination"
+        },
+        "venueDraft": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VenueDraft"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "cameras": {
+          "items": {
+            "$ref": "#/$defs/CameraPlan"
+          },
+          "maxItems": 20,
+          "title": "Cameras",
+          "type": "array"
+        },
+        "equipmentDraft": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EquipmentDraft"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "status",
+        "workGroups",
+        "zones",
+        "programs",
+        "tasks",
+        "instructions",
+        "bundles",
+        "assumptions",
+        "unresolved",
+        "questions",
+        "coordination"
+      ],
+      "title": "PlanResult",
+      "type": "object"
+    },
+    "ProgramPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Id"
+        },
+        "tempId": {
+          "anyOf": [
+            {
+              "pattern": "^tmp-[A-Za-z0-9_-]{1,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tempid"
+        },
+        "zoneId": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "type": "string"
+            },
+            {
+              "pattern": "^tmp-[A-Za-z0-9_-]{1,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Zoneid"
+        },
+        "name": {
+          "maxLength": 20,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "startAt": {
+          "format": "date-time",
+          "title": "Startat",
+          "type": "string"
+        },
+        "endAt": {
+          "format": "date-time",
+          "title": "Endat",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "startAt",
+        "endAt"
+      ],
+      "title": "ProgramPlan",
+      "type": "object"
+    },
+    "Question": {
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "pattern": "^[A-Za-z0-9_-]{1,40}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "field": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Field",
+          "type": "string"
+        },
+        "question": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "field",
+        "question"
+      ],
+      "title": "Question",
+      "type": "object"
+    },
+    "Redelegation": {
+      "additionalProperties": false,
+      "properties": {
+        "taskId": {
+          "pattern": "^[A-Za-z0-9_-]{1,40}$",
+          "title": "Taskid",
+          "type": "string"
+        },
+        "reason": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "taskId",
+        "reason"
+      ],
+      "title": "Redelegation",
+      "type": "object"
+    },
+    "ResolvedConflict": {
+      "additionalProperties": false,
+      "properties": {
+        "refs": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Refs",
+          "type": "array"
+        },
+        "resolution": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Resolution",
+          "type": "string"
+        }
+      },
+      "required": [
+        "refs",
+        "resolution"
+      ],
+      "title": "ResolvedConflict",
+      "type": "object"
+    },
+    "TaskPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "tempId": {
+          "pattern": "^tmp-[A-Za-z0-9_-]{1,40}$",
+          "title": "Tempid",
+          "type": "string"
+        },
+        "workGroupId": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "type": "string"
+            },
+            {
+              "pattern": "^tmp-[A-Za-z0-9_-]{1,40}$",
+              "type": "string"
+            }
+          ],
+          "title": "Workgroupid"
+        },
+        "bundleKey": {
+          "pattern": "^[A-Za-z0-9_-]{1,40}$",
+          "title": "Bundlekey",
+          "type": "string"
+        },
+        "zoneId": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "type": "string"
+            },
+            {
+              "pattern": "^tmp-[A-Za-z0-9_-]{1,40}$",
+              "type": "string"
+            }
+          ],
+          "title": "Zoneid"
+        },
+        "programId": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "type": "string"
+            },
+            {
+              "pattern": "^tmp-[A-Za-z0-9_-]{1,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Programid"
+        },
+        "title": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "startAt": {
+          "format": "date-time",
+          "title": "Startat",
+          "type": "string"
+        },
+        "endAt": {
+          "format": "date-time",
+          "title": "Endat",
+          "type": "string"
+        },
+        "steps": {
+          "items": {
+            "maxLength": 120,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 6,
+          "minItems": 1,
+          "title": "Steps",
+          "type": "array"
+        },
+        "checklist": {
+          "items": {
+            "$ref": "#/$defs/ChecklistItem"
+          },
+          "maxItems": 6,
+          "title": "Checklist",
+          "type": "array"
+        },
+        "assigneeId": {
+          "default": null,
+          "title": "Assigneeid",
+          "type": "null"
+        }
+      },
+      "required": [
+        "tempId",
+        "workGroupId",
+        "bundleKey",
+        "zoneId",
+        "title",
+        "startAt",
+        "endAt",
+        "steps"
+      ],
+      "title": "TaskPlan",
+      "type": "object"
+    },
+    "Unresolved": {
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "pattern": "^[A-Za-z0-9_-]{1,40}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "description": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "key",
+        "description"
+      ],
+      "title": "Unresolved",
+      "type": "object"
+    },
+    "VenueDraft": {
+      "additionalProperties": false,
+      "description": "결과6의 평면도 초안. 이번 범위는 layout만 생산한다(V9-D45). profiles·equipmentDraft는 만들지 않는다.",
+      "properties": {
+        "layout": {
+          "$ref": "#/$defs/VenueLayout"
+        }
+      },
+      "required": [
+        "layout"
+      ],
+      "title": "VenueDraft",
+      "type": "object"
+    },
+    "VenueLayout": {
+      "additionalProperties": false,
+      "description": "width·height는 AI가 읽은 렌더링 그림의 픽셀 크기다. 0~1 좌표를 그릴 때의 가로세로 비율로 쓴다.",
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/VenueSource"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "title": "Width",
+          "type": "integer"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "title": "Height",
+          "type": "integer"
+        },
+        "zones": {
+          "items": {
+            "$ref": "#/$defs/VenueZoneRect"
+          },
+          "maxItems": 10,
+          "minItems": 1,
+          "title": "Zones",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source",
+        "width",
+        "height",
+        "zones"
+      ],
+      "title": "VenueLayout",
+      "type": "object"
+    },
+    "VenueSource": {
+      "additionalProperties": false,
+      "properties": {
+        "documentId": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Documentid",
+          "type": "string"
+        },
+        "pageNumber": {
+          "minimum": 1,
+          "title": "Pagenumber",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "documentId",
+        "pageNumber"
+      ],
+      "title": "VenueSource",
+      "type": "object"
+    },
+    "VenueZoneRect": {
+      "additionalProperties": false,
+      "description": "평면도 그림에서 읽은 구역 하나. 좌표는 그림 왼쪽 위가 (0,0), 오른쪽 아래가 (1,1)인 비율이다.\n\nname은 같은 결과 zones의 이름과 정확히 같다. BE가 이름으로 zones의 id/tempId를 찾아 네 꼭짓점으로 바꾼다(V9-D54).",
+      "properties": {
+        "name": {
+          "maxLength": 30,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "x": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Y",
+          "type": "number"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "title": "Width",
+          "type": "number"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "title": "Height",
+          "type": "number"
+        }
+      },
+      "required": [
+        "name",
+        "x",
+        "y",
+        "width",
+        "height"
+      ],
+      "title": "VenueZoneRect",
+      "type": "object"
+    },
+    "WorkGroupPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Id"
+        },
+        "tempId": {
+          "anyOf": [
+            {
+              "pattern": "^tmp-[A-Za-z0-9_-]{1,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tempid"
+        },
+        "name": {
+          "maxLength": 20,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "purpose": {
+          "anyOf": [
+            {
+              "enum": [
+                "SAFETY",
+                "EQUIPMENT"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Purpose"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "WorkGroupPlan",
+      "type": "object"
+    },
+    "ZonePlan": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Id"
+        },
+        "tempId": {
+          "anyOf": [
+            {
+              "pattern": "^tmp-[A-Za-z0-9_-]{1,40}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tempid"
+        },
+        "name": {
+          "maxLength": 30,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "ZonePlan",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "jobId": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "title": "Jobid",
+      "type": "string"
+    },
+    "attempt": {
+      "minimum": 1,
+      "title": "Attempt",
+      "type": "integer"
+    },
+    "requestSchemaVersion": {
+      "const": "4",
+      "title": "Requestschemaversion",
+      "type": "string"
+    },
+    "inputHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Inputhash",
+      "type": "string"
+    },
+    "contextRevision": {
+      "minimum": 0,
+      "title": "Contextrevision",
+      "type": "integer"
+    },
+    "resultSchemaVersion": {
+      "enum": [
+        "5",
+        "6"
+      ],
+      "title": "Resultschemaversion",
+      "type": "string"
+    },
+    "modelVersion": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Modelversion",
+      "type": "string"
+    },
+    "result": {
+      "$ref": "#/$defs/PlanResult"
+    }
+  },
+  "required": [
+    "jobId",
+    "attempt",
+    "requestSchemaVersion",
+    "inputHash",
+    "contextRevision",
+    "resultSchemaVersion",
+    "modelVersion",
+    "result"
+  ],
+  "title": "PlanSuccess",
+  "type": "object"
+}

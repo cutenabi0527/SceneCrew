@@ -1,0 +1,18 @@
+[project]
+name = "report-stt"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "av>=19.0.1",
+    "fastapi>=0.151.0",
+    "faster-whisper>=1.2.1",
+    "httpx>=0.28.1",
+    "numpy>=2.5.4",
+    "uvicorn>=0.54.0",
+]
+
+[project.optional-dependencies]
+cuda = [
+    "nvidia-cublas-cu12>=12.9.2.10",
+    "nvidia-cudnn-cu12==9.*",
+]

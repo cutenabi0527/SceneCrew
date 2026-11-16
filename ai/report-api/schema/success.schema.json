@@ -1,0 +1,328 @@
+{
+  "$defs": {
+    "AnalysisResult": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "anyOf": [
+            {
+              "enum": [
+                "EQUIPMENT",
+                "SUPPLY",
+                "CONGESTION",
+                "DELAY",
+                "STAFF_GAP",
+                "OTHER"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Category"
+        },
+        "reportedState": {
+          "anyOf": [
+            {
+              "enum": [
+                "OCCURRED",
+                "RESOLVED_MENTION",
+                "RECURRED",
+                "UNSPECIFIED"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reportedstate"
+        },
+        "scores": {
+          "$ref": "#/$defs/Scores"
+        },
+        "entities": {
+          "items": {
+            "$ref": "#/$defs/Entity"
+          },
+          "title": "Entities",
+          "type": "array"
+        },
+        "zoneCandidates": {
+          "items": {
+            "$ref": "#/$defs/ZoneCandidate"
+          },
+          "title": "Zonecandidates",
+          "type": "array"
+        },
+        "analysisValidity": {
+          "const": "CURRENT",
+          "title": "Analysisvalidity",
+          "type": "string"
+        },
+        "situation": {
+          "$ref": "#/$defs/Situation"
+        }
+      },
+      "required": [
+        "category",
+        "reportedState",
+        "scores",
+        "entities",
+        "zoneCandidates",
+        "analysisValidity",
+        "situation"
+      ],
+      "title": "AnalysisResult",
+      "type": "object"
+    },
+    "CategoryScore": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "enum": [
+            "EQUIPMENT",
+            "SUPPLY",
+            "CONGESTION",
+            "DELAY",
+            "STAFF_GAP",
+            "OTHER"
+          ],
+          "title": "Label",
+          "type": "string"
+        },
+        "score": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Score",
+          "type": "number"
+        }
+      },
+      "required": [
+        "label",
+        "score"
+      ],
+      "title": "CategoryScore",
+      "type": "object"
+    },
+    "Entity": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "ZONE",
+            "ITEM",
+            "PROGRAM",
+            "ROLE"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "minimum": 1,
+          "title": "End",
+          "type": "integer"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "start",
+        "end",
+        "text"
+      ],
+      "title": "Entity",
+      "type": "object"
+    },
+    "Scores": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/CategoryScore"
+        },
+        "reportedState": {
+          "$ref": "#/$defs/StateScore"
+        }
+      },
+      "required": [
+        "category",
+        "reportedState"
+      ],
+      "title": "Scores",
+      "type": "object"
+    },
+    "Situation": {
+      "additionalProperties": false,
+      "description": "운영 상황 추천. primary는 6종 또는 null(미분류), related는 primary를 뺀 중복 없는 6종 목록이다.",
+      "properties": {
+        "primary": {
+          "anyOf": [
+            {
+              "enum": [
+                "SCHEDULE_DELAY",
+                "STAFF_GAP",
+                "TASK_CONFLICT",
+                "EQUIPMENT_ANOMALY",
+                "PERFORMANCE_ORDER_CHANGE",
+                "AUDIENCE_SAFETY"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Primary"
+        },
+        "related": {
+          "items": {
+            "enum": [
+              "SCHEDULE_DELAY",
+              "STAFF_GAP",
+              "TASK_CONFLICT",
+              "EQUIPMENT_ANOMALY",
+              "PERFORMANCE_ORDER_CHANGE",
+              "AUDIENCE_SAFETY"
+            ],
+            "type": "string"
+          },
+          "title": "Related",
+          "type": "array"
+        }
+      },
+      "required": [
+        "primary",
+        "related"
+      ],
+      "title": "Situation",
+      "type": "object"
+    },
+    "StateScore": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "enum": [
+            "OCCURRED",
+            "RESOLVED_MENTION",
+            "RECURRED",
+            "UNSPECIFIED"
+          ],
+          "title": "Label",
+          "type": "string"
+        },
+        "score": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Score",
+          "type": "number"
+        }
+      },
+      "required": [
+        "label",
+        "score"
+      ],
+      "title": "StateScore",
+      "type": "object"
+    },
+    "ZoneCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "zoneId": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Zoneid",
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "ZONE",
+            "PROGRAM",
+            "ROLE"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "sourceRef": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Sourceref",
+          "type": "string"
+        },
+        "contextRevision": {
+          "minimum": 0,
+          "title": "Contextrevision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "zoneId",
+        "source",
+        "sourceRef",
+        "contextRevision"
+      ],
+      "title": "ZoneCandidate",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "jobId": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "title": "Jobid",
+      "type": "string"
+    },
+    "attempt": {
+      "minimum": 1,
+      "title": "Attempt",
+      "type": "integer"
+    },
+    "requestSchemaVersion": {
+      "const": "4",
+      "title": "Requestschemaversion",
+      "type": "string"
+    },
+    "inputHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Inputhash",
+      "type": "string"
+    },
+    "contextRevision": {
+      "minimum": 0,
+      "title": "Contextrevision",
+      "type": "integer"
+    },
+    "resultSchemaVersion": {
+      "const": "4",
+      "title": "Resultschemaversion",
+      "type": "string"
+    },
+    "modelVersion": {
+      "minLength": 1,
+      "title": "Modelversion",
+      "type": "string"
+    },
+    "result": {
+      "$ref": "#/$defs/AnalysisResult"
+    }
+  },
+  "required": [
+    "jobId",
+    "attempt",
+    "requestSchemaVersion",
+    "inputHash",
+    "contextRevision",
+    "resultSchemaVersion",
+    "modelVersion",
+    "result"
+  ],
+  "title": "AnalyzeSuccess",
+  "type": "object"
+}

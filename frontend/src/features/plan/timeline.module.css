@@ -1,0 +1,123 @@
+/* 공연·업무 타임라인: 왼쪽 행 이름 | 오른쪽 시간축 */
+.frame {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-x: auto;
+    /* overflow-x만 주면 세로도 auto가 되어 1px 차이로 세로 스크롤이 생긴다 */
+    overflow-y: hidden;
+}
+.row {
+    display: grid;
+    grid-template-columns: 120px var(--track-w);
+    gap: 10px;
+    align-items: stretch;
+    width: max-content;
+}
+/* 왼쪽 열 고정: 오른쪽 시간만 스크롤한다 */
+.label {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    background: var(--surface);
+}
+.axis {
+    position: relative;
+    height: 20px;
+    font-size: 11.5px;
+    color: var(--muted);
+}
+.axis span {
+    position: absolute;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+/* 양 끝 시각은 칸 안쪽으로 붙여 가로 넘침을 막는다 */
+.axis span:first-child {
+    transform: none;
+}
+.axis span:last-child {
+    transform: translateX(-100%);
+}
+.track {
+    position: relative;
+    border-radius: var(--r-sm);
+    background: var(--surface-2);
+}
+.now {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    width: 2px;
+    background: var(--fg);
+}
+.program {
+    position: absolute;
+    top: 6px;
+    height: 34px;
+    padding: 0 8px;
+    overflow: hidden;
+    border-radius: 8px;
+    background: var(--bar);
+    color: #ffffff;
+    font-size: 12.5px;
+    font-weight: 700;
+    line-height: 34px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.task {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 24px;
+    height: 34px;
+    min-height: 0;
+    padding: 0 8px;
+    overflow: hidden;
+    border: 1px solid var(--blue);
+    border-left-width: 4px;
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--fg);
+    font-size: 11.5px;
+    line-height: 1.25;
+    text-align: left;
+    white-space: nowrap;
+}
+.task b,
+.task span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.task span {
+    color: var(--muted);
+}
+.task[data-status='doing'] {
+    border-color: var(--accent);
+}
+.task[data-status='done'] {
+    border-color: var(--line-2);
+    background: #f2f4f7;
+    opacity: 0.6;
+}
+.task[data-open] {
+    border-style: dashed;
+}
+.task:disabled {
+    cursor: default;
+}
+.task:disabled:not([data-status='done']) {
+    opacity: 1;
+}

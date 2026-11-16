@@ -1,0 +1,152 @@
+spring:
+  application:
+    name: scenecrew
+  profiles:
+    default: local
+  jpa:
+    open-in-view: false
+    hibernate:
+      # 스키마는 Flyway가 관리하고 JPA는 엔티티와 일치하는지만 검사한다.
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    locations: classpath:db/migration
+  task:
+    scheduling:
+      pool:
+        # 주기 작업(outbox 전달·AI 작업 복구·만료 원본 정리)이 서로 기다리지 않게 한다. 기본값은 1개다.
+        size: 4
+  servlet:
+    multipart:
+      # 문서 파일당 20MB, 한 번에 합계 30MB(P08). 정확한 상한은 서비스에서 실제 byte로 다시 검사한다.
+      max-file-size: 20MB
+      max-request-size: 32MB
+
+scenecrew:
+  invite:
+    web-origin: ${SCENECREW_INVITE_WEB_ORIGIN:}
+  equipment:
+    # 장비 수집기 내부 수신 경로(#330, backend/docs/equipment-collector.md). 기본은 닫혀 있다.
+    collector:
+      enabled: ${COLLECTOR_INGEST_ENABLED:false}
+      # 수집기·토큰 SHA-256·sourceRef→장비·run 목록(JSON 배열). 토큰 원문은 넣지 않는다.
+      registrations: ${COLLECTOR_REGISTRATIONS:}
+      cleanup:
+        enabled: ${COLLECTOR_CLEANUP_ENABLED:true}
+        interval: ${COLLECTOR_CLEANUP_INTERVAL:10m}  # 주기 계측·값이 그대로인 기록 24시간, 상태 변화 30일
+        batch-size: 1000                            # 한 번에 지우는 행 수
+        max-batches: 100                            # 한 번 실행에서 최대 반복 수
+  safety:
+    # 카메라 프레임 수신·인원 추정·관측 저장(#349, backend/docs/safety-camera.md). 기본은 닫혀 있다.
+    camera:
+      enabled: ${CAMERA_INGEST_ENABLED:false}
+      # 카메라 수집기·행사·토큰 SHA-256(JSON 배열). 토큰 원문은 넣지 않는다.
+      registrations: ${CAMERA_COLLECTOR_REGISTRATIONS:}
+      # stub(시험값, 기본) 또는 ai(AI 서버 /internal/estimate-crowd)
+      estimator: ${CAMERA_ESTIMATOR:stub}
+      analysis-interval: ${CAMERA_ANALYSIS_INTERVAL:10s}  # 카메라마다 최신 프레임 1장을 이 간격으로 분석·저장
+      estimate-timeout: 8s
+      cleanup:
+        interval: 10m                                     # 30일 지난 관측 정리
+        batch-size: 1000
+  storage:
+    s3:
+      # 음성·문서 원본 버킷. 접근 키는 AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY 환경변수로 받는다.
+      bucket: ${S3_BUCKET:}
+      region: ${S3_REGION:ap-northeast-2}
+      # 로컬 개발·테스트에서 MinIO를 쓸 때만 지정한다.
+      endpoint: ${S3_ENDPOINT:}
+    # 음성 길이 측정과 만료 원본 정리 (backend/docs/file-storage.md)
+    files:
+      ffprobe-path: ${FFPROBE_PATH:ffprobe}   # 이미지에는 ffmpeg 패키지로 설치되어 있다
+      ffprobe-timeout: 10s
+      cleanup:
+        enabled: ${FILE_CLEANUP_ENABLED:true}
+        interval: ${FILE_CLEANUP_INTERVAL:10m}  # 음성은 생성 후 24시간, 문서는 expires_at이 지나면 지운다
+        batch-size: 100                         # 한 번에 음성·문서 각각 최대 100개
+  idempotency:
+    # 요청 키 재요청 처리 (backend/docs/idempotency.md)
+    in-progress-wait: 3s        # 같은 키 요청이 처리 중이면 이만큼 기다린 뒤 409 REQUEST_IN_PROGRESS
+    lock-retry: 100ms
+    cleanup:
+      enabled: ${IDEMPOTENCY_CLEANUP_ENABLED:true}
+      interval: ${IDEMPOTENCY_CLEANUP_INTERVAL:10m}  # 최초 접수 후 24시간 지난 응답 본문을 비운다
+      batch-size: 500
+  outbox:
+    # 업무와 함께 저장한 후속 작업을 꺼내 처리하는 규칙 (backend/docs/outbox.md)
+    relay:
+      enabled: ${OUTBOX_RELAY_ENABLED:true}
+      delay-ms: 1000        # 처리 후 다음 확인까지 1초
+      batch-size: 10        # 한 번에 최대 10개
+      lease-seconds: 30     # 꺼낸 작업을 30초 붙잡음
+      max-attempts: 5       # 최대 5번 시도
+      backoff: 5s,30s,2m,10m  # 실패 후 다시 시도까지 대기
+  push:
+    enabled: ${FCM_PUSH_ENABLED:false}
+  ai:
+    # AI 서버 호출 (backend/docs/ai-job.md). 토큰은 서버 .env에만 둔다.
+    server:
+      base-url: ${AI_SERVER_URL:}
+      service-token: ${AI_SERVICE_TOKEN:}
+      connect-timeout: 5s
+    # 음성 전사 (backend/docs/stt-transcription.md). AI 서버가 음성을 내려받을 업무 서버 주소. 비어 있으면 전사를 접수하지 않는다.
+    transcription:
+      audio-base-url: ${AI_AUDIO_BASE_URL:}
+    # 문서 추출 (backend/docs/document-extraction.md). AI 서버가 문서를 내려받을 업무 서버 주소.
+    # 따로 정하지 않으면 음성 전사와 같은 주소를 쓴다. 비어 있으면 추출을 접수하지 않는다(503).
+    extraction:
+      document-base-url: ${AI_DOCUMENT_BASE_URL:${AI_AUDIO_BASE_URL:}}
+    # AI 작업 공통 처리 규칙 (backend/docs/ai-job.md)
+    job:
+      max-attempts: 3           # 첫 호출 포함 최대 3번
+      retry-delays: 5s,30s      # 다시 시도 가능한 실패 뒤 대기. 남은 마감 안일 때만 다시 보낸다
+      dispatch-lease: 30s       # 넘긴 작업이 이 안에 시작되지 않으면(넘긴 직후 서버 종료) 복구가 다시 넘김
+      run-grace: 10s            # 실행 담당 증표 = 마감 + 10초
+      recovery:
+        enabled: ${AI_JOB_RECOVERY_ENABLED:true}
+        delay-ms: 30000         # 30초마다 사라진 작업·마감 지난 작업 확인
+        batch-size: 20
+      # 종류별 마감(접수부터, AI10). 여기 없는 종류는 접수하지 않는다. 키는 [ ]로 감싸야 _가 지워지지 않는다.
+      deadlines:
+        "[TRANSCRIBE]": 90s
+        "[ANALYZE_REPORT]": 15s
+        "[GENERATE_PLAN]": 600s
+        "[GENERATE_CHANGE]": 600s
+        "[ASSIGN_INITIAL]": 600s
+        "[EXTRACT_EVENT_INPUT]": 300s   # 접수부터 첫 실행까지(아래 run-deadlines)
+        "[SUMMARIZE_EVENT]": 120s       # 종료 요약(#269). 실행기를 거치지 않는 동기 호출의 대기 상한(AI10)
+      # 첫 실행부터의 마감(AI10). 여기 있는 종류는 위 deadlines가 첫 실행까지의 대기 마감이 되고,
+      # 첫 실행이 그 안에 시작되면 그때부터 이 값으로 마감을 한 번 다시 정한다. 위 deadlines에 있는 종류만 적는다.
+      run-deadlines:
+        "[EXTRACT_EVENT_INPUT]": 600s
+      # AI 서버 자원별 동시 호출 수(AI10). 종류마다 쓰는 자원이 정해져 있고, 자원이 다르면 서로 기다리지 않는다.
+      slots:
+        "[GMS]": 2              # 계획·변경안·배정
+        "[STT]": 1              # 전사
+        "[REPORT]": 1           # 보고 분석
+  impact:
+    # 영향 분석 구현: sql(기본) 또는 neo4j. neo4j는 SPRING_NEO4J_URI가 있어야 한다.
+    engine: ${IMPACT_ENGINE:sql}
+
+logging:
+  pattern:
+    # 로그 줄마다 requestId를 붙인다. 오류 응답의 requestId로 해당 요청 로그만 찾을 수 있다.
+    level: "%5p [%X{requestId:-}]"
+
+server:
+  port: ${SERVER_PORT:8080}
+  error:
+    include-message: never
+    include-stacktrace: never
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never

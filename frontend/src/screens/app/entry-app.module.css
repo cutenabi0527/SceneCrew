@@ -1,0 +1,321 @@
+/* 공연 바꾸기 시트 목록 · 공연 목록 · 초대 참여(APP) */
+
+/* 시트 카드: 지금 공연은 굵은 테두리, 못 여는 공연은 회색 바탕 */
+.sheetList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.pick {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 64px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--fg);
+    font: inherit;
+    text-align: left;
+}
+.pick[aria-current='true'] {
+    min-height: 72px;
+    border: 2px solid var(--fg);
+}
+.pick:disabled {
+    background: var(--bg);
+}
+.pickText {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+.pickName {
+    font-size: 15px;
+    font-weight: 600;
+}
+.pick[aria-current='true'] .pickName {
+    font-size: 16px;
+    font-weight: 700;
+}
+.pickMeta {
+    font-size: 13px;
+    color: var(--muted);
+}
+.pickState,
+.pickLive,
+.pickInvited {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+}
+.pickLive {
+    color: var(--ok);
+}
+.pickInvited {
+    color: var(--blue);
+}
+.pickCheck {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.2;
+}
+.demoNote {
+    margin: 0;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* 공연 목록 */
+.h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+.group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.groupHead {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+}
+.hero {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--ok);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--fg);
+    font: inherit;
+    text-align: left;
+}
+.heroHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+.heroName {
+    font-size: 18px;
+    font-weight: 700;
+}
+.heroMeta {
+    font-size: 14px;
+    color: var(--muted);
+}
+.heroBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    border-radius: 10px;
+    background: var(--fg);
+    color: var(--surface);
+    font-size: 16px;
+    font-weight: 700;
+}
+.chipOk,
+.chipBlue {
+    flex: none;
+    align-self: flex-start;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--ok-soft);
+    color: var(--ok);
+    font-size: 12px;
+    font-weight: 600;
+}
+.chipBlue {
+    background: var(--blue-soft);
+    color: var(--blue);
+}
+.heroHead .chipOk,
+.heroHead .chipBlue {
+    align-self: center;
+}
+.rows {
+    display: flex;
+    flex-direction: column;
+    padding: 0 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+}
+.evRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 60px;
+    padding: 8px 0;
+    border: 0;
+    background: none;
+    color: var(--fg);
+    font: inherit;
+    text-align: left;
+}
+.evRow + .evRow {
+    border-top: 1px solid var(--surface-2);
+}
+.evRowName {
+    font-size: 15px;
+    font-weight: 600;
+}
+.account {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+/* 초대 참여 */
+.join {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.joinHead {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.radios {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.radio {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 64px;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    cursor: pointer;
+}
+/* 진짜 라디오는 카드 전체를 덮어 투명하게 둔다(누르는 곳 = 카드) */
+.radio input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+.radio:has(input:checked) {
+    padding: 9px 13px;
+    border: 2px solid var(--fg);
+}
+.radio:has(input:focus-visible) {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+}
+.dot {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--muted);
+    border-radius: 50%;
+}
+.radio:has(input:checked) .dot {
+    border-color: var(--fg);
+}
+.radio:has(input:checked) .dot::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--fg);
+}
+.radioText {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+.radioHead {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 16px;
+}
+.none {
+    font-size: 12px;
+    color: var(--muted);
+}
+.guide {
+    margin: 0;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--warn-soft);
+    font-size: 14px;
+    line-height: 1.5;
+}
+.switches {
+    display: flex;
+    flex-direction: column;
+    padding: 4px 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+}
+.switchRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 56px;
+}
+.switchRow + .switchRow {
+    min-height: 64px;
+    border-top: 1px solid var(--surface-2);
+}
+.switchText {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+}
+.switchLabel {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+}
+.switchSub {
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--muted);
+}
+.footSmall {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+    color: var(--muted);
+}

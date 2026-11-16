@@ -1,0 +1,194 @@
+{
+  "$defs": {
+    "Hints": {
+      "additionalProperties": false,
+      "description": "접수 시점 같은 행사의 이름 스냅샷. 네 키 모두 필수이고 빈 배열을 허용한다.",
+      "properties": {
+        "zones": {
+          "items": {
+            "maxLength": 30,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Zones",
+          "type": "array"
+        },
+        "equipment": {
+          "items": {
+            "maxLength": 30,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Equipment",
+          "type": "array"
+        },
+        "programs": {
+          "items": {
+            "maxLength": 30,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Programs",
+          "type": "array"
+        },
+        "groups": {
+          "items": {
+            "maxLength": 30,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Groups",
+          "type": "array"
+        }
+      },
+      "required": [
+        "zones",
+        "equipment",
+        "programs",
+        "groups"
+      ],
+      "title": "Hints",
+      "type": "object"
+    },
+    "Options": {
+      "additionalProperties": false,
+      "description": "사용자가 \"원음으로 다시 전사\"를 고른 Job에만 붙는다(§6.1).",
+      "properties": {
+        "pipeline": {
+          "const": "RAW",
+          "title": "Pipeline",
+          "type": "string"
+        }
+      },
+      "required": [
+        "pipeline"
+      ],
+      "title": "Options",
+      "type": "object"
+    },
+    "Payload": {
+      "additionalProperties": false,
+      "properties": {
+        "audioId": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Audioid",
+          "type": "string"
+        },
+        "audioUrl": {
+          "title": "Audiourl",
+          "type": "string"
+        },
+        "audioSha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Audiosha256",
+          "type": "string"
+        },
+        "hints": {
+          "$ref": "#/$defs/Hints"
+        },
+        "options": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Options"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "audioId",
+        "audioUrl",
+        "audioSha256",
+        "hints"
+      ],
+      "title": "Payload",
+      "type": "object"
+    },
+    "Scope": {
+      "additionalProperties": false,
+      "description": "BE가 접수 때 검증한 최소 범위(Q17). 동의 여부는 BE 접수 조건이라 값으로 보내지 않는다.",
+      "properties": {
+        "eventId": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Eventid",
+          "type": "string"
+        },
+        "uploaderMemberId": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Uploadermemberid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "eventId",
+        "uploaderMemberId"
+      ],
+      "title": "Scope",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "jobId": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "title": "Jobid",
+      "type": "string"
+    },
+    "attempt": {
+      "minimum": 1,
+      "title": "Attempt",
+      "type": "integer"
+    },
+    "requestSchemaVersion": {
+      "const": "4",
+      "title": "Requestschemaversion",
+      "type": "string"
+    },
+    "kind": {
+      "const": "TRANSCRIBE",
+      "title": "Kind",
+      "type": "string"
+    },
+    "inputHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Inputhash",
+      "type": "string"
+    },
+    "contextRevision": {
+      "minimum": 0,
+      "title": "Contextrevision",
+      "type": "integer"
+    },
+    "deadlineAt": {
+      "format": "date-time",
+      "title": "Deadlineat",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/Scope"
+    },
+    "payload": {
+      "$ref": "#/$defs/Payload"
+    }
+  },
+  "required": [
+    "jobId",
+    "attempt",
+    "requestSchemaVersion",
+    "kind",
+    "inputHash",
+    "contextRevision",
+    "deadlineAt",
+    "scope",
+    "payload"
+  ],
+  "title": "TranscribeRequest",
+  "type": "object"
+}

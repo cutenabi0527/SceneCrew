@@ -1,0 +1,9 @@
+/* 어느 줄에 놓여도 오른쪽 끝에 붙는다 */
+.zoom {
+    display: flex;
+    flex: none;
+    gap: 6px;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto;
+}

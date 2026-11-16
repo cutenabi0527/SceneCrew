@@ -1,0 +1,15 @@
+[project]
+name = "equipment-collector"
+version = "0.1.0"
+description = "현장 음향 장비(QLXD4) 상태 수집 프로그램"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["."]
+python_files = ["test_*.py"]

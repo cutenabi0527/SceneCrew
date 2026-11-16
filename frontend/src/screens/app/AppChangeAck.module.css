@@ -1,0 +1,240 @@
+/* APP 변경 확인(M08): 알림 띠 → 바뀐 내용 → 바뀐 뒤 내 업무 → 아래 고정 확인 */
+.banner {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: var(--blue-soft);
+}
+.bannerTitle {
+    font-size: 18px;
+    font-weight: 700;
+}
+.bannerSub {
+    font-size: 14px;
+    color: var(--bar-2);
+    font-variant-numeric: tabular-nums;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.section h2 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    font-size: 15px;
+}
+.cardTitle {
+    font-size: 16px;
+    font-weight: 700;
+}
+.fields {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+}
+.field {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    align-items: center;
+    font-size: 15px;
+    font-variant-numeric: tabular-nums;
+}
+.field dt {
+    font-size: 13px;
+    color: var(--muted);
+}
+.field dd {
+    margin: 0;
+}
+.changed {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+.changed svg {
+    color: var(--muted);
+}
+.before {
+    color: var(--muted);
+}
+/* 바뀐 값만 노란 형광펜으로 */
+.after {
+    padding: 0 6px;
+    border-radius: 6px;
+    background: var(--yellow-soft);
+    font-size: 18px;
+    font-weight: 700;
+    align-self: flex-start;
+}
+.same {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.task {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    min-height: 64px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--blue);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--fg);
+    font: inherit;
+    text-align: left;
+}
+.task[data-status='doing'] {
+    border-left-color: var(--accent);
+}
+.task[data-status='done'] {
+    border-left-color: var(--ok);
+}
+.taskText {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+.taskMeta {
+    font-size: 13px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+}
+.taskTitle {
+    font-size: 15px;
+    font-weight: 700;
+}
+.status {
+    flex-shrink: 0;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--blue-soft);
+    color: var(--blue);
+}
+.status[data-status='doing'] {
+    background: var(--accent-soft);
+    color: #b23a0a;
+}
+.status[data-status='done'] {
+    background: var(--ok-soft);
+    color: var(--ok);
+}
+
+/* 하단 탭이 없는 화면: 본문 맨 아래에 붙는 고정 단추 */
+.bar {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: auto -16px 0;
+    padding: 12px 16px calc(20px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+}
+.barPrimary,
+.barSecondary {
+    min-height: 56px;
+    border-radius: 12px;
+    font: inherit;
+    font-size: 17px;
+    font-weight: 700;
+}
+.barPrimary {
+    border: 0;
+    background: var(--fg);
+    color: var(--surface);
+}
+.barSecondary {
+    border: 1px solid var(--line-2);
+    background: var(--surface);
+    color: var(--fg);
+}
+.barHint {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+}
+
+/* 남에게 온 요청·없는 알림 */
+.blocked {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 24px 8px;
+    text-align: center;
+    word-break: keep-all;
+}
+.lock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    color: var(--muted);
+}
+.lock svg {
+    width: 26px;
+    height: 26px;
+}
+.blockedTitle {
+    font-size: 18px;
+    font-weight: 700;
+}
+.blockedText {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+.blockedActions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    margin-top: 12px;
+}
+.primary,
+.secondary {
+    min-height: 52px;
+    border-radius: 10px;
+    font: inherit;
+    font-size: 16px;
+}
+.primary {
+    border: 0;
+    background: var(--fg);
+    color: var(--surface);
+    font-weight: 700;
+}
+.secondary {
+    border: 1px solid var(--line-2);
+    background: var(--surface);
+    color: var(--fg);
+    font-weight: 600;
+}

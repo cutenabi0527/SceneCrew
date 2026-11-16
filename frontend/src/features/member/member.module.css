@@ -1,0 +1,637 @@
+.hot {
+    border-color: var(--bad);
+}
+
+/* 구조도: 총괄 → 그룹 → 팀원. 선만 이어 그리고 권한 차이는 표현하지 않는다 */
+.phase {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: max-content;
+    margin-bottom: 16px;
+}
+/* 와이어프레임 계층도 캔버스: 네비 바 아래를 꽉 채운다. 어두운 점 격자 + 점선 연결, 안쪽 토큰을 어둡게 다시 정의한다 */
+.canvas {
+    flex: 1;
+    --surface: #2d2e3a;
+    --surface-2: #414145;
+    --fg: #f2f2f5;
+    --muted: #ffffff;
+    --faint: #ffffff;
+    --line: #86868f;
+    --line-2: #b4b4bc;
+    --ok: #6fd39b;
+    --ok-soft: #22382c;
+    --warn: #f0b45c;
+    --warn-soft: #3d3122;
+    --bad: #ff6d5a;
+    --bad-soft: #43262a;
+    --blue: #8fb4ff;
+    --blue-soft: #263049;
+    --violet: #b3acff;
+    --violet-soft: #302c4a;
+    min-height: 0;
+    /* 왼쪽은 확대/축소 막대 자리만큼 비운다 */
+    padding: 20px 24px 96px 76px;
+    background-color: #2a2a2c;
+    background-image: radial-gradient(#47474d 1px, transparent 1.3px);
+    background-size: 20px 20px;
+    /* 운영 탭 바(.opsBackdrop)와 점 격자가 이어지도록 화면 기준으로 고정한다 */
+    background-attachment: fixed;
+    color: var(--fg);
+    overflow: auto;
+}
+/* 가로 계층도: 총괄을 위에 두고 그룹을 가로로 나란히, 그룹 아래로 팀원을 세운다 */
+.tree,
+.tree ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.tree {
+    display: flex;
+    justify-content: center;
+    min-width: max-content;
+}
+.tree > li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.tree > li > ul {
+    position: relative;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding-top: 20px;
+}
+.tree > li > ul::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 20px;
+    border-left: 1.5px dashed var(--line);
+}
+.tree > li > ul > li {
+    position: relative;
+    padding-top: 20px;
+}
+/* 형제 그룹을 잇는 가로선과 각 그룹으로 내려오는 세로선 */
+.tree > li > ul > li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -8px;
+    right: -8px;
+    border-top: 1.5px dashed var(--line);
+}
+.tree > li > ul > li:first-child::before {
+    left: 50%;
+}
+.tree > li > ul > li:last-child::before {
+    right: 50%;
+}
+.tree > li > ul > li:only-child::before {
+    display: none;
+}
+.tree > li > ul > li::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 20px;
+    border-left: 1.5px dashed var(--line);
+}
+/* 그룹 안 팀원: 세로 목록 */
+.tree > li > ul > li > ul {
+    margin-left: 12px;
+    padding-left: 16px;
+}
+.tree > li > ul > li > ul > li {
+    position: relative;
+    padding: 4px 0;
+}
+/* 팀원 연결선: 가로선은 카드 세로 가운데에서 꺾이고, 마지막 팀원은 그 직각에서 세로선이 끝난다 */
+.tree > li > ul > li > ul > li > .nodeRow {
+    position: relative;
+}
+.tree > li > ul > li > ul > li > .nodeRow::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -16px;
+    width: 14px;
+    border-top: 1.5px dashed var(--line);
+}
+.tree > li > ul > li > ul > li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -16px;
+    border-left: 1.5px dashed var(--line);
+}
+.tree > li > ul > li > ul > li:last-child > .nodeRow::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -16px;
+    height: calc(50% + 4px);
+    border-left: 1.5px dashed var(--line);
+}
+.node {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 200px;
+    min-height: 48px;
+    padding: 8px 12px;
+    border: 2px solid var(--line-2);
+    border-radius: 999px;
+    background: var(--surface);
+    color: inherit;
+    text-align: left;
+}
+.node:hover {
+    border-color: var(--fg);
+}
+.node.hot {
+    border-color: var(--bad);
+}
+.node.me {
+    border-color: #5b8def;
+    background: #1f2a44;
+}
+/* 예비 인원 카드는 보라 테두리 */
+.node.reserve {
+    border-color: #b3acff;
+}
+/* 미해결 이슈가 있는 그룹: 바탕과 테두리 모두 어두운 빨강 */
+.groupNode.unresolvedNode {
+    border-color: #8e2a2a;
+    background: #4a1a1c;
+}
+.node[aria-pressed='true'] {
+    border-color: #8f87f1;
+    box-shadow: 0 0 0 4px rgb(143 135 241 / 28%);
+}
+.root {
+    width: 264px;
+    border-radius: 10px;
+}
+.groupNode {
+    width: 264px;
+    border-radius: 10px;
+    border-color: #6e6e77;
+    background: var(--surface-2);
+}
+.nodeRow {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+/* 업무 목록 펼침 버튼(▼). 펼치면 뒤집혀 ▲가 된다 */
+.caret {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 1.5px solid var(--line);
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 10px;
+}
+.caret:hover {
+    border-color: var(--fg);
+    color: var(--fg);
+}
+.caret span {
+    transition: transform 0.15s;
+}
+.caret[aria-expanded='true'] span {
+    transform: rotate(180deg);
+}
+.taskDrop {
+    display: grid;
+    gap: 10px;
+}
+.taskDrop h4 {
+    margin: 0 0 6px;
+}
+/* 펼친 업무는 다른 화면의 업무 카드를 그대로 쓴다. 어두운 캔버스 안에서도 밝은 원래 토큰으로 되돌린다 */
+.taskCards,
+.dropCard {
+    --surface: #ffffff;
+    --bg: #f3f4ef;
+    --fg: #0e1a2b;
+    --muted: #000000;
+    --faint: #000000;
+    --line: #d7dcd3;
+    --line-2: #c3cabf;
+    --surface-2: #e9ece4;
+    --blue: #1e5ed8;
+    --blue-soft: #e4ecfb;
+    --ok: #1e7a4a;
+    --ok-soft: #dff2e6;
+    --warn: #a35a00;
+    --warn-soft: #fcefd6;
+    --bad: #b4232a;
+    --bad-soft: #fbe3e3;
+    --violet: #5b4bd6;
+    --violet-soft: #ece9fb;
+    color: var(--fg);
+}
+.taskCards {
+    display: grid;
+    gap: 8px;
+}
+/* 펼친 노드 상세: 노드 바로 아래 밝은 카드 + 날짜별 업무 */
+.drop {
+    display: grid;
+    gap: 10px;
+    width: 252px;
+    margin-top: 8px;
+}
+.dropCard {
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    background: var(--surface);
+}
+.dropCard p {
+    margin: 0;
+}
+.tree > li > .drop {
+    width: 300px;
+    margin-bottom: 4px;
+}
+.tree > li > ul > li > .drop {
+    width: 264px;
+}
+.node .grow {
+    min-width: 0;
+}
+/* 팀원 노드: 이름 옆에 예비·업무 상태 칩을 잇는다 */
+.nameLine {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+}
+.nameLine > b {
+    margin-right: 2px;
+}
+/* 팀원을 끌어 이 그룹 위에 올렸을 때: 그룹 카드 테두리를 밝힌다 */
+.groupBranch[data-over] > .nodeRow .groupNode {
+    border-color: #8fb3ff;
+    box-shadow: 0 0 0 4px rgb(143 179 255 / 30%);
+}
+.tree li[draggable='true'] > .nodeRow .node {
+    cursor: grab;
+}
+/* 그룹 카드 안 오른쪽의 인원 추가(+) 단추 */
+.nodeWrap {
+    position: relative;
+}
+.node.withExtra {
+    padding-right: 48px;
+}
+.addMember {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 1.5px solid var(--line-2);
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--fg);
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1;
+    transform: translateY(-50%);
+}
+.addMember:hover {
+    border-color: var(--fg);
+}
+/* 그룹 인원 맨 밑의 빈 초대 자리 */
+.node.inviteSlot {
+    /* 팀원 카드와 같은 폭. 오른쪽은 카드 안 삭제(X) 자리 */
+    width: 260px;
+    min-height: 0;
+    padding: 5px 48px 5px 6px;
+    border-style: dashed;
+    border-color: var(--line);
+    background: transparent;
+    color: var(--muted);
+}
+.node.inviteSlot:hover {
+    border-color: var(--fg);
+    color: var(--fg);
+}
+.inviteCircle {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1.5px dashed currentColor;
+    border-radius: 50%;
+    font-size: 20px;
+    font-weight: 700;
+}
+/* 팀원 노드의 상태 칩은 이름 아래 줄에 둔다 */
+.nodeChips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+}
+/* 펼친 팀원 정보: "항목: 값"을 줄마다 검은 글씨로 */
+.dropCard {
+    color: #000000;
+}
+.facts {
+    display: grid;
+    gap: 4px;
+    margin: 0;
+    font-size: 13px;
+    color: #000000;
+}
+.facts > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+}
+.facts dt::after {
+    content: ':';
+}
+.facts dd {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    margin: 0;
+}
+/* 지금 불가 팀원 카드: 붉은 검정 바탕 + 카드 전체를 모서리에서 모서리로 가로지르는 큰 x. 테두리와 x는 같은 색 */
+.node.offNode {
+    --x-color: #ff6d5a;
+    position: relative;
+    overflow: hidden;
+    border-color: var(--x-color);
+    background: #3a1114;
+}
+.offNode::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--x-color);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0L100 100M100 0L0 100' stroke='%23000' stroke-width='3' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E")
+        center / 100% 100% no-repeat;
+    pointer-events: none;
+}
+/* 지금 불가한 예비: 테두리·x·바탕을 모두 보라 계열로 */
+.node.reserve.offNode {
+    --x-color: #b3acff;
+    background: #2a2340;
+}
+/* 투입 가능한 예비의 상태 글자 */
+.ready {
+    color: var(--ok);
+}
+/* 예비 투입 안내 팝업 */
+.notice {
+    width: min(420px, calc(100vw - 32px));
+    padding: 20px;
+    border: 0;
+    border-radius: 14px;
+    background: #ffffff;
+    color: #000000;
+    box-shadow: 0 10px 30px rgb(14 26 43 / 20%);
+}
+.notice::backdrop {
+    background: rgb(14 26 43 / 45%);
+}
+.notice p {
+    margin: 8px 0 16px;
+    font-size: 14px;
+}
+.dropCard :is(.muted, .faint) {
+    color: #000000;
+}
+/* 미배정 묶음: 첫 업무 요약을 누르면 묶음 안 업무가 펼쳐진다 */
+.bundleToggle {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #000000;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+}
+.bundleCaret {
+    font-size: 10px;
+    transition: transform 0.15s;
+}
+.bundleToggle[aria-expanded='true'] .bundleCaret {
+    transform: rotate(180deg);
+}
+.bundleTasks {
+    display: grid;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: #000000;
+    font-size: 12.5px;
+}
+
+/* 내 상태: 소속(굵게)과 옆에 그룹 안내 문구를 가운데 정렬. 테두리 없이 글자를 키우고 위아래 여백을 둔다 */
+.meHead {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    align-items: baseline;
+    justify-content: center;
+    padding: 10px 0;
+    text-align: center;
+}
+.mePill {
+    flex: none;
+    font-size: 18px;
+}
+.meHead > p {
+    flex: 0 1 auto;
+    font-size: 16px;
+}
+
+/* 그룹별 현황(줄 목록): 카드 없이 이름 | 집계를 구분선으로 나열 */
+.groupFlat {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--fg);
+}
+.groupFlat li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 2px;
+    border-bottom: 1px solid #eef0f3;
+    font-size: 14px;
+}
+.groupFlat li:last-child {
+    border-bottom: 0;
+}
+
+/* APP 글자는 회색을 쓰지 않는다: 계층도 안 업무 카드의 보조 글자도 검정으로 둔다 */
+:global([data-ui='app']) .taskCards,
+:global([data-ui='app']) .dropCard {
+    --fg: #000000;
+    --muted: #000000;
+    --faint: #000000;
+}
+
+/* 구성도 확대/축소: 화면 왼쪽 가운데에 세로로 + / 배율 막대 / − */
+.zoomBar {
+    position: fixed;
+    top: 50%;
+    left: 16px;
+    z-index: 25;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 6px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    box-shadow: 0 6px 18px rgb(0 0 0 / 35%);
+    transform: translateY(-50%);
+}
+.zoomBtn {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    min-height: 0;
+    padding: 0;
+    border: 1.5px solid var(--line-2);
+    border-radius: 50%;
+    background: var(--surface-2);
+    color: var(--fg);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+}
+.zoomBtn:hover:not(:disabled) {
+    border-color: var(--fg);
+}
+.zoomBtn:disabled {
+    opacity: 0.4;
+}
+/* 세로 막대: 위가 크게, 아래가 작게 */
+.zoomRange {
+    width: 24px;
+    height: 140px;
+    margin: 0;
+    accent-color: #8fb3ff;
+    writing-mode: vertical-lr;
+    direction: rtl;
+    cursor: grab;
+}
+.zoomPct {
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* 팀원 카드: 동그라미 · 이름 · 상태를 한 줄에(칩이 아래로 넘어가지 않게 조금 넓힌다) */
+.node.memberNode {
+    width: 260px;
+    min-height: 0;
+    padding: 5px 14px 5px 6px;
+}
+.memberNode .nameLine {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
+/* 배경을 끌어 화면을 옮긴다: 잡을 수 있는 손 모양, 끄는 동안 글자 선택 막기 */
+.canvas {
+    cursor: grab;
+}
+.canvas[data-panning] {
+    cursor: grabbing;
+    user-select: none;
+}
+.canvas .node,
+.canvas .caret,
+.canvas .drop {
+    cursor: auto;
+}
+.canvas button {
+    cursor: pointer;
+}
+
+/* 확대해도 스크롤바는 보이지 않게 한다. 화면 이동은 배경 끌기·휠(Shift+휠은 가로)로 한다 */
+.canvas {
+    scrollbar-width: none;
+}
+.canvas::-webkit-scrollbar {
+    display: none;
+}
+.zoomFit {
+    min-height: 0;
+    padding: 3px 6px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--fg);
+    font-size: 11px;
+    font-weight: 700;
+}
+.zoomFit:hover {
+    border-color: var(--fg);
+}
+
+/* 초대 자리 카드 안 오른쪽의 삭제(X): 테두리 없이 빨간 글씨 */
+.slotDelete {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: var(--bad);
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1;
+}
+.slotDelete:hover {
+    background: var(--bad-soft);
+}

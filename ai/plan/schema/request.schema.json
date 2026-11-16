@@ -1,0 +1,550 @@
+{
+  "$defs": {
+    "EventInput": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 20,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "maxLength": 1000,
+          "title": "Description",
+          "type": "string"
+        },
+        "date": {
+          "format": "date",
+          "title": "Date",
+          "type": "string"
+        },
+        "prepStartAt": {
+          "format": "date-time",
+          "title": "Prepstartat",
+          "type": "string"
+        },
+        "openAt": {
+          "format": "date-time",
+          "title": "Openat",
+          "type": "string"
+        },
+        "closeAt": {
+          "format": "date-time",
+          "title": "Closeat",
+          "type": "string"
+        },
+        "teardownEndAt": {
+          "format": "date-time",
+          "title": "Teardownendat",
+          "type": "string"
+        },
+        "locationName": {
+          "maxLength": 1000,
+          "title": "Locationname",
+          "type": "string"
+        },
+        "address": {
+          "maxLength": 1000,
+          "title": "Address",
+          "type": "string"
+        },
+        "totalCapacity": {
+          "maximum": 31,
+          "minimum": 1,
+          "title": "Totalcapacity",
+          "type": "integer"
+        },
+        "expectedVisitors": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expectedvisitors"
+        },
+        "peakVisitors": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Peakvisitors"
+        },
+        "desiredReserveCount": {
+          "maximum": 31,
+          "minimum": 0,
+          "title": "Desiredreservecount",
+          "type": "integer"
+        },
+        "confirmedInput": {
+          "additionalProperties": true,
+          "title": "Confirmedinput",
+          "type": "object"
+        }
+      },
+      "required": [
+        "name",
+        "description",
+        "date",
+        "prepStartAt",
+        "openAt",
+        "closeAt",
+        "teardownEndAt",
+        "locationName",
+        "address",
+        "totalCapacity",
+        "desiredReserveCount"
+      ],
+      "title": "EventInput",
+      "type": "object"
+    },
+    "FloorPlanInput": {
+      "additionalProperties": false,
+      "description": "평면도 페이지(V9-D54). 추출 결과3의 floorPlanPages 첫 장의 원본 문서와 쪽 번호다.\n\nAI가 url(BE 내부 문서 내려받기)로 원본을 받아 sha256을 대조하고 그 쪽을 그림으로 렌더링한다.\n문서 항목 모양은 추출 요청4의 documents[]와 같다. pageNumber는 PDF의 1부터 세는 쪽 번호이고 그림 파일이면 1이다.",
+      "properties": {
+        "documentId": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Documentid",
+          "type": "string"
+        },
+        "pageNumber": {
+          "minimum": 1,
+          "title": "Pagenumber",
+          "type": "integer"
+        },
+        "mime": {
+          "enum": [
+            "application/pdf",
+            "image/png",
+            "image/jpeg"
+          ],
+          "title": "Mime",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "url": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "documentId",
+        "pageNumber",
+        "mime",
+        "sha256",
+        "url"
+      ],
+      "title": "FloorPlanInput",
+      "type": "object"
+    },
+    "PlanPayload": {
+      "additionalProperties": false,
+      "properties": {
+        "event": {
+          "$ref": "#/$defs/EventInput"
+        },
+        "zones": {
+          "items": {
+            "$ref": "#/$defs/ZoneInput"
+          },
+          "maxItems": 10,
+          "title": "Zones",
+          "type": "array"
+        },
+        "programs": {
+          "items": {
+            "$ref": "#/$defs/ProgramInput"
+          },
+          "maxItems": 20,
+          "title": "Programs",
+          "type": "array"
+        },
+        "workGroups": {
+          "items": {
+            "$ref": "#/$defs/WorkGroupInput"
+          },
+          "maxItems": 31,
+          "title": "Workgroups",
+          "type": "array"
+        },
+        "floorPlan": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FloorPlanInput"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "scheduleItems": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/ScheduleItem"
+              },
+              "maxItems": 50,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scheduleitems"
+        }
+      },
+      "required": [
+        "event",
+        "zones",
+        "programs"
+      ],
+      "title": "PlanPayload",
+      "type": "object"
+    },
+    "ProgramInput": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "zoneId": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Zoneid"
+        },
+        "name": {
+          "maxLength": 20,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "startAt": {
+          "format": "date-time",
+          "title": "Startat",
+          "type": "string"
+        },
+        "endAt": {
+          "format": "date-time",
+          "title": "Endat",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "startAt",
+        "endAt"
+      ],
+      "title": "ProgramInput",
+      "type": "object"
+    },
+    "ScheduleItem": {
+      "additionalProperties": false,
+      "description": "일정표 한 행. 필수는 key·title·startAt·endAt·source이고, 시각을 확정할 수 없으면 startAt·endAt을 null로 둔다.\n\ntimeText는 원문 시각 표기(예: \"17:30~17:50\", \"미정\")다. 시각을 읽지 못한 이유를 사람이 확인할 때 쓴다.\nworkGroupName·zoneName은 원문의 담당 직무·구역 칸을 요청의 직무 그룹·구역 이름으로 맞춘 값이다.\nbundle은 원문의 묶음 표시(예: \"묶음 1\", \"A구역 담당\")이며, 같은 직무·같은 묶음 항목끼리만 시간 겹침을 검사한다.",
+      "properties": {
+        "key": {
+          "pattern": "^[A-Za-z0-9_-]{1,30}$",
+          "title": "Key",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "startAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Startat"
+        },
+        "endAt": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Endat"
+        },
+        "timeText": {
+          "anyOf": [
+            {
+              "maxLength": 40,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Timetext"
+        },
+        "workGroupName": {
+          "anyOf": [
+            {
+              "maxLength": 20,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Workgroupname"
+        },
+        "zoneName": {
+          "anyOf": [
+            {
+              "maxLength": 30,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Zonename"
+        },
+        "bundle": {
+          "anyOf": [
+            {
+              "maxLength": 40,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Bundle"
+        },
+        "source": {
+          "$ref": "#/$defs/ScheduleSource"
+        },
+        "steps": {
+          "anyOf": [
+            {
+              "items": {
+                "maxLength": 120,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 6,
+              "minItems": 1,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Steps"
+        },
+        "checklist": {
+          "anyOf": [
+            {
+              "items": {
+                "maxLength": 80,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 6,
+              "minItems": 1,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checklist"
+        }
+      },
+      "required": [
+        "key",
+        "title",
+        "startAt",
+        "endAt",
+        "source"
+      ],
+      "title": "ScheduleItem",
+      "type": "object"
+    },
+    "ScheduleSource": {
+      "additionalProperties": false,
+      "description": "원문 위치. documentId·pageNumber는 floorPlan과 같은 뜻이다(추출 요청4 documents[]의 문서, PDF 1부터 세는 쪽).",
+      "properties": {
+        "documentId": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Documentid",
+          "type": "string"
+        },
+        "pageNumber": {
+          "minimum": 1,
+          "title": "Pagenumber",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "documentId",
+        "pageNumber"
+      ],
+      "title": "ScheduleSource",
+      "type": "object"
+    },
+    "WorkGroupInput": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 20,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "WorkGroupInput",
+      "type": "object"
+    },
+    "ZoneInput": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 30,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "maxLength": 1000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Description"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "ZoneInput",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "jobId": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "title": "Jobid",
+      "type": "string"
+    },
+    "attempt": {
+      "minimum": 1,
+      "title": "Attempt",
+      "type": "integer"
+    },
+    "requestSchemaVersion": {
+      "const": "4",
+      "title": "Requestschemaversion",
+      "type": "string"
+    },
+    "kind": {
+      "const": "GENERATE_PLAN",
+      "title": "Kind",
+      "type": "string"
+    },
+    "inputHash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Inputhash",
+      "type": "string"
+    },
+    "contextRevision": {
+      "minimum": 0,
+      "title": "Contextrevision",
+      "type": "integer"
+    },
+    "deadlineAt": {
+      "format": "date-time",
+      "title": "Deadlineat",
+      "type": "string"
+    },
+    "payload": {
+      "$ref": "#/$defs/PlanPayload"
+    }
+  },
+  "required": [
+    "jobId",
+    "attempt",
+    "requestSchemaVersion",
+    "kind",
+    "inputHash",
+    "contextRevision",
+    "deadlineAt",
+    "payload"
+  ],
+  "title": "PlanRequest",
+  "type": "object"
+}

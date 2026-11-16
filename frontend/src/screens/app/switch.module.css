@@ -1,0 +1,54 @@
+/* Material 3 스위치: 52×32 트랙. 누르는 곳은 위아래 여백까지 44px */
+.switch {
+    position: relative;
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    box-sizing: border-box;
+    width: 52px;
+    height: 32px;
+    margin-block: 6px;
+    padding: 0 6px;
+    border: 2px solid var(--muted);
+    border-radius: 999px;
+    background: var(--surface-2);
+    cursor: pointer;
+}
+.switch::before {
+    content: '';
+    position: absolute;
+    inset: -8px -4px;
+}
+.thumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--muted);
+    transition:
+        width 0.12s ease,
+        height 0.12s ease,
+        margin 0.12s ease;
+}
+.switch[aria-checked='true'] {
+    justify-content: flex-end;
+    padding: 0 2px;
+    border-color: var(--ok);
+    background: var(--ok);
+}
+.switch[aria-checked='true'] .thumb {
+    width: 24px;
+    height: 24px;
+    background: var(--surface);
+    color: var(--ok);
+}
+.switch:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+}
+.switch:disabled {
+    cursor: default;
+    opacity: 0.5;
+}

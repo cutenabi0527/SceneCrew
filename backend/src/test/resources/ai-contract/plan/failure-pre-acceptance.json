@@ -1,0 +1,13 @@
+{
+  "jobId": null,
+  "attempt": null,
+  "requestSchemaVersion": null,
+  "inputHash": null,
+  "contextRevision": null,
+  "error": {
+    "code": "INVALID_REQUEST",
+    "message": "요청 형식이 계약과 맞지 않아 접수하지 않았습니다.",
+    "retryable": false,
+    "details": {}
+  }
+}

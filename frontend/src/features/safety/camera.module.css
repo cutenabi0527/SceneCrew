@@ -1,0 +1,201 @@
+/* 카메라 화면 새 창(W05): 왼쪽 분할 화면 | 오른쪽 모든 카메라 목록 */
+/* 새 창 한 화면을 채운다 */
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100dvh;
+    padding: 14px 16px 16px;
+    background: var(--surface);
+}
+.body {
+    display: grid;
+    flex: 1;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 14px;
+    min-height: 0;
+}
+/* 분할 화면: 1대 전체, 2대 좌우, 3~4대 2×2, 그 이상은 칸을 늘린다 */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: minmax(0, 1fr);
+    gap: 10px;
+    min-height: 0;
+    overflow-y: auto;
+}
+.grid[data-count='1'] {
+    grid-template-columns: 1fr;
+}
+.empty {
+    grid-column: 1 / -1;
+    align-self: center;
+    margin: 0;
+    color: var(--muted);
+    text-align: center;
+}
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 0;
+    overflow-y: auto;
+}
+.list ul {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.list li {
+    display: flex;
+    gap: 6px;
+    align-items: stretch;
+}
+.pick {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    background: var(--surface);
+    color: var(--fg);
+    text-align: left;
+}
+.pick[aria-pressed='true'] {
+    border-color: var(--blue);
+    background: var(--blue-soft);
+}
+
+/* 카메라 한 대의 미리보기 칸 */
+.feed {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 0;
+    margin: 0;
+}
+.screen {
+    position: relative;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 140px;
+    border-radius: var(--r-sm);
+    background: #14181f;
+    color: #e6e9ef;
+    font-size: 12.5px;
+    text-align: center;
+}
+.large .screen {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+}
+.live {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 12%);
+    font-size: 11px;
+    font-weight: 700;
+}
+.live i {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: #ef5f6b;
+}
+.meta {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    opacity: 0.85;
+}
+/* 실서버 현재 프레임(#372): 화면 칸을 채우고 비율은 유지한다 */
+.frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: inherit;
+    background: #000000;
+}
+.frame ~ .meta {
+    position: absolute;
+    right: 8px;
+    bottom: 6px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+}
+.off {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 12px;
+    font-weight: 700;
+}
+.off small {
+    font-weight: 400;
+    opacity: 0.85;
+}
+.caption {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+/* 화면을 누르면 새 창으로 여는 칸 */
+.open {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: var(--r-sm);
+    background: none;
+    cursor: pointer;
+}
+.open:hover .screen {
+    outline: 2px solid var(--blue);
+    outline-offset: 1px;
+}
+/* 안전 화면 카메라 탭의 전체 분할 화면: 페이지 흐름 안에서 16:9 칸을 나란히 둔다 */
+.split {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+.split[data-count='1'] {
+    grid-template-columns: minmax(0, 720px);
+}
+.split[data-count='2'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 860px) {
+    .split {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .body {
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(0, 1fr) auto;
+    }
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    .list {
+        max-height: 200px;
+    }
+}

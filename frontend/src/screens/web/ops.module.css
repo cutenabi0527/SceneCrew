@@ -1,0 +1,462 @@
+/* 장비 운영·안전·운영진(W03/W05/W06) 공통 배치 */
+
+/* 시간표 칸 맨 위의 지금 시각 줄 */
+.context {
+    margin: 0 0 8px;
+    font-size: 13.5px;
+}
+.clockLine {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px 16px;
+}
+.nowBar {
+    margin: 0 6px;
+    color: var(--muted);
+}
+.clock {
+    font-family: var(--mono);
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1;
+}
+.nowTag {
+    color: var(--ok);
+    font-size: 13px;
+    font-weight: 800;
+}
+.nowShow {
+    font-size: 14px;
+}
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+}
+.filters .field {
+    width: 160px;
+}
+/* 오른쪽 패널의 "장비 종류 [선택] 기술 상태 [선택]" 한 줄 */
+/* 시간표 위: 장비 종류·기술 상태 | 확대/축소 */
+.toolRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    align-items: center;
+    margin-bottom: 6px;
+}
+.filterLine {
+    display: flex;
+    /* 남는 폭을 쓰고, 확대/축소 단추는 같은 줄 오른쪽 끝에 둔다 */
+    flex: 1 1 auto;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+.filterLine label {
+    display: flex;
+    flex: 0 1 auto;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+.filterLine :global(.lbl) {
+    flex: none;
+    white-space: nowrap;
+    font-size: 15px;
+    font-weight: 700;
+}
+/* 공통 입력(.inp) 모양을 쓰되, 같은 줄의 확대/축소·장비 등록 버튼과 높이·글자 크기를 맞춘다 */
+.filterLine select {
+    /* 한글 8자가 넉넉히 들어가는 폭(글자 8em + 양옆 여백·화살표) */
+    width: calc(8em + 50px);
+    min-width: 0;
+    height: 36px;
+    min-height: 0;
+    /* 기본 화살표는 안쪽 여백을 제어할 수 없어 직접 그린다.
+       글자 왼쪽(8px)과 화살표 오른쪽(8px) 여백을 같게 둔다 */
+    appearance: none;
+    padding: 0 26px 0 8px;
+    background: var(--surface)
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%235b6673' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+        no-repeat right 8px center;
+    border-radius: 8px;
+    font-size: 14.5px;
+}
+/* 펼친 목록도 글자 양옆에 같은 여백(브라우저가 지원하는 경우) */
+.filterLine option {
+    padding: 2px 8px;
+}
+.sideCol {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+/* 장비 상세 패널 위, 패널과 같은 너비의 검은 버튼 */
+.sideRegister {
+    width: 100%;
+    min-height: 44px;
+    font-size: 15px;
+}
+/* 시간표 아래 오른쪽에 두는 범례 */
+.legendBottom {
+    justify-content: flex-end;
+    margin-top: 2px;
+}
+.legendRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.legendItem {
+    /* 장비 시간표 범례: 눈에 잘 띄게 크고 굵게 */
+    padding: 3px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 16px;
+    align-items: start;
+}
+@media (max-width: 960px) {
+    .split {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+.side {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    background: var(--surface);
+}
+
+/* 장비 시간표 */
+.timeline {
+    overflow-x: auto;
+    /* overflow-x만 주면 세로도 auto가 되어 1px 차이로 세로 스크롤이 생긴다 */
+    overflow-y: hidden;
+}
+.tlHead,
+.tlRow {
+    display: grid;
+    grid-template-columns: var(--name-w) var(--track-w);
+    width: max-content;
+}
+.tlHead {
+    border-bottom: 1px solid var(--line);
+}
+/* 왼쪽 열 고정: 오른쪽 시간만 스크롤한다 */
+.tlCorner {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    background: var(--surface);
+}
+.tlScale {
+    position: relative;
+    height: 28px;
+    /* 10분마다 일정한 세로 눈금 */
+    background-image: linear-gradient(to right, var(--line) 1px, transparent 1px);
+    background-size: var(--slot-w) 8px;
+    background-position: left bottom;
+    background-repeat: repeat-x;
+}
+.tlScale span {
+    position: absolute;
+    top: 4px;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+}
+/* 맨 앞 시각은 칸 안쪽으로 붙여 왼쪽 고정 열에 가리지 않게 한다 */
+.tlScale span:first-child {
+    transform: none;
+}
+.tlRow {
+    border-bottom: 1px solid #eef0f3;
+}
+.tlRow[aria-selected='true'],
+.tlRow[aria-selected='true'] .tlName {
+    background: var(--blue-soft);
+}
+.tlName {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 10px;
+    border: 0;
+    background: var(--surface);
+    text-align: left;
+    color: inherit;
+    font-size: 13px;
+}
+.tlTrack {
+    position: relative;
+    min-height: 52px;
+}
+.nowLine {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--bad);
+}
+.bar {
+    position: absolute;
+    top: 14px;
+    height: 28px;
+    padding: 0 6px;
+    border-radius: 6px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 28px;
+}
+.bar[data-kind='준비'],
+.legendItem[data-kind='준비'] {
+    background: #dce8ff;
+    color: #1e4fb8;
+}
+.bar[data-kind='공연'],
+.legendItem[data-kind='공연'] {
+    background: #2b2f36;
+    color: #ffffff;
+}
+.bar[data-kind='회수'],
+.legendItem[data-kind='회수'] {
+    background: #e7e9ee;
+    color: #000000;
+}
+.bar[data-kind='예약'],
+.legendItem[data-kind='예약'] {
+    background: #ece4ff;
+    color: #5b3ab8;
+}
+.bar[data-conflict] {
+    outline: 2px solid var(--bad);
+    outline-offset: 1px;
+}
+
+/* 복구 대안 */
+.recovery {
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    background: var(--surface);
+}
+.options {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+}
+.option {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    font-size: 13px;
+}
+.option[aria-current='true'] {
+    border: 2px dashed #a4520f;
+}
+.option ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+/* 안전 */
+.safety {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 16px;
+    align-items: start;
+}
+@media (max-width: 960px) {
+    .safety {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+.camStrip {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 2px;
+    /* 카메라가 많아 넘칠 때만 가는 가로 스크롤 */
+    scrollbar-width: thin;
+}
+/* 카메라 한 대: 상태 점 + 이름 + 상태 글자(한 줄) */
+.camPill {
+    display: inline-flex;
+    flex: none;
+    gap: 5px;
+    align-items: center;
+    padding: 4px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    font-size: 12px;
+    white-space: nowrap;
+}
+.camPill i {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--ok);
+}
+.camPill[data-kind='warn'] i {
+    background: var(--warn);
+}
+.camPill[data-kind='bad'] i {
+    background: var(--bad);
+}
+
+/* 운영진 */
+.crew {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 14px;
+}
+.crewTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+.crewTable th,
+.crewTable td {
+    padding: 8px 6px;
+    border-bottom: 1px solid #eef0f3;
+    text-align: left;
+    vertical-align: top;
+}
+.crewTable th {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* 인력 배치 검토 목록: 대상 | 내용 | 업무 보기 */
+.reviewList {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 13px;
+}
+.reviewList li {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    min-height: 40px;
+    padding: 6px 0;
+    border-bottom: 1px solid #eef0f3;
+}
+.reviewList li:last-child {
+    border-bottom: 0;
+}
+
+/* 안전 지원 후보 표: 좁으면 표 안에서만 가로로 밀고, 맨 아래 행이 떠 있는 채팅 버튼에 가리지 않게 띄운다 */
+.candWrap {
+    margin-bottom: 56px;
+    overflow-x: auto;
+}
+.candTable {
+    min-width: 640px;
+}
+.candTable td {
+    /* 버튼 없는 행도 같은 높이로 맞춘다 */
+    height: 57px;
+    vertical-align: middle;
+}
+.candTable th:last-child,
+.candTable td:last-child {
+    width: 1%;
+    text-align: right;
+    white-space: nowrap;
+}
+.candAction {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* 알림 목록 팝업: 건수와 상관없이 크기를 고정하고, 넘치면 목록만 스크롤한다 */
+.alertList {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    height: min(420px, calc(100dvh - 180px));
+    padding-right: 6px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+}
+.alertList .alert {
+    flex: none;
+}
+.alert {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    min-height: 40px;
+    padding: 6px 12px;
+    border: 1px solid var(--bad);
+    border-radius: var(--r-sm);
+    background: var(--bad-soft);
+    color: var(--fg);
+    text-align: left;
+}
+.alert span {
+    flex: none;
+    white-space: nowrap;
+}
+.alertTitle {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.bang {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: var(--bad);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 900;
+}
+/* 장비 등록 팝업: 직접 입력과 파일 가져오기 사이 구분선 */
+.sep {
+    width: 100%;
+    margin: 4px 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+}
+
+/* 시간표 이름 칸의 상태 칩·사용 상태 글씨도 함께 키운다 */
+.tlName :global(.chip),
+.tlName :global(.xs) {
+    font-size: 13px;
+}

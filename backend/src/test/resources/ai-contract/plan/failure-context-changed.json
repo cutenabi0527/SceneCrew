@@ -1,0 +1,15 @@
+{
+  "jobId": "11111111-1111-4111-8111-111111111111",
+  "attempt": 1,
+  "requestSchemaVersion": "4",
+  "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "contextRevision": 12,
+  "error": {
+    "code": "READ_CONTEXT_CHANGED",
+    "message": "실행 중 행사 입력이 바뀌었습니다. 현재 입력으로 다시 생성해 주세요.",
+    "retryable": false,
+    "details": {
+      "observedRevision": 13
+    }
+  }
+}

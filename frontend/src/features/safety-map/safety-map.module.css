@@ -1,0 +1,66 @@
+.map {
+    width: 100%;
+    max-width: 640px;
+    border: 1px solid var(--line);
+    background: var(--surface-2);
+    border-radius: 8px;
+}
+
+.zone {
+    stroke: var(--line-2);
+    stroke-width: 0.004;
+    fill: var(--surface);
+    fill-opacity: 0.7;
+}
+
+.point {
+    stroke: var(--surface);
+    stroke-width: 0.004;
+}
+
+.label {
+    font-size: 0.035px;
+    fill: var(--muted);
+    text-anchor: middle;
+}
+
+/* 위험도는 색만으로 구분하지 않고 범례·목록에 글자로도 적는다 */
+.EXCEEDS_CONFIRMED_RULE {
+    fill: var(--accent);
+}
+
+.ATTENTION {
+    fill: var(--warn);
+}
+
+.WITHIN_CONFIRMED_RULE {
+    fill: var(--ok);
+}
+
+.UNASSESSED,
+.NOT_CURRENT {
+    fill: var(--muted);
+}
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    list-style: none;
+    padding: 0;
+}
+
+.swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+
+.frame {
+    width: 100%;
+    max-width: 480px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+}

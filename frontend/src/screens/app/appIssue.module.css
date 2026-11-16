@@ -1,0 +1,424 @@
+/* APP 이슈 목록·내 보고 상세(현장 팀원용). 상태 색은 보고·대응 처리 상태 색(--tone-*)을 쓴다. */
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    font-variant-numeric: tabular-nums;
+}
+.detail {
+    flex: 1 0 auto;
+    gap: 16px;
+}
+.title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+.count {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+}
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* 상태 칩: 접수됨 주황 / 대응 중 보라 / 해결 보고 초록 / 종료 회색 */
+.chip {
+    flex-shrink: 0;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--surface-2);
+    color: var(--muted);
+}
+.chip[data-status='RECEIVED'] {
+    background: #fff0e0;
+    color: #8a4b00;
+}
+.chip[data-status='RESPONDING'] {
+    background: var(--violet-soft);
+    color: var(--violet);
+}
+.chip[data-status='RESOLUTION_REPORTED'] {
+    background: var(--ok-soft);
+    color: var(--ok);
+}
+
+/* 상태 카드: 왼쪽 4px 막대가 처리 상태 */
+.card {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--tone-closed);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--fg);
+    font: inherit;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+button.card {
+    cursor: pointer;
+}
+.card[data-status='RECEIVED'] {
+    border-left-color: var(--tone-new);
+}
+.card[data-status='RESPONDING'] {
+    border-left-color: var(--tone-approve);
+}
+.card[data-status='RESOLUTION_REPORTED'] {
+    border-left-color: var(--tone-resolve);
+}
+.closed {
+    opacity: 0.6;
+}
+.cardTop {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+.meta {
+    font-size: 13px;
+    color: var(--muted);
+}
+.head {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+.cardTitle {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+.detailTitle {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+}
+.sub {
+    font-size: 14px;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+}
+.summary {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+.now {
+    border-top: 1px solid var(--surface-2);
+    padding-top: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+.nowBox {
+    border-radius: 10px;
+    padding: 10px 12px;
+    background: var(--blue-soft);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* 4단계 처리 막대 */
+.steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+    font-size: 12px;
+    text-align: center;
+    color: var(--muted);
+}
+.steps li {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.steps li::before {
+    content: '';
+    height: 6px;
+    border-radius: 999px;
+    background: var(--surface-2);
+}
+.steps li[data-on] {
+    color: var(--fg);
+}
+.steps li[aria-current] {
+    font-weight: 700;
+}
+.steps[data-status='RECEIVED'] li[data-on]::before {
+    background: var(--tone-new);
+}
+.steps[data-status='RESPONDING'] li[data-on]::before {
+    background: var(--tone-approve);
+}
+.steps[data-status='RESOLUTION_REPORTED'] li[data-on]::before {
+    background: var(--tone-resolve);
+}
+.steps[data-status='CLOSED'] li[data-on]::before {
+    background: var(--tone-closed);
+}
+/* 빈 상태 안내: 단계마다 제 색 */
+.flow {
+    gap: 6px;
+    font-size: 13px;
+    color: var(--fg);
+}
+.flow li {
+    gap: 6px;
+}
+.flow li:nth-child(1)::before {
+    background: var(--tone-new);
+}
+.flow li:nth-child(2)::before {
+    background: var(--tone-approve);
+}
+.flow li:nth-child(3)::before {
+    background: var(--tone-resolve);
+}
+.flow li:nth-child(4)::before {
+    background: var(--tone-closed);
+}
+
+.more {
+    min-height: 48px;
+    padding: 0 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--fg);
+    font: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    cursor: pointer;
+}
+.more b {
+    font-size: 14px;
+    font-weight: 600;
+}
+.more span {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+/* 빈 상태·권한 없음 */
+.empty {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 28px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+}
+.emptyIcon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.emptyIcon svg {
+    width: 24px;
+    height: 24px;
+}
+.emptyTitle {
+    font-size: 17px;
+    font-weight: 700;
+}
+.emptyText {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+.primary,
+.secondary {
+    box-sizing: border-box;
+    min-height: 52px;
+    padding: 0 28px;
+    border-radius: 10px;
+    font: inherit;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.primary {
+    border: 0;
+    background: var(--fg);
+    color: var(--surface);
+    font-weight: 700;
+}
+.secondary {
+    border: 1px solid var(--line-2);
+    background: var(--surface);
+    color: var(--fg);
+    font-weight: 600;
+}
+.primary:disabled,
+.secondary:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.sectionTitle {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+}
+.guide {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--muted);
+}
+
+/* 권한 없음: 화면 가운데 */
+.noAccess {
+    flex: 1 0 auto;
+    padding: 24px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+.noAccess .emptyIcon {
+    width: 56px;
+    height: 56px;
+}
+.noAccess .emptyTitle {
+    font-size: 18px;
+}
+.noAccessActions {
+    margin-top: 12px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* 내가 보낸 보고(이력) */
+.history {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.history li {
+    display: flex;
+    gap: 12px;
+}
+.history time {
+    width: 44px;
+    flex-shrink: 0;
+    padding-top: 2px;
+    font-size: 13px;
+    color: var(--muted);
+}
+.historyBody {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-left: 2px solid var(--surface-2);
+    padding-left: 12px;
+}
+.historyBody b {
+    font-size: 13px;
+    font-weight: 600;
+}
+.historyBody p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+/* 관련 업무 줄 */
+.task {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 56px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--fg);
+    font: inherit;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    cursor: pointer;
+}
+.task > span:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+.task b {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* 아래 고정 행동 */
+.footer {
+    position: sticky;
+    bottom: 0;
+    margin: auto -16px 0;
+    padding: 12px 16px calc(20px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.footerPair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+.footerPair button {
+    min-height: 56px;
+    border-radius: 12px;
+}
+.footerNote {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--muted);
+    text-align: center;
+}
